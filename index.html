@@ -1,0 +1,2544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Award - Federal Contract Intelligence</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3-sankey/0.12.3/d3-sankey.min.js"></script>
+  
+<style>
+:root {
+  /* Structural Variables (Unchanged by themes) */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --font-family: "Atkinson Hyperlegible Next", sans-serif;
+  --radius: 4px;
+  --transition: all 0.2s ease-in-out;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Dynamically set theme variables will be applied here */
+body {
+  font-family: var(--font-family);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* --- Theme Controls --- */
+.theme-controls {
+  display: flex;
+  gap: var(--space-sm);
+  background-color: var(--bg-secondary);
+  padding: var(--space-xs);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.theme-btn {
+  padding: var(--space-sm) var(--space);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius);
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  transition: var(--transition);
+}
+
+.theme-btn.active {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  box-shadow: var(--shadow);
+}
+
+/* --- (rest of your CSS) --- */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.app-container { min-height: 100vh; max-width: 1600px; margin: 0 auto; background: var(--bg-primary); }
+.app-header { background: var(--bg-primary); border-bottom: 1px solid var(--border); padding: var(--space-lg) var(--space-xl); position: static; top: 0; z-index: 100; }
+.header-content { display: flex; flex-direction: column; gap: var(--space-lg); }
+.logo-main { display: flex; justify-content: space-between; align-items: flex-start; }
+.logo-brand { display: flex; align-items: center; gap: var(--space); }
+.logo-brand span { font-size: 2.5rem; font-weight: 800; color: var(--text-primary); }
+.logo-subtitle { font-size: 0.875rem; color: var(--text-secondary); margin-top: var(--space-xs); }
+.data-load-controls { display: flex; gap: var(--space); margin-bottom: var(--space); }
+.controls-section { display: flex; flex-direction: column; gap: var(--space-lg); }
+.main-filters { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: var(--space); align-items: end; }
+.form-input, .form-select { padding: var(--space) var(--space-lg); border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-primary); color: var(--text-primary); font-size: 0.875rem; transition: var(--transition); }
+.form-input:focus, .form-select:focus { outline: none; border-color: var(--text-primary); box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.1); }
+.search-wrapper { position: relative; }
+.search-input { padding-left: var(--space); }
+.btn { display: inline-flex; align-items: center; gap: var(--space-sm); padding: var(--space) var(--space-lg); font-size: 0.875rem; font-weight: 500; border: 1px solid transparent; border-radius: var(--radius); cursor: pointer; transition: all 0.2s ease-in-out; text-decoration: none; background: transparent; }
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.btn-primary { background: var(--primary); color: var(--bg-primary); font-weight: 600; }
+.btn-primary:hover { background: var(--primary-dark); }
+.btn-secondary { background: var(--bg-primary); color: var(--text-secondary); border-color: var(--border); font-weight: 500; }
+.btn-secondary:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+.btn-sm { padding: var(--space-sm) var(--space); font-size: 0.75rem; }
+.file-input { display: none; }
+.advanced-filters { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-lg); margin-top: var(--space-lg); display: none; }
+.advanced-filters.active { display: block; }
+.filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); }
+.form-group { display: flex; flex-direction: column; gap: var(--space-xs); }
+.form-label { font-size: 0.75rem; font-weight: 600; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em; }
+.dashboard { padding: var(--space-xl); display: flex; flex-direction: column; gap: var(--space); }
+.section-title { font-size: 2.25rem; color: var(--text-primary); margin-bottom: var(--space-lg); border-bottom: none; padding-bottom: var(--space-sm); font-weight: 600; line-height: 1.2; letter-spacing: -1.5px; }
+.section-title strong { font-weight: 700; color: var(--text-primary); }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space); margin-bottom: var(--space-sm); }
+.stat-card { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space); }
+.stat-label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-sm); }
+.stat-value { font-family: var(--font-family); font-size: 2.5rem; font-weight: 600; color: var(--text-primary); letter-spacing: -1px; }
+.stat-company { font-size: 1.8rem; font-weight: 600; color: var(--text-primary); }
+.chart-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-xl); margin-bottom: var(--space-sm); color: var(--text-primary); }
+.chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg); }
+.chart-controls { display: flex; gap: var(--space-sm); }
+.primary-charts { display: grid; grid-template-columns: 3fr 2fr; gap: var(--space-xl); height: 450px; }
+.chart-container { position: relative; height: 100%; max-height: 450px; overflow: visible; padding-bottom: 40px; display: flex; flex-direction: column; justify-content: center; }
+.sankey-container { width: 100%; height: 100%; overflow: hidden; }
+.industry-chart-container { display: flex; flex-direction: column; justify-content: center; align-items: center; padding-top: var(--space-lg); }
+.table-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.tabs { display: flex; background: var(--bg-tertiary); border-bottom: 1px solid var(--border); }
+.tab-btn { padding: var(--space) var(--space-lg); background: none; border: none; color: var(--text-secondary); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: var(--transition); }
+.tab-btn.active, .tab-btn:hover { color: var(--text-primary); background: var(--bg-primary); }
+.tab-content { display: none; padding: var(--space-xl); }
+.tab-content.active { display: block; }
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th { background: var(--bg-secondary); padding: var(--space); text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.data-table td { padding: var(--space); border-bottom: 1px solid var(--border); color: var(--text-primary); font-size: 0.875rem; }
+.data-table tr:hover { background: var(--bg-tertiary); }
+.entity-badge { display: inline-flex; align-items: center; gap: var(--space-sm); }
+.entity-icon { width: 1.5rem; height: 1.5rem; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; flex-shrink: 0; }
+.modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: var(--transition); }
+.modal-backdrop.active { opacity: 1; visibility: visible; }
+.modal { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); width: 90%; max-width: 600px; max-height: 80vh; overflow: auto; }
+.modal-header { padding: var(--space-lg); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.modal-body { padding: var(--space-lg); }
+.modal-footer { padding: var(--space-lg); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.loading-state, .empty-state, .error-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--space-2xl); text-align: center; }
+.loading-spinner { width: 2rem; height: 2rem; border: 2px solid var(--border); border-top: 2px solid var(--text-primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: var(--space); }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.error-state { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: var(--radius); }
+.hidden { display: none !important; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 768px) { .app-header { padding: var(--space) var(--space-lg); } .dashboard { padding: var(--space-lg); } .main-filters { grid-template-columns: 1fr; } .primary-charts { grid-template-columns: 1fr; height: auto; gap: var(--space-lg); } .chart-container { height: 300px; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .chart-section { padding: var(--space-lg); } }
+/* --- Mobile Optimization --- */
+@media (max-width: 768px) {
+  /* -- General Layout & Spacing -- */
+  .app-header, .dashboard, .chart-section {
+    padding: var(--space); /* Reduce padding on mobile */
+  }
+.primary-charts {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: var(--space-xl);
+  }
+  
+  .sankey-container {
+    height: 250px; /* Shorter height for mobile */
+    position: relative;
+  }
+  /* -- Header -- */
+  .logo-main {
+    flex-direction: column; /* Stack logo and theme controls */
+    align-items: flex-start;
+    gap: var(--space);
+  }
+
+  /* -- Filters -- */
+  .main-filters {
+    grid-template-columns: 1fr; /* Stack all filters into a single column */
+  }
+  
+  /* -- Typography -- */
+  .section-title {
+    font-size: 1.5rem; /* Reduce title size for readability */
+    letter-spacing: -0.5px;
+  }
+  .stat-value, .stat-company {
+    font-size: 2rem; /* Reduce stat font size */
+  }
+
+  /* -- Stat Cards -- */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr; /* Keep the 2x2 grid for stats */
+  }
+
+  /* -- Chart Stacking -- */
+  .primary-charts {
+    grid-template-columns: 1fr; /* Stack Sankey and Donut charts vertically */
+    height: auto;
+    gap: var(--space-xl); /* Add more space between stacked charts */
+  }
+
+.chart-container,
+.sankey-container { /* Add .sankey-container to the rule */
+  height: 350px; /* Give charts a consistent, touch-friendly height */
+}
+
+  /* -- Tables -- */
+  .tabs {
+    overflow-x: auto; /* Allow tabs to scroll horizontally on small screens */
+    white-space: nowrap;
+  }
+}
+
+.active-filters-display {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-top: var(--space-xs);
+  font-weight: 500;
+  height: 1.5em; /
+}
+.active-filters-display strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+/* --- Personalized Footer --- */
+.app-footer-personalized {
+  background: var(--bg-secondary);
+  padding: var(--space-2xl) var(--space-xl);
+  border-top: 1px solid var(--border);
+}
+.footer-grid-personalized {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: var(--space-2xl);
+}
+.footer-section h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+}
+.footer-section p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.connect-card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  display: flex;
+  gap: var(--space-lg);
+  align-items: flex-start;
+}
+.connect-avatar img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+.connect-info h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+.connect-info p {
+  font-size: 0.875rem;
+  margin-bottom: var(--space-lg);
+}
+.connect-buttons {
+  display: flex;
+  gap: var(--space-sm);
+}
+.how-to-steps, .footer-links {
+  list-style: none;
+  padding: 0;
+}
+.how-to-steps li + li, .footer-links li + li {
+  margin-top: var(--space-lg);
+}
+.how-to-steps h4 {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  transition: var(--transition);
+}
+.footer-links a:hover {
+  color: var(--primary);
+}
+.footer-links a i {
+  color: var(--text-tertiary);
+}
+.copyright {
+  border-top: 1px solid var(--border);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+}
+
+/* Mobile Styles */
+@media (max-width: 992px) {
+  .footer-grid-personalized {
+    grid-template-columns: 1fr; /* Stack columns on mobile/tablet */
+  }
+}
+/* --- Enhanced Empty State --- */
+.empty-state-content {
+  max-width: 800px;
+  text-align: left;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  padding: var(--space-2xl);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.empty-state-title {
+  font-size: 1.75rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+.empty-state-intro {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: var(--space) 0 var(--space-xl) 0;
+  max-width: 90%;
+}
+.how-to-guide h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--space-sm);
+}
+.how-to-guide ol {
+  list-style: none;
+  padding-left: 0;
+}
+.how-to-guide li + li {
+  margin-top: var(--space-lg);
+}
+.how-to-guide li strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+}
+.how-to-guide li p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+.empty-state-prompt {
+    text-align: center;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--border);
+}
+.logo-mark {
+  display: inline-flex;
+  align-items: center;
+  background: var(--primary);
+  color: var(--primary-text);
+  padding: var(--space) var(--space-lg); /* Adjusted padding for better balance */
+  border-radius: 6px;
+  font-size: 2rem; /* Updated font size */
+  font-weight: 700;
+  line-height: 1;
+}
+.data-load-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+}
+
+.example-datasets {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.dataset-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dataset-buttons {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.upload-section {
+  padding-top: var(--space);
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+  .dataset-buttons {
+    justify-content: center;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-content">
+        <div class="logo-main">
+          <div>
+            <div class="logo-brand">
+  <div class="logo-mark">Hoowon?</div>
+</div>
+            <div class="logo-subtitle">Historical Contract Intelligence</div>
+          </div>
+          <div class="theme-controls" id="themeControls">
+            <button class="theme-btn" data-theme="light">Light</button>
+            <button class="theme-btn" data-theme="dark">Dark</button>
+          </div>
+        </div>
+        
+        <div class="data-load-controls">
+  <div class="example-datasets">
+    <div class="dataset-label">Load Example Data:</div>
+    <div class="dataset-buttons">
+      <button class="btn btn-primary btn-sm" data-dataset="it-software">IT & Software</button>
+      <button class="btn btn-primary btn-sm" data-dataset="professional-services">Prof Services</button>
+      <button class="btn btn-primary btn-sm" data-dataset="facilities">Facilities & Maint</button>
+      <button class="btn btn-primary btn-sm" data-dataset="dhs">DHS Contracts</button>
+      <button class="btn btn-primary btn-sm" data-dataset="va">VA Awards YTD</button>
+    </div>
+  </div>
+  <div class="upload-section">
+    <input type="file" id="csvFile" class="file-input" accept=".csv">
+    <label for="csvFile" class="btn btn-secondary">
+      Upload Your CSV
+    </label>
+  </div>
+</div>
+        
+        <div class="controls-section" id="controlsSection" style="display: none;">
+          <div class="main-filters">
+            <div class="search-wrapper">
+              <input type="text" id="searchInput" class="form-input search-input" placeholder="Search contracts, agencies, vendors...">
+            </div>
+            <select id="agencyFilter" class="form-select">
+              <option value="">All Agencies</option>
+            </select>
+            <select id="vendorFilter" class="form-select">
+              <option value="">All Vendors</option>
+            </select>
+            <select id="naicsFilter" class="form-select">
+              <option value="">All NAICS</option>
+            </select>
+            <div style="display: flex; gap: var(--space-sm);">
+              <button id="resetBtn" class="btn btn-secondary btn-sm">
+                Reset
+              </button>
+              <button id="moreFiltersBtn" class="btn btn-secondary btn-sm">
+                More
+              </button>
+            </div>
+          </div>
+          
+          <div class="advanced-filters" id="advancedFilters">
+            <div class="filters-grid">
+              <div class="form-group">
+                <label class="form-label">Start Date</label>
+                <input type="date" id="startDate" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">End Date</label>
+                <input type="date" id="endDate" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Office</label>
+                <select id="officeFilter" class="form-select">
+                  <option value="">Any Office</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Value Range</label>
+                <select id="valueFilter" class="form-select">
+                  <option value="">Any Value</option>
+                  <option value="0-100000">Under $100K</option>
+                  <option value="100000-500000">$100K - $500K</option>
+                  <option value="500000-1000000">$500K - $1M</option>
+                  <option value="1000000-5000000">$1M - $5M</option>
+                  <option value="5000000-10000000">$5M - $10M</option>
+                  <option value="10000000-999999999999">Over $10M</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div id="loadingState" class="loading-state hidden">
+      <div class="loading-spinner"></div>
+      <p>Processing contract data...</p>
+    </div>
+
+    <div id="errorState" class="error-state hidden">
+      <h2>Error Loading Data</h2>
+      <p id="errorMessage"></p>
+      <div id="parseWarnings" class="hidden" style="margin-top: var(--space); padding: var(--space); background: #fff3cd; color: #856404; border-radius: var(--radius);"></div>
+    </div>
+
+    <div id="emptyState" class="empty-state">
+  <div class="empty-state-content">
+    <h2 class="empty-state-title">Historical Data is Your Secret Sales Weapon</h2>
+    <p class="empty-state-intro">
+      Looking at old contract awards isn't just about what you missed—it's about seeing the future. By analyzing the government's past buying habits, you can stop guessing and start making strategic decisions. It's like having the competition's playbook before the game starts.
+    </p>
+    <div class="how-to-guide">
+      <h3>How To Use This Tool</h3>
+      <ol>
+        <li>
+          <strong>1. Find Contract Data</strong>
+          <p>Go to FPDS.gov, perform a search, and export the results as a CSV file.</p>
+        </li>
+        <li>
+          <strong>2. Upload & Analyze</strong>
+          <p>Upload the CSV to visualize spending, identify vendors, and find opportunities.</p>
+        </li>
+        <li>
+          <strong>3. Filter & Explore</strong>
+          <p>Use the interactive filters and click on charts to narrow results and gain insights.</p>
+        </li>
+      </ol>
+    </div>
+    <p class="empty-state-prompt">
+      Use the buttons in the header to load example data or upload your own CSV to begin.
+    </p>
+  </div>
+</div>
+
+    <main class="dashboard hidden" id="dashboard">
+      <section>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Value</div>
+            <div class="stat-value" id="totalValue">$0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Contracts</div>
+            <div class="stat-value" id="totalContracts">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Companies</div>
+            <div class="stat-value" id="totalCompanies">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Market Leader</div>
+            <div class="stat-company" id="topCompany">-</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chart-section">
+        <div class="chart-header">
+         <div>
+  <h2 class="section-title">Award Flow & NAICS Distribution</h2>
+  <div id="filterDisplay" class="active-filters-display"></div>
+</div>
+          <div class="chart-controls">
+            <button id="sankeyLimit10" class="btn btn-sm btn-primary">Top 10</button>
+            <button id="sankeyLimit25" class="btn btn-sm btn-secondary">Top 25</button>
+            <button id="sankeyLimitAll" class="btn btn-sm btn-secondary">All</button>
+          </div>
+        </div>
+        <div class="primary-charts">
+          <div id="sankeyChart" class="sankey-container"></div>
+         <div class="chart-container industry-chart-container">
+  <canvas id="industryChart"></canvas>
+</div>
+        </div>
+      </section>
+      
+      <section class="chart-section">
+        <h2 class="section-title" style="margin-bottom: var(--space);">Seasonal Buying Pattern</h2>
+        <div class="chart-container" style="height: 200px; max-height: 200px; padding-bottom: 5px;">
+          <canvas id="timelineChart"></canvas>
+        </div>
+      </section>
+      
+      <section class="table-section">
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="recent">Recent Awards</button>
+          <button class="tab-btn" data-tab="largest">Largest Awards</button>
+          <button class="tab-btn" data-tab="offices">Top Offices</button>
+        </div>
+        
+        <div class="tab-content active" id="recentTab">
+          <table class="data-table" id="recentTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Contract ID</th>
+                <th>Agency</th>
+                <th>Office</th>
+                <th>Vendor</th>
+                <th>Description</th>
+                <th>Value</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        
+        <div class="tab-content" id="largestTab">
+          <table class="data-table" id="largestTable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Contract ID</th>
+                <th>Agency</th>
+                <th>Office</th>
+                <th>Vendor</th>
+                <th>Description</th>
+                <th>Value</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        
+        <div class="tab-content" id="officesTab">
+          <table class="data-table" id="officesTable">
+            <thead>
+              <tr>
+                <th>Agency</th>
+                <th>Office</th>
+                <th>Contracts</th>
+                <th>Total Value</th>
+                <th>Top NAICS</th>
+                <th>Top Vendor</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+	  <footer class="app-footer-personalized">
+      <div class="footer-grid-personalized">
+        <div class="footer-section">
+          <h3>Let's Connect</h3>
+          <div class="connect-card">
+            <div class="connect-avatar">
+              <img src="markgs.jpg" alt="Mark's profile picture">
+            </div>
+            <div class="connect-info">
+              <h4>Hi, I'm Mark</h4>
+              <p>Historical Data is Your Secret Sales Weapon. Looking at old contract awards isn't just about what you missed—it's about seeing the future. By analyzing the government's past buying habits, you can stop guessing and start making strategic decisions. It's like having the competition's playbook before the game starts.</p><p>I've created a suite of Post-Award Intelligence tools that help you find those primes, follow the money, and unlock more opportunities.</p>
+              <div class="connect-buttons">
+                <a href="https://www.linkedin.com/in/markflournoy/" class="btn btn-secondary btn-sm" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> Connect</a>
+                <a href="mailto:mark@subhoo.com" class="btn btn-secondary btn-sm"><i class="fas fa-envelope"></i> Email</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>How To Use This Tool</h3>
+          <ul class="how-to-steps">
+            <li>
+              <h4>1. Find Contract Data</h4>
+              <p>Go to FPDS.gov, perform a search, and export the results as a CSV file.</p>
+            </li>
+            <li>
+              <h4>2. Upload & Analyze</h4>
+              <p>Upload the CSV to visualize spending, identify vendors, and find opportunities.</p>
+            </li>
+            <li>
+              <h4>3. Filter & Explore</h4>
+              <p>Use our interactive filters and click on charts to narrow results and gain insights.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Useful Resources</h3>
+          <ul class="footer-links">
+            <li><a href="https://www.fpds.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Federal Procurement Data System</a></li>
+            <li><a href="https://www.sba.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Small Business Administration</a></li>
+            <li><a href="https://sam.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> SAM.gov</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copyright">
+        <p>&copy; 2025 Hoowon. All rights reserved.</p>
+      </div>
+    </footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="contractModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Contract Details</h3>
+        <button class="btn btn-sm" id="closeModal">×
+        </button>
+      </div>
+      <div class="modal-body" id="modalContent"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="closeModalBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const themeManager = {
+  themes: {
+    light: {
+  cssVars: {
+    '--primary': '#1A593A',
+    '--primary-dark': '#004225',
+    '--primary-text': '#FFFFFF',
+    '--text-primary': '#004225',
+    '--text-secondary': '#5B7568',
+    '--text-tertiary': '#8DA396',
+    '--bg-primary': '#F9FAF8',
+    '--bg-secondary': '#F0F2EF',
+    '--bg-tertiary': '#E8EBE6',
+    '--border': '#E8EBE6',
+  },
+  chartPalette: [
+    '#004225', '#1A593A', '#3B7051', '#5B8A6F', 
+    '#8DA396', '#B9C9C0', '#DDE6E2', '#F5F8F2'
+  ]
+},
+    dark: {
+  cssVars: {
+    '--primary': '#73C69D',
+    '--primary-dark': '#5FAA83',
+    '--primary-text': '#1B2B23',
+    '--text-primary': '#F5F8F2',
+    '--text-secondary': '#B9C9C0',
+    '--text-tertiary': '#8DA396',
+    '--bg-primary': '#1B2B23',
+    '--bg-secondary': '#2A3F33',
+    '--bg-tertiary': '#3A5143',
+    '--border': '#3A5143',
+  },
+  chartPalette: [
+    '#F5F8F2', '#DDE6E2', '#B9C9C0', '#8DA396', 
+    '#6DD499', '#5ABF83', '#47AA6F', '#3A8C5A'
+  ]
+}
+},
+
+  applyTheme(themeName) {
+    const theme = this.themes[themeName];
+    if (!theme) {
+      console.warn(`Theme "${themeName}" not found.`);
+      return;
+    }
+
+    for (const [key, value] of Object.entries(theme.cssVars)) {
+      document.documentElement.style.setProperty(key, value);
+    }
+    
+    PALETTE = theme.chartPalette;
+
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.theme === themeName);
+    });
+
+    localStorage.setItem('selectedTheme', themeName);
+
+    if (app.data.length > 0) {
+      charts.initAll();
+      dashboard.updateCharts();
+    }
+  },
+
+  init() {
+    const savedTheme = localStorage.getItem('selectedTheme');
+    const defaultTheme = 'light';
+    this.applyTheme(savedTheme || defaultTheme);
+  }
+};
+
+const app = {
+  data: [],
+  filteredData: [],
+  agencies: {},
+  offices: {},
+  vendors: {},
+  naicsCodes: {},
+  pscCodes: {},
+  charts: {},
+  filters: {
+    search: null,
+    agency: null,
+    vendor: null,
+    naics: null,
+    office: null,
+    startDate: null,
+    endDate: null,
+    valueRange: null
+  },
+  selection: { type: null, value: null, container: null },
+  sankeyDisplayLimit: 10,
+  s3BaseUrl: "https://subhoodata.s3.us-east-1.amazonaws.com/data/",
+  totalFilteredValue: 0,
+  sankeyTotal: 0,
+  isUpdating: false,
+  parseWarnings: []
+};
+
+let PALETTE = [];
+ 
+const chartConfig = { fillOpacity: 0.65, lineOpacity: 0.25 };
+const elements = {};
+
+function cacheElements() {
+  const elementIds = [
+    'csvFile', 'loadExampleBtn', 'searchInput', 'agencyFilter', 'vendorFilter',
+    'naicsFilter', 'officeFilter', 'valueFilter', 'startDate', 'endDate',
+    'resetBtn', 'moreFiltersBtn', 'advancedFilters', 'controlsSection',
+    'loadingState', 'errorState', 'emptyState', 'dashboard', 'totalValue',
+    'totalContracts', 'totalCompanies', 'topCompany', 'sankeyChart',
+    'sankeyLimit10', 'sankeyLimit25', 'sankeyLimitAll', 'contractModal',
+    'closeModal', 'closeModalBtn', 'modalContent', 'parseWarnings'
+  ];
+
+  elementIds.forEach(id => {
+    elements[id] = document.getElementById(id);
+  });
+
+  elements.timelineChart = document.getElementById('timelineChart')?.getContext('2d');
+  elements.industryChart = document.getElementById('industryChart')?.getContext('2d');
+  elements.recentTable = document.querySelector('#recentTable tbody');
+  elements.largestTable = document.querySelector('#largestTable tbody');
+  elements.officesTable = document.querySelector('#officesTable tbody');
+}
+
+const utils = {
+  formatMoney: function(value) {
+   if (!value && value !== 0) return '$0';
+   const number = parseFloat(value);
+   if (isNaN(number)) return '$0';
+
+   const formatNumber = (num) => {
+     return num % 1 === 0 ? num.toFixed(0) : num.toFixed(1);
+   };
+
+   if (number >= 1e9) return '$' + formatNumber(number / 1e9) + 'B';
+   if (number >= 1e6) return '$' + formatNumber(number / 1e6) + 'M';
+   if (number >= 1e3) return '$' + formatNumber(number / 1e3) + 'K';
+   
+   return '$' + number.toFixed(0);
+ },
+
+  getOpacityHex: function(opacity) {
+    if (opacity < 0) opacity = 0;
+    if (opacity > 1) opacity = 1;
+    const alpha = Math.round(opacity * 255);
+    return (alpha < 16 ? '0' : '') + alpha.toString(16).toUpperCase();
+  },
+
+  formatDate: function(dateInput) { 
+    if (!dateInput) return 'N/A';
+    const date = this.parseDate(dateInput);
+    return date ? date.toLocaleDateString('en-US', { 
+      year: '2-digit', 
+      month: 'short', 
+      day: 'numeric', 
+      timeZone: 'UTC' 
+    }) : 'N/A';
+  },
+  
+  parseMoney: function(value) {
+    if (value === null || value === undefined || value === '') return 0;
+    const cleanValue = String(value).replace(/[$,\s]/g, '');
+    return this.safeParseFloat(cleanValue);
+  },
+  
+  safeParseFloat: function(value) {
+    if (value === null || value === undefined || value === '') return 0;
+    const parsed = parseFloat(value);
+    return isNaN(parsed) ? 0 : parsed;
+  },
+
+  detectDataType: function(value, columnName) {
+    if (!value || value === '') return { type: 'string', value: value };
+    
+    const str = String(value).trim();
+    
+    // Money detection
+    if (str.match(/^\$?[\d,]+\.?\d*$/)) {
+      return { type: 'number', value: this.parseMoney(str) };
+    }
+    
+    // Date detection for common formats
+    if (str.match(/^\d{1,2}[-\/]\w{3}[-\/]\d{2,4}$/) || 
+        str.match(/^\d{4}-\d{2}-\d{2}$/) ||
+        str.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+      const parsedDate = this.parseDate(str);
+      if (parsedDate) {
+        return { type: 'date', value: parsedDate, originalValue: str };
+      }
+    }
+    
+    // Number detection
+    if (str.match(/^[\d,]+\.?\d*$/) && !isNaN(parseFloat(str.replace(/,/g, '')))) {
+      return { type: 'number', value: parseFloat(str.replace(/,/g, '')) };
+    }
+    
+    // Boolean detection
+    if (str.toLowerCase() === 'true' || str.toLowerCase() === 'false') {
+      return { type: 'boolean', value: str.toLowerCase() === 'true' };
+    }
+    
+    return { type: 'string', value: str };
+  },
+  
+  parseCSV: function(text) {
+    if (!text || typeof text !== 'string') {
+      return { headers: [], data: [], errors: ['Invalid input: expected string'], warnings: [] };
+    }
+
+    const errors = [];
+    const warnings = [];
+    const lines = [];
+    let currentLine = [];
+    let currentField = [];
+    let inQuotes = false;
+    let i = 0;
+    let lineNumber = 1;
+
+    // More efficient character-by-character parsing
+    while (i < text.length) {
+      const char = text[i];
+      const nextChar = i + 1 < text.length ? text[i + 1] : '';
+
+      if (inQuotes) {
+        if (char === '"') {
+          if (nextChar === '"') {
+            // Escaped quote: ""
+            currentField.push('"');
+            i += 2;
+            continue;
+          } else {
+            // End quote
+            inQuotes = false;
+            i++;
+            continue;
+          }
+        } else {
+          // Regular character inside quotes (including line breaks)
+          currentField.push(char);
+          if (char === '\n') lineNumber++;
+        }
+      } else {
+        // Outside quotes
+        if (char === '"') {
+          // Start quote (should only happen at field start)
+          if (currentField.length > 0) {
+            warnings.push(`Unexpected quote at line ${lineNumber}, position ${i}`);
+          }
+          inQuotes = true;
+        } else if (char === ',') {
+          // Field separator
+          currentLine.push(currentField.join('').trim());
+          currentField = [];
+        } else if (char === '\r' && nextChar === '\n') {
+          // Windows line ending
+          currentLine.push(currentField.join('').trim());
+          lines.push({ line: currentLine, lineNumber });
+          currentLine = [];
+          currentField = [];
+          lineNumber++;
+          i++; // Skip the \n
+        } else if (char === '\r' || char === '\n') {
+          // Unix/Mac line ending
+          currentLine.push(currentField.join('').trim());
+          lines.push({ line: currentLine, lineNumber });
+          currentLine = [];
+          currentField = [];
+          lineNumber++;
+        } else {
+          // Regular character
+          currentField.push(char);
+        }
+      }
+      i++;
+    }
+
+    // Handle end of file
+    if (inQuotes) {
+      errors.push(`Unclosed quoted field at line ${lineNumber}`);
+    }
+    
+    // Add final field and line if any content remains
+    if (currentField.length > 0 || currentLine.length > 0) {
+      currentLine.push(currentField.join('').trim());
+      lines.push({ line: currentLine, lineNumber });
+    }
+
+    // Filter empty lines
+    const nonEmptyLines = lines.filter(lineObj => 
+      lineObj.line.length > 0 && lineObj.line.some(field => field.length > 0)
+    );
+
+    if (nonEmptyLines.length === 0) {
+      return { headers: [], data: [], errors: ['No data found'], warnings };
+    }
+
+    const headers = nonEmptyLines[0].line;
+    const data = [];
+
+    // Validate and clean headers
+    const cleanHeaders = headers.map(header => {
+      const cleaned = header.trim();
+      if (!cleaned) {
+        warnings.push('Empty header field detected and will be replaced');
+        return `Column_${headers.indexOf(header)}`;
+      }
+      return cleaned;
+    });
+
+    const headerCount = cleanHeaders.length;
+    
+    // Process data rows with validation and type detection
+    for (let i = 1; i < nonEmptyLines.length; i++) {
+      const lineObj = nonEmptyLines[i];
+      const values = lineObj.line;
+      
+      if (values.length !== headerCount) {
+        warnings.push(`Row ${lineObj.lineNumber}: Expected ${headerCount} fields, got ${values.length}`);
+        // Pad or truncate to match header count
+        while (values.length < headerCount) values.push('');
+        values.length = headerCount;
+      }
+
+      const row = {};
+      for (let j = 0; j < headerCount; j++) {
+        const rawValue = values[j] || '';
+        const typedValue = this.detectDataType(rawValue, cleanHeaders[j]);
+        
+        // Store both original and typed values
+        row[cleanHeaders[j]] = rawValue;
+        if (typedValue.type !== 'string') {
+          row[`${cleanHeaders[j]}_typed`] = typedValue.value;
+          row[`${cleanHeaders[j]}_type`] = typedValue.type;
+        }
+      }
+      data.push(row);
+    }
+
+    return { headers: cleanHeaders, data, errors, warnings };
+  },
+  
+  parseDate: function(dateString) {
+    if (!dateString) return null;
+    if (dateString instanceof Date && !isNaN(dateString)) return dateString;
+    
+    const s = String(dateString).trim();
+    
+    // Handle DD-MMM-YY format (e.g., "15-Jan-23")
+    let parts = s.match(/^(\d{1,2})-(\w{3})-(\d{2,4})$/);
+    if (parts) {
+      const months = {
+        'Jan':0,'Feb':1,'Mar':2,'Apr':3,'May':4,'Jun':5,
+        'Jul':6,'Aug':7,'Sep':8,'Oct':9,'Nov':10,'Dec':11
+      };
+      const day = parseInt(parts[1]);
+      const month = months[parts[2]];
+      let year = parseInt(parts[3]);
+      if (year < 100) year = year < 50 ? 2000 + year : 1900 + year;
+      if (!isNaN(day) && month !== undefined && !isNaN(year)) {
+        return new Date(Date.UTC(year, month, day));
+      }
+    }
+    
+    const date = new Date(s);
+    if (!isNaN(date.getTime())) {
+      const utcDate = new Date(Date.UTC(
+        date.getFullYear(), 
+        date.getMonth(), 
+        date.getDate()
+      ));
+      return utcDate;
+    }
+    
+    return null;
+  },
+  
+  truncateText: function(text, maxLength) {
+    if (!text) return '';
+    if (typeof text !== 'string') text = String(text);
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  },
+  
+  getEntityColor: function(entityName) {
+    if (!entityName) return PALETTE[0];
+    let hash = 0;
+    const name = String(entityName);
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return PALETTE[Math.abs(hash) % PALETTE.length];
+  },
+  
+  getInitials: function(name) {
+    if (!name) return '?'; 
+    const nameStr = String(name);
+    const words = nameStr.split(/\s+/).filter(word => word.length > 0);
+    return words.length > 1 
+      ? (words[0].charAt(0) + words[1].charAt(0)).toUpperCase() 
+      : nameStr.charAt(0).toUpperCase();
+  },
+
+  parseValueRange: function(rangeStr) {
+    if (!rangeStr || typeof rangeStr !== 'string') return null;
+    const parts = rangeStr.split('-');
+    if (parts.length !== 2) return null;
+    const min = this.safeParseFloat(parts[0]);
+    const max = this.safeParseFloat(parts[1]);
+    return { min, max };
+  },
+
+  validateContract: function(contract) {
+    return contract && 
+           typeof contract === 'object' &&
+           contract.id &&
+           contract.value !== undefined &&
+           contract.value !== null;
+  }
+};
+
+const stateManager = {
+  showState: function(state, message = '') {
+    const states = ['loadingState', 'errorState', 'emptyState', 'dashboard'];
+    states.forEach(s => {
+      const el = elements[s];
+      if (el) {
+        el.classList.toggle('hidden', s !== state);
+      }
+    });
+    
+    if (state === 'errorState') {
+      if (message && document.getElementById('errorMessage')) {
+        document.getElementById('errorMessage').textContent = message;
+      }
+      
+      // Show parse warnings if any
+      if (app.parseWarnings.length > 0 && elements.parseWarnings) {
+        elements.parseWarnings.innerHTML = `
+          <h4>Parse Warnings:</h4>
+          <ul>${app.parseWarnings.map(w => `<li>${w}</li>`).join('')}</ul>
+        `;
+        elements.parseWarnings.classList.remove('hidden');
+      }
+    }
+    
+    if (elements.controlsSection) {
+      elements.controlsSection.style.display = state === 'dashboard' ? 'block' : 'none';
+    }
+  },
+
+  updateFilters: function(filterUpdates, skipSync = false) {
+    if (app.isUpdating) return;
+    
+    Object.assign(app.filters, filterUpdates);
+    
+    if (!skipSync) {
+      this.syncFiltersToUI();
+    }
+    
+    this.applyFilters();
+  },
+
+  syncFiltersToUI: function() {
+    if (elements.searchInput) {
+      elements.searchInput.value = app.filters.search || '';
+    }
+
+    if (elements.startDate) {
+      elements.startDate.value = app.filters.startDate || '';
+    }
+	if (elements.endDate) {
+      elements.endDate.value = app.filters.endDate || '';
+    }
+
+    const selectFilters = ['agency', 'vendor', 'naics', 'office'];
+    selectFilters.forEach(filter => {
+      const element = elements[`${filter}Filter`];
+      if (element) {
+        element.value = app.filters[filter] || '';
+      }
+    });
+
+    if (elements.valueFilter) {
+      if (app.filters.valueRange) {
+        const range = app.filters.valueRange;
+        const value = `${range.min}-${range.max}`;
+        for (let option of elements.valueFilter.options) {
+          if (option.value === value) {
+            elements.valueFilter.value = value;
+            break;
+          }
+        }
+      } else {
+        elements.valueFilter.value = '';
+      }
+    }
+  },
+
+  applyFilters: function() {
+    if (!app.data || app.data.length === 0) return;
+    
+    app.isUpdating = true;
+    
+    let filtered = [...app.data];
+    
+    if (app.filters.search) {
+      const term = String(app.filters.search).toLowerCase();
+      filtered = filtered.filter(item => {
+        if (!utils.validateContract(item)) return false;
+        return Object.values(item).some(val => {
+          if (val === null || val === undefined) return false;
+          return String(val).toLowerCase().includes(term);
+        });
+      });
+    }
+    
+    const entityFilters = ['agency', 'vendor', 'naics', 'office'];
+    entityFilters.forEach(field => {
+      if (app.filters[field]) {
+        filtered = filtered.filter(item => 
+          item && item[field] === app.filters[field]
+        );
+      }
+    });
+    
+    if (app.filters.startDate) {
+      const startDate = utils.parseDate(app.filters.startDate);
+      if (startDate) {
+        filtered = filtered.filter(item => 
+          item && item.parsedDate && item.parsedDate >= startDate
+        );
+      }
+    }
+    
+    if (app.filters.endDate) {
+      const endDate = utils.parseDate(app.filters.endDate);
+      if (endDate) {
+        endDate.setUTCHours(23, 59, 59, 999);
+        filtered = filtered.filter(item => 
+          item && item.parsedDate && item.parsedDate <= endDate
+        );
+      }
+    }
+    
+    if (app.filters.valueRange) {
+      const range = app.filters.valueRange;
+      filtered = filtered.filter(item => {
+        if (!item) return false;
+        const value = utils.safeParseFloat(item.value);
+        return value >= range.min && value <= range.max;
+      });
+    }
+    
+    app.filteredData = filtered;
+    
+    this.analyzeFilteredData();
+    dashboard.updateAll();
+    this.updateFilterDisplay();
+    
+    app.isUpdating = false;
+  },
+
+  analyzeFilteredData: function() {
+    const data = app.filteredData;
+    
+    app.agencies = {};
+    app.offices = {};
+    app.vendors = {};
+    app.naicsCodes = {};
+    app.pscCodes = {};
+    
+    data.forEach(contract => {
+      if (!utils.validateContract(contract)) return;
+      
+      const value = utils.safeParseFloat(contract.value);
+      
+      if (contract.agency) {
+        if (!app.agencies[contract.agency]) {
+          app.agencies[contract.agency] = {
+            name: contract.agency, 
+            count: 0, 
+            value: 0
+          };
+        }
+        app.agencies[contract.agency].count++;
+        app.agencies[contract.agency].value += value;
+      }
+      
+      if (contract.office) {
+        if (!app.offices[contract.office]) {
+          app.offices[contract.office] = {
+            name: contract.office, 
+            agency: contract.agency, 
+            count: 0, 
+            value: 0, 
+            naicsCodes: {}
+          };
+        }
+        app.offices[contract.office].count++;
+        app.offices[contract.office].value += value;
+        
+        if (contract.naics) {
+          if (!app.offices[contract.office].naicsCodes[contract.naics]) {
+            app.offices[contract.office].naicsCodes[contract.naics] = { count: 0, value: 0 };
+          }
+          app.offices[contract.office].naicsCodes[contract.naics].count++;
+          app.offices[contract.office].naicsCodes[contract.naics].value += value;
+        }
+      }
+      
+      if (contract.vendor) {
+        if (!app.vendors[contract.vendor]) {
+          app.vendors[contract.vendor] = {
+            name: contract.vendor, 
+            count: 0, 
+            value: 0
+          };
+        }
+        app.vendors[contract.vendor].count++;
+        app.vendors[contract.vendor].value += value;
+      }
+      
+      if (contract.naics) {
+        if (!app.naicsCodes[contract.naics]) {
+          app.naicsCodes[contract.naics] = {
+            code: contract.naics, 
+            description: contract.naicsDescription, 
+            count: 0, 
+            value: 0
+          };
+        }
+        app.naicsCodes[contract.naics].count++;
+        app.naicsCodes[contract.naics].value += value;
+      }
+
+      if (contract.psc) {
+        if (!app.pscCodes[contract.psc]) {
+          app.pscCodes[contract.psc] = {
+            code: contract.psc, 
+            description: contract.pscDescription, 
+            count: 0, 
+            value: 0
+          };
+        }
+        app.pscCodes[contract.psc].count++;
+        app.pscCodes[contract.psc].value += value;
+      }
+    });
+  },
+
+  resetFilters: function() {
+    app.filters = {
+      search: null,
+      agency: null,
+      vendor: null,
+      naics: null,
+      office: null,
+      startDate: null,
+      endDate: null,
+      valueRange: null
+    };
+    
+    app.selection = { type: null, value: null, container: null };
+    app.filteredData = [...app.data];
+    app.sankeyDisplayLimit = 10;
+    
+    this.analyzeFilteredData();
+    sankeyChart.updateButtons('sankeyLimit10');
+    dashboard.updateAll();
+    
+    if (elements.advancedFilters) {
+      elements.advancedFilters.classList.remove('active');
+    }
+    
+    this.updateFilterDisplay();
+    this.syncFiltersToUI();
+  },
+
+  applySelectionFilter: function(type, value) {
+    if (app.filters[type] === value) {
+      const updates = { [type]: null };
+      if (type === 'agency') {
+        updates.office = null;
+      }
+      this.updateFilters(updates);
+      return;
+    }
+
+    const updates = { [type]: value };
+    
+    if (type === 'office') {
+      const parentAgency = app.offices[value]?.agency;
+      if (parentAgency && parentAgency !== app.filters.agency) {
+        updates.agency = parentAgency;
+      }
+    } else if (type === 'agency') {
+      if (app.filters.office) {
+        const currentOfficeAgency = app.offices[app.filters.office]?.agency;
+        if (currentOfficeAgency !== value) {
+          updates.office = null;
+        }
+      }
+    }
+    
+    this.updateFilters(updates);
+  },
+
+  updateFilterDisplay() {
+    const displayElement = document.getElementById('filterDisplay');
+    if (!displayElement) return;
+
+    const parts = [];
+    const filters = app.filters;
+
+    if (filters.agency) {
+      parts.push(`<strong>${utils.truncateText(filters.agency, 40)}</strong>`);
+    }
+    if (filters.office) {
+      parts.push(`<strong>${utils.truncateText(filters.office, 40)}</strong>`);
+    }
+    if (filters.vendor) {
+      parts.push(`<strong>${utils.truncateText(filters.vendor, 40)}</strong>`);
+    }
+    if (filters.naics) {
+      parts.push(`<strong>${filters.naics}</strong>`);
+    }
+
+    displayElement.innerHTML = parts.length > 0 
+      ? parts.join(' &nbsp;|&nbsp; ')
+      : '<em>No filters applied</em>';
+  }
+};
+
+const dataProcessor = {
+  async loadExampleData(dataset = 'it-software') {
+  try {
+    stateManager.showState('loadingState');
+    
+    const datasetMap = {
+      'it-software': 'it-software-2024.csv',
+      'professional-services': 'professional-services-2024.csv', 
+      'facilities': 'facilities-maintenance-2024.csv',
+      'dhs': 'dhs-contracts-2024.csv',
+      'va': 'va-ytd.csv'
+    };
+    
+    const filename = datasetMap[dataset] || datasetMap['it-software'];
+    const response = await fetch(`${app.s3BaseUrl}${filename}`);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to load ${dataset} data (Status: ${response.status})`);
+    }
+    const csvText = await response.text();
+    this.processData(csvText);
+  } catch (error) {
+    console.error('Load error:', error);
+    stateManager.showState('errorState', error.message);
+  }
+},
+
+  processData(csvText) {
+    try {
+      stateManager.showState('loadingState');
+      
+      let csvData;
+      try {
+        csvData = utils.parseCSV(csvText);
+      } catch (parseError) {
+        throw new Error(`CSV parsing failed: ${parseError.message}`);
+      }
+      
+      // Store warnings globally for display
+      app.parseWarnings = csvData.warnings || [];
+      
+      // Show critical errors
+      if (csvData.errors && csvData.errors.length > 0) {
+        throw new Error(`CSV errors: ${csvData.errors.join(', ')}`);
+      }
+      
+      const requiredFields = [
+        'Contract ID', 'Date Signed', 'Contracting Agency', 
+        'Legal Business Name', 'Action Obligation ($)'
+      ];
+      
+      for (const field of requiredFields) {
+        if (!csvData.headers.includes(field)) {
+          throw new Error(
+            `Required field "${field}" not found in CSV. Available fields: ${csvData.headers.join(', ')}`
+          );
+        }
+      }
+      
+      app.data = csvData.data
+        .map((row, index) => {
+          try {
+            const parsedDate = utils.parseDate(row['Date Signed']);
+            const value = utils.parseMoney(row['Action Obligation ($)']);
+            
+            return {
+              id: String(row['Contract ID'] || ''),
+              reference: String(row['Reference IDV'] || ''),
+              modification: String(row['Modification Number'] || ''),
+              date: String(row['Date Signed'] || ''),
+              parsedDate: parsedDate,
+              type: String(row['Award/IDV Type'] || ''),
+              agency: String(row['Contracting Agency'] || ''),
+              office: String(row['Contracting Office Name'] || ''),
+              vendor: String(row['Legal Business Name'] || ''),
+              value: value,
+              naics: String(row['NAICS'] || ''),
+              naicsDescription: String(row['NAICS Description'] || ''),
+              psc: String(row['PSC'] || ''),
+              pscDescription: String(row['PSC Description'] || ''),
+              description: String(row['PSC Description'] || row['Description of Requirement'] || '')
+            };
+          } catch (rowError) {
+            console.warn(`Error processing row ${index + 1}:`, rowError);
+            return null;
+          }
+        })
+        .filter(row => row !== null && utils.validateContract(row));
+      
+      if (app.data.length === 0) {
+        throw new Error('No valid data rows could be processed');
+      }
+      
+      app.filteredData = [...app.data];
+      
+      stateManager.analyzeFilteredData();
+      this.populateFilters();
+      
+      // Show warnings if any, but still proceed to dashboard
+      if (app.parseWarnings.length > 0) {
+        console.warn('CSV Parse Warnings:', app.parseWarnings);
+      }
+      
+      stateManager.showState('dashboard');
+      sankeyChart.updateButtons('sankeyLimit10');
+      charts.initAll();
+      dashboard.updateAll();
+      stateManager.updateFilterDisplay();
+      
+    } catch (error) {
+      console.error('Processing error:', error);
+      stateManager.showState('errorState', error.message);
+    }
+  },
+
+  populateFilters() {
+    this.populateSelect('agencyFilter', app.agencies);
+    this.populateSelect('vendorFilter', app.vendors);
+    this.populateSelect('naicsFilter', app.naicsCodes);
+    this.populateSelect('officeFilter', app.offices);
+  },
+
+  populateSelect(selectId, data) {
+    const select = elements[selectId];
+    if (!select) return;
+    
+    const currentVal = select.value;
+    
+    while (select.options.length > 1) {
+      select.remove(1);
+    }
+    
+    const sortedData = Object.values(data)
+      .filter(item => item && (item.name || item.code))
+      .sort((a, b) => (b.count || 0) - (a.count || 0))
+      .slice(0, 200);
+    
+    sortedData.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.name || item.code;
+      option.textContent = `${utils.truncateText(item.name || item.code, 40)} (${(item.count || 0).toLocaleString()})`;
+      select.appendChild(option);
+    });
+    
+    select.value = currentVal;
+  }
+};
+
+const charts = {
+  centerTextPlugin: {
+    id: 'centerText',
+    afterDraw: function(chart) {
+      if (chart.config.type !== 'doughnut' || app.totalFilteredValue === undefined) {
+        return;
+      }
+      
+      const ctx = chart.ctx;
+      const chartArea = chart.chartArea;
+      if (chartArea.width <= 0 || chartArea.height <= 0) return;
+
+      const centerX = (chartArea.left + chartArea.right) / 2;
+      const centerY = (chartArea.top + chartArea.bottom) / 2;
+      
+      const valueText = utils.formatMoney(app.totalFilteredValue);
+      const labelText = 'Total Value';
+      
+      const innerRadius = chart.getDatasetMeta(0).data[0]?.innerRadius || chart.width / 4;
+      const valueFontSize = Math.min((innerRadius * 2) / 4.5, 32);
+      const labelFontSize = Math.min((innerRadius * 2) / 10, 14);
+      
+      ctx.save();
+      
+      ctx.font = `600 ${valueFontSize}px ${Chart.defaults.font.family}`;
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-primary');
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(valueText, centerX, centerY - (labelFontSize / 1.5));
+      
+      ctx.font = `500 ${labelFontSize}px ${Chart.defaults.font.family}`;
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary');
+      ctx.fillText(labelText, centerX, centerY + (valueFontSize / 2.5));
+      
+      ctx.restore();
+    }
+  },
+
+  initAll() {
+    Object.values(app.charts).forEach(chart => {
+      if (chart && typeof chart.destroy === 'function') chart.destroy();
+    });
+    app.charts = {};
+    if (window.Chart) {
+      Chart.defaults.font.family = "'Atkinson Hyperlegible Next', sans-serif";
+      Chart.defaults.font.size = 12;
+      Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue('--text-primary');
+    }
+    this.initTimelineChart();
+    this.initIndustryChart();
+    sankeyChart.init();
+  },
+
+  initTimelineChart() {
+    if (!elements.timelineChart) return;
+    
+    const timelineColor = PALETTE[2];
+    const fillOpacityHex = utils.getOpacityHex(chartConfig.fillOpacity);
+    
+    app.charts.timeline = new Chart(elements.timelineChart, {
+      type: 'line',
+      data: { 
+        labels: [], 
+        datasets: [{ 
+          data: [], 
+          borderColor: `transparent`, 
+		      borderWidth: 0.5,    
+          backgroundColor: `${timelineColor}${fillOpacityHex}`,
+          tension: 0.4, 
+          fill: true,
+          pointRadius: 0,
+          pointHoverRadius: 3
+        }] 
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { 
+          legend: { display: false },
+          tooltip: { 
+            callbacks: { 
+              label: c => utils.formatMoney(c.raw) 
+            } 
+          }
+        },
+        scales: {
+          x: { grid: { display: false } },
+          y: { 
+            beginAtZero: true, 
+            grid: { display: false },
+            ticks: { callback: v => utils.formatMoney(v) }
+          }
+        }
+      }
+    });
+  },
+
+  initIndustryChart() {
+    if (!elements.industryChart) return;
+    
+    app.charts.industry = new Chart(elements.industryChart, {
+      type: 'doughnut',
+      data: { 
+        labels: [], 
+        datasets: [{ 
+          data: [], 
+          backgroundColor: [], 
+          borderColor: [],
+          borderWidth: 0.5,
+          originalLabels: [] 
+        }] 
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          tooltip: { 
+            callbacks: { 
+              label: function(context) {
+                const label = context.label || '';
+                const value = utils.formatMoney(context.raw);
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const percentage = total > 0 ? ((context.raw / total) * 100).toFixed(1) : '0';
+                return `${label}: ${value} (${percentage}%)`;
+              }
+            }
+          }
+        },
+        onClick: (event, activeElements) => {
+          if (activeElements.length > 0) {
+            const index = activeElements[0].index;
+            const naicsCode = app.charts.industry.data.datasets[0].originalLabels[index];
+            if (naicsCode) {
+              stateManager.applySelectionFilter('naics', naicsCode);
+            }
+          }
+        }
+      },
+      plugins: [this.centerTextPlugin]
+    });
+  },
+
+  updateTimeline() {
+    const chart = app.charts.timeline;
+    if (!chart || !app.filteredData) return;
+    
+    const monthlyData = {};
+    app.filteredData.forEach(contract => {
+      if (contract && contract.parsedDate) {
+        const key = `${contract.parsedDate.getUTCFullYear()}-${(contract.parsedDate.getUTCMonth() + 1).toString().padStart(2, '0')}`;
+        monthlyData[key] = (monthlyData[key] || 0) + utils.safeParseFloat(contract.value);
+      }
+    });
+    
+    const sortedMonths = Object.keys(monthlyData).sort();
+    chart.data.labels = sortedMonths.map(month => {
+      const [year, monthNum] = month.split('-');
+      return new Date(Date.UTC(parseInt(year), parseInt(monthNum) - 1))
+        .toLocaleDateString('en-US', {
+          month: 'short', 
+          year: '2-digit', 
+          timeZone: 'UTC'
+        });
+    });
+    chart.data.datasets[0].data = sortedMonths.map(month => monthlyData[month] || 0);
+    chart.update('none');
+  },
+
+  updateIndustry() {
+    const chart = app.charts.industry;
+    if (!chart || !app.naicsCodes) return;
+    
+    const naicsArray = Object.values(app.naicsCodes)
+      .filter(naics => naics && naics.value > 0)
+      .sort((a, b) => (b.value || 0) - (a.value || 0))
+      .slice(0, 6);
+    
+    if (naicsArray.length === 0) {
+      chart.data.labels = [];
+      chart.data.datasets[0].data = [];
+      chart.data.datasets[0].backgroundColor = [];
+      chart.data.datasets[0].borderColor = [];
+      chart.data.datasets[0].originalLabels = [];
+      chart.update('none');
+      return;
+    }
+    
+    const solidColors = naicsArray.map(naics => utils.getEntityColor(naics.code));
+    const fillOpacityHex = utils.getOpacityHex(chartConfig.fillOpacity);
+    
+    chart.data.labels = naicsArray.map(naics => 
+      `${naics.code} - ${utils.truncateText(naics.description || '', 20)}`
+    );
+    chart.data.datasets[0].originalLabels = naicsArray.map(naics => naics.code);
+    chart.data.datasets[0].data = naicsArray.map(naics => naics.value || 0);
+    chart.data.datasets[0].backgroundColor = solidColors.map(color => `${color}${fillOpacityHex}`);
+    chart.data.datasets[0].borderColor = solidColors;
+    
+    chart.update('none');
+  }
+};
+
+const sankeyChart = {
+  init() {
+    this.update();
+  },
+
+  update() {
+    if (!elements.sankeyChart || !window.d3) return;
+    
+    elements.sankeyChart.innerHTML = '';
+    const data = this.generateData();
+    
+    if (!data.nodes.length || !data.links.length) {
+      elements.sankeyChart.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary);">
+          No relationships found. Try another filter combo.
+        </div>
+      `;
+      return;
+    }
+    
+    const width = elements.sankeyChart.clientWidth;
+    const height = elements.sankeyChart.clientHeight;
+    
+    const svg = d3.select(elements.sankeyChart).append('svg')
+      .attr('width', width)
+      .attr('height', height);
+        
+    const sankey = d3.sankey()
+      .nodeWidth(15)
+      .nodePadding(10)
+      .extent([[1, 5], [width - 1, height - 5]]);
+        
+    const {nodes, links} = sankey({
+      nodes: data.nodes.map(d => Object.assign({}, d)),
+      links: data.links.map(d => Object.assign({}, d))
+    });
+
+    app.sankeyTotal = app.filteredData
+      .filter(c => c && c.vendor && data.vendorNames.has(c.vendor))
+      .reduce((sum, c) => sum + utils.safeParseFloat(c.value), 0);
+    
+    this.renderLinks(svg, links);
+    this.renderNodes(svg, nodes);
+    this.renderLabels(svg, nodes, width);
+  },
+
+  renderLinks(svg, links) {
+    const defs = svg.append('defs');
+    links.forEach((link, i) => {
+      const gradient = defs.append('linearGradient')
+        .attr('id', `gradient-${i}`)
+        .attr('gradientUnits', 'userSpaceOnUse')
+        .attr('x1', link.source.x1)
+        .attr('x2', link.target.x0);
+
+      gradient.append('stop')
+        .attr('offset', '0%')
+        .attr('stop-color', utils.getEntityColor(link.source.name));
+      gradient.append('stop')
+        .attr('offset', '100%')
+        .attr('stop-color', utils.getEntityColor(link.target.name));
+      
+      link.gradientId = `gradient-${i}`;
+    });
+    
+    svg.append('g')
+      .selectAll('path')
+      .data(links)
+      .join('path')
+      .attr('d', d3.sankeyLinkHorizontal())
+      .attr('stroke', d => `url(#${d.gradientId})`)
+      .attr('stroke-width', d => Math.max(1, d.width))
+      .attr('fill', 'none')
+      .attr('stroke-opacity', chartConfig.lineOpacity)
+      .append('title')
+      .text(d => `${d.source.name} → ${d.target.name}\n${utils.formatMoney(d.value)}`);
+  },
+
+  renderNodes(svg, nodes) {
+    svg.append('g')
+      .selectAll('rect')
+      .data(nodes)
+      .join('rect')
+      .attr('x', d => d.x0)
+      .attr('y', d => d.y0)
+      .attr('height', d => d.y1 - d.y0)
+      .attr('width', d => d.x1 - d.x0)
+      .attr('fill', d => utils.getEntityColor(d.name))
+      .attr('fill-opacity', chartConfig.fillOpacity)
+      .attr('rx', 2)
+      .style('cursor', 'pointer')
+      .on('click', (event, d) => {
+        let filterType = null;
+        if (app.agencies[d.name]) filterType = 'agency';
+        else if (app.offices[d.name]) filterType = 'office';
+        else if (app.vendors[d.name]) filterType = 'vendor';
+
+        if (filterType) {
+          stateManager.applySelectionFilter(filterType, d.name);
+        }
+      })
+      .append('title')
+      .text(d => `${d.name}\n${utils.formatMoney(d.value)}`);
+  },
+
+  renderLabels(svg, nodes, width) {
+  const isMobile = window.innerWidth <= 768;
+  const fontSize = isMobile ? '10px' : '12px';
+  const maxChars = isMobile ? 15 : 25;
+  
+  svg.append('g')
+    .selectAll('text')
+    .data(nodes)
+    .join('text')
+    .attr('x', d => {
+      if (isMobile) {
+        // Center alignment for mobile
+        return d.x0 < width / 2 ? d.x1 + 4 : d.x0 - 4;
+      }
+      return d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6;
+    })
+    .attr('y', d => (d.y1 + d.y0) / 2)
+    .attr('dy', '0.35em')
+    .attr('text-anchor', d => d.x0 < width / 2 ? 'start' : 'end')
+    .attr('font-size', fontSize)
+    .attr('fill', 'var(--text-primary)')
+    .text(d => utils.truncateText(d.name, maxChars));
+},
+
+  generateData() {
+  if (!app.filteredData || app.filteredData.length === 0) {
+    return { nodes: [], links: [], vendorNames: new Set() };
+  }
+
+  // Mobile detection and responsive limits
+  const isMobile = window.innerWidth <= 768;
+  const isTablet = window.innerWidth <= 1024;
+  
+  // Adjust limits based on screen size
+  let vendorLimit = app.sankeyDisplayLimit;
+  let officeLimit = 25;
+  let agencyLimit = 15;
+  
+  if (isMobile) {
+    vendorLimit = Math.min(app.sankeyDisplayLimit > 0 ? app.sankeyDisplayLimit : 10, 5);
+    officeLimit = 8;
+    agencyLimit = 5;
+  } else if (isTablet) {
+    vendorLimit = Math.min(app.sankeyDisplayLimit > 0 ? app.sankeyDisplayLimit : 10, 8);
+    officeLimit = 15;
+    agencyLimit = 10;
+  }
+
+  const vendorTotals = {};
+  app.filteredData.forEach(contract => {
+    if (contract && contract.vendor && utils.safeParseFloat(contract.value) > 0) {
+      const vendor = contract.vendor;
+      const value = utils.safeParseFloat(contract.value);
+      vendorTotals[vendor] = (vendorTotals[vendor] || 0) + value;
+    }
+  });
+  
+  if (Object.keys(vendorTotals).length === 0) {
+    return { nodes: [], links: [], vendorNames: new Set() };
+  }
+
+  const sortedVendors = Object.keys(vendorTotals)
+    .sort((a, b) => vendorTotals[b] - vendorTotals[a]);
+  const actualVendorLimit = vendorLimit > 0 ? Math.min(vendorLimit, sortedVendors.length) : sortedVendors.length;
+  const topVendorNames = new Set(sortedVendors.slice(0, actualVendorLimit));
+
+  const topVendorContracts = app.filteredData.filter(c => 
+    c && c.vendor && topVendorNames.has(c.vendor)
+  );
+  
+  const relevantOfficeTotals = {};
+  const relevantAgencyTotals = {};
+  
+  topVendorContracts.forEach(c => {
+    const value = utils.safeParseFloat(c.value);
+    if (c.office && value > 0) {
+      relevantOfficeTotals[c.office] = (relevantOfficeTotals[c.office] || 0) + value;
+    }
+    if (c.agency && value > 0) {
+      relevantAgencyTotals[c.agency] = (relevantAgencyTotals[c.agency] || 0) + value;
+    }
+  });
+
+  const sortedRelevantOffices = Object.keys(relevantOfficeTotals)
+    .sort((a, b) => relevantOfficeTotals[b] - relevantOfficeTotals[a]);
+  const topOfficeNames = new Set(sortedRelevantOffices.slice(0, officeLimit));
+
+  const sortedRelevantAgencies = Object.keys(relevantAgencyTotals)
+    .sort((a, b) => relevantAgencyTotals[b] - relevantAgencyTotals[a]);
+  const topAgencyNames = new Set(sortedRelevantAgencies.slice(0, agencyLimit));
+
+  const agencyOfficeFlows = {};
+  const officeVendorFlows = {};
+  
+  topVendorContracts.forEach(contract => {
+    if (!contract.agency || !contract.office || !contract.vendor) return;
+    
+    const value = utils.safeParseFloat(contract.value);
+    if (value <= 0) return;
+    
+    if (topAgencyNames.has(contract.agency) &&
+        topOfficeNames.has(contract.office) &&
+        topVendorNames.has(contract.vendor)) {
+      
+      const aoKey = `${contract.agency}|${contract.office}`;
+      agencyOfficeFlows[aoKey] = (agencyOfficeFlows[aoKey] || 0) + value;
+      
+      const ovKey = `${contract.office}|${contract.vendor}`;
+      officeVendorFlows[ovKey] = (officeVendorFlows[ovKey] || 0) + value;
+    }
+  });
+
+  const sortedAgencyOfficeFlows = Object.entries(agencyOfficeFlows)
+    .sort(([,a], [,b]) => b - a);
+  const sortedOfficeVendorFlows = Object.entries(officeVendorFlows)
+    .sort(([,a], [,b]) => b - a);
+
+  const allFlows = [
+    ...sortedAgencyOfficeFlows.map(([key, value]) => ({
+      source: key.split('|')[0],
+      target: key.split('|')[1],
+      value
+    })),
+    ...sortedOfficeVendorFlows.map(([key, value]) => ({
+      source: key.split('|')[0],
+      target: key.split('|')[1],
+      value
+    }))
+  ];
+
+  if (allFlows.length === 0) {
+    return { nodes: [], links: [], vendorNames: topVendorNames };
+  }
+
+  const nodeMap = new Map();
+  allFlows.forEach(flow => {
+    if (!nodeMap.has(flow.source)) {
+      nodeMap.set(flow.source, { name: flow.source });
+    }
+    if (!nodeMap.has(flow.target)) {
+      nodeMap.set(flow.target, { name: flow.target });
+    }
+  });
+
+  const nodesArray = Array.from(nodeMap.values());
+  const nodeIndexMap = new Map(nodesArray.map((node, i) => [node.name, i]));
+  
+  const links = allFlows
+    .map(flow => ({
+      source: nodeIndexMap.get(flow.source),
+      target: nodeIndexMap.get(flow.target),
+      value: flow.value
+    }))
+    .filter(link => 
+      link.source !== undefined && 
+      link.target !== undefined && 
+      link.source !== link.target &&
+      link.value > 0
+    );
+    
+  return { 
+    nodes: nodesArray, 
+    links, 
+    vendorNames: topVendorNames 
+  };
+},
+
+  updateButtons(activeId) {
+    const buttons = document.querySelectorAll('.chart-controls .btn');
+    buttons.forEach(btn => {
+      btn.classList.toggle('btn-primary', btn.id === activeId);
+      btn.classList.toggle('btn-secondary', btn.id !== activeId);
+    });
+  }
+};
+
+const dashboard = {
+  updateAll() {
+    this.updateStats();
+    this.updateCharts();
+    this.updateTables();
+  },
+
+  updateStats() {
+    app.totalFilteredValue = app.filteredData.reduce((sum, item) => {
+      return sum + utils.safeParseFloat(item ? item.value : 0);
+    }, 0);
+    
+    const totalContracts = app.filteredData.length;
+    const uniqueCompanies = new Set(
+      app.filteredData
+        .filter(item => item && item.vendor)
+        .map(item => item.vendor)
+    ).size;
+    
+    const topCompany = Object.values(app.vendors)
+      .filter(vendor => vendor && vendor.value > 0)
+      .sort((a, b) => (b.value || 0) - (a.value || 0))[0];
+    
+    if (elements.totalValue) {
+      elements.totalValue.textContent = utils.formatMoney(app.totalFilteredValue);
+    }
+    if (elements.totalContracts) {
+      elements.totalContracts.textContent = totalContracts.toLocaleString();
+    }
+    if (elements.totalCompanies) {
+      elements.totalCompanies.textContent = uniqueCompanies.toLocaleString();
+    }
+    if (elements.topCompany) {
+      elements.topCompany.textContent = utils.truncateText(
+        topCompany?.name || 'N/A', 20
+      );
+    }
+  },
+
+  updateCharts() {
+    charts.updateTimeline();
+    charts.updateIndustry();
+    sankeyChart.update();
+  },
+
+  updateTables() {
+    this.updateTable('recent', 
+      [...app.filteredData]
+        .sort((a, b) => {
+          const dateA = a?.parsedDate?.getTime() || 0;
+          const dateB = b?.parsedDate?.getTime() || 0;
+          return dateB - dateA;
+        })
+        .slice(0, 15)
+    );
+    
+    this.updateTable('largest', 
+      [...app.filteredData]
+        .sort((a, b) => utils.safeParseFloat(b?.value) - utils.safeParseFloat(a?.value))
+        .slice(0, 15)
+    );
+    
+    this.updateOfficesTable();
+  },
+
+  updateTable(type, data) {
+    const tbody = elements[`${type}Table`];
+    if (!tbody) return;
+    
+    tbody.innerHTML = '';
+    data.forEach(contract => {
+      if (utils.validateContract(contract)) {
+        const row = this.createTableRow(contract);
+        tbody.appendChild(row);
+      }
+    });
+  },
+
+  createTableRow(contract) {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${utils.formatDate(contract.date)}</td>
+<td>${utils.truncateText(contract.id, 12)}</td>
+<td>
+        <div class="entity-badge">
+          <div class="entity-icon" style="background-color: ${utils.getEntityColor(contract.agency)}">
+            ${utils.getInitials(contract.agency)}
+          </div>
+          ${utils.truncateText(contract.agency, 20)}
+        </div>
+      </td>
+      <td>${utils.truncateText(contract.office, 20)}</td>
+      <td>
+        <div class="entity-badge">
+          <div class="entity-icon" style="background-color: ${utils.getEntityColor(contract.vendor)}">
+            ${utils.getInitials(contract.vendor)}
+          </div>
+          ${utils.truncateText(contract.vendor, 20)}
+        </div>
+      </td>
+      <td class="truncate" title="${contract.description || ''}">${utils.truncateText(contract.description, 30)}</td>
+      <td class="text-right">${utils.formatMoney(contract.value)}</td>
+      <td><button class="btn btn-sm btn-secondary view-details-btn" data-contract-id="${contract.id}">View</button></td>
+    `;
+    return row;
+  },
+
+  updateOfficesTable() {
+    const tbody = elements.officesTable;
+    if (!tbody) return;
+    
+    const top15 = Object.values(app.offices)
+      .filter(office => office && office.value > 0)
+      .sort((a, b) => (b.value || 0) - (a.value || 0))
+      .slice(0, 15);
+    
+    tbody.innerHTML = '';
+    
+    top15.forEach(office => {
+      const topNaics = Object.values(office.naicsCodes || {})
+        .sort((a, b) => (b.value || 0) - (a.value || 0))[0] || { code: 'N/A' };
+      
+      const officeContracts = app.filteredData.filter(c => 
+        c && c.office === office.name
+      );
+      const vendorValues = {};
+      officeContracts.forEach(c => {
+        if (c && c.vendor) {
+          const value = utils.safeParseFloat(c.value);
+          vendorValues[c.vendor] = (vendorValues[c.vendor] || 0) + value;
+        }
+      });
+      
+      const topVendorName = Object.entries(vendorValues)
+        .sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>
+          <div class="entity-badge">
+            <div class="entity-icon" style="background-color: ${utils.getEntityColor(office.agency)}">
+              ${utils.getInitials(office.agency)}
+            </div>
+            ${utils.truncateText(office.agency, 15)}
+          </div>
+        </td>
+        <td>
+          <div class="entity-badge">
+            <div class="entity-icon" style="background-color: ${utils.getEntityColor(office.name)}">
+              ${utils.getInitials(office.name)}
+            </div>
+            ${utils.truncateText(office.name, 15)}
+          </div>
+        </td>
+        <td>${(office.count || 0).toLocaleString()}</td>
+        <td class="text-right">${utils.formatMoney(office.value)}</td>
+        <td>${topNaics.code || 'N/A'}</td>
+        <td>
+          <div class="entity-badge">
+            <div class="entity-icon" style="background-color: ${utils.getEntityColor(topVendorName)}">
+              ${utils.getInitials(topVendorName)}
+            </div>
+            ${utils.truncateText(topVendorName, 15)}
+          </div>
+        </td>
+      `;
+      
+      tbody.appendChild(row);
+    });
+  }
+};
+
+const modal = {
+  show(contractId) {
+    const contract = app.data.find(c => c && c.id === contractId);
+    if (!contract) return;
+    
+    const fpdsUrl = `https://www.fpds.gov/ezsearch/fpdsportal?q=PIID%3A%22${encodeURIComponent(contract.id)}%22`;
+    
+    if (elements.modalContent) {
+      elements.modalContent.innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--space-lg);">
+          <div>
+            <h4 style="color: var(--text-primary); margin-bottom: var(--space);">Contract Information</h4>
+            <p><strong>Contract ID:</strong> ${contract.id || 'N/A'}</p>
+            <p><strong>Reference IDV:</strong> ${contract.reference || 'N/A'}</p>
+            <p><strong>Date Signed:</strong> ${utils.formatDate(contract.date)}</p>
+            <p><strong>Value:</strong> ${utils.formatMoney(contract.value)}</p>
+          </div>
+          <div>
+            <h4 style="color: var(--text-primary); margin-bottom: var(--space);">Parties Involved</h4>
+            <p><strong>Agency:</strong> ${contract.agency || 'N/A'}</p>
+            <p><strong>Office:</strong> ${contract.office || 'N/A'}</p>
+            <p><strong>Vendor:</strong> ${contract.vendor || 'N/A'}</p>
+          </div>
+        </div>
+        <div style="margin-top: var(--space-lg);">
+          <h4 style="color: var(--text-primary); margin-bottom: var(--space);">Description & Codes</h4>
+          <p><strong>Description:</strong> ${contract.description || 'No description available'}</p>
+          <p><strong>NAICS:</strong> ${contract.naics || 'N/A'} - ${contract.naicsDescription || ''}</p>
+          <p><strong>PSC:</strong> ${contract.psc || 'N/A'} - ${contract.pscDescription || ''}</p>
+        </div>
+        <div style="margin-top: var(--space-lg); text-align: center;">
+          <a href="${fpdsUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            View on FPDS.gov
+          </a>
+        </div>
+      `;
+    }
+    
+    if (elements.contractModal) {
+      elements.contractModal.classList.add('active');
+    }
+  },
+
+  close() {
+    if (elements.contractModal) {
+      elements.contractModal.classList.remove('active');
+    }
+  }
+};
+
+const eventListeners = {
+  setup() {
+    this.setupFileHandlers();
+    this.setupFilterHandlers();
+    this.setupUIHandlers();
+    this.setupChartHandlers();
+    this.setupModalHandlers();
+    this.setupKeyboardHandlers();
+    this.setupResizeHandler();
+    this.setupThemeHandlers();
+  },
+
+  setupThemeHandlers() {
+    const themeControls = document.getElementById('themeControls');
+    if (themeControls) {
+      themeControls.addEventListener('click', (e) => {
+        if (e.target.matches('.theme-btn')) {
+          const themeName = e.target.dataset.theme;
+          themeManager.applyTheme(themeName);
+        }
+      });
+    }
+  },
+
+  setupFileHandlers() {
+  // Dataset button handler
+  const dataLoadControls = document.querySelector('.data-load-controls');
+  if (dataLoadControls) {
+    dataLoadControls.addEventListener('click', (e) => {
+      if (e.target.matches('[data-dataset]')) {
+        const dataset = e.target.dataset.dataset;
+        dataProcessor.loadExampleData(dataset);
+      }
+    });
+  }
+
+  // Existing file upload handler
+  if (elements.csvFile) {
+    elements.csvFile.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          dataProcessor.processData(event.target.result);
+        };
+        reader.onerror = () => {
+          stateManager.showState('errorState', 'Error reading the file.');
+        };
+        reader.readAsText(file);
+      }
+    });
+  }
+},
+
+  setupFilterHandlers() {
+    let searchTimeout;
+    if (elements.searchInput) {
+      elements.searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          stateManager.updateFilters({ search: e.target.value || null });
+        }, 300);
+      });
+    }
+    
+    const entityFilters = ['agency', 'vendor', 'naics', 'office'];
+    entityFilters.forEach(type => {
+      const element = elements[`${type}Filter`];
+      if (element) {
+        element.addEventListener('change', (e) => {
+          stateManager.updateFilters({ 
+            [type]: e.target.value || null 
+          });
+        });
+      }
+    });
+    
+    ['startDate', 'endDate'].forEach(type => {
+      const element = elements[type];
+      if (element) {
+        element.addEventListener('change', (e) => {
+          stateManager.updateFilters({ 
+            [type]: e.target.value || null 
+          });
+        });
+      }
+    });
+    
+    if (elements.valueFilter) {
+      elements.valueFilter.addEventListener('change', (e) => {
+        const range = e.target.value ? utils.parseValueRange(e.target.value) : null;
+        stateManager.updateFilters({ valueRange: range });
+      });
+    }
+    
+    if (elements.resetBtn) {
+      elements.resetBtn.addEventListener('click', () => {
+        stateManager.resetFilters();
+      });
+    }
+    
+    if (elements.moreFiltersBtn) {
+      elements.moreFiltersBtn.addEventListener('click', () => {
+        if (elements.advancedFilters) {
+          elements.advancedFilters.classList.toggle('active');
+        }
+      });
+    }
+  },
+
+  setupUIHandlers() {
+    const tabsContainer = document.querySelector('.tabs');
+    if (tabsContainer) {
+      tabsContainer.addEventListener('click', (e) => {
+        if (e.target.matches('.tab-btn')) {
+          document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+          });
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          
+          e.target.classList.add('active');
+          
+          const tabId = e.target.dataset.tab + 'Tab';
+          const tabContent = document.getElementById(tabId);
+          if (tabContent) {
+            tabContent.classList.add('active');
+          }
+        }
+      });
+    }
+    
+    const tableSection = document.querySelector('.table-section');
+    if (tableSection) {
+      tableSection.addEventListener('click', (e) => {
+        if (e.target.matches('.view-details-btn')) {
+          const contractId = e.target.dataset.contractId;
+          if (contractId) {
+            modal.show(contractId);
+          }
+        }
+      });
+    }
+  },
+
+  setupChartHandlers() {
+    const chartControls = document.querySelector('.chart-controls');
+    if (chartControls) {
+      chartControls.addEventListener('click', (e) => {
+        if (e.target.matches('.btn')) {
+          const limitMap = { 
+            sankeyLimit10: 10, 
+            sankeyLimit25: 25, 
+            sankeyLimitAll: 0 
+          };
+          
+          if (limitMap.hasOwnProperty(e.target.id)) {
+            app.sankeyDisplayLimit = limitMap[e.target.id];
+            sankeyChart.updateButtons(e.target.id);
+            sankeyChart.update();
+          }
+        }
+      });
+    }
+  },
+
+  setupModalHandlers() {
+    if (elements.closeModal) {
+      elements.closeModal.addEventListener('click', modal.close);
+    }
+    
+    if (elements.closeModalBtn) {
+      elements.closeModalBtn.addEventListener('click', modal.close);
+    }
+    
+    if (elements.contractModal) {
+      elements.contractModal.addEventListener('click', (e) => {
+        if (e.target === elements.contractModal) {
+          modal.close();
+        }
+      });
+    }
+  },
+
+  setupKeyboardHandlers() {
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        modal.close();
+        if (elements.advancedFilters) {
+          elements.advancedFilters.classList.remove('active');
+        }
+      }
+    });
+  },
+
+  setupResizeHandler() {
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        Object.values(app.charts).forEach(chart => {
+          if (chart && typeof chart.resize === 'function') {
+            chart.resize();
+          }
+        });
+        
+        sankeyChart.update();
+      }, 250);
+    });
+  }
+};
+
+function init() {
+  cacheElements();
+  themeManager.init();
+  eventListeners.setup();
+  stateManager.showState('emptyState');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const checkLibraries = () => {
+    if (typeof Chart !== 'undefined' && typeof d3 !== 'undefined' && d3.sankey) {
+      init();
+    } else {
+      setTimeout(checkLibraries, 100);
+    }
+  };
+  checkLibraries();
+});
+</script>
+</body>
+</html>
+        
