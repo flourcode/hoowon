@@ -616,6 +616,54 @@ body {
     opacity: 1;
   }
 }
+/* Update the grid to three columns */
+.footer-grid-expanded {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+/* Style the user types section */
+.user-types {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+  margin-bottom: var(--space);
+}
+
+.user-type {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.user-type strong {
+  color: var(--text-primary);
+  font-weight: 600;
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+.bottom-line {
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-align: center;
+  margin-top: var(--space);
+  padding-top: var(--space);
+  border-top: 1px solid var(--border);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .footer-grid-expanded {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+}
 </style>
 </head>
 <body>
@@ -892,25 +940,49 @@ body {
       </div>
     </section>
 
-    <!-- Two Column Layout -->
-    <div class="footer-grid">
+    <!-- Three Column Layout for expanded content -->
+    <div class="footer-grid-expanded">
       
       <!-- Connect Section -->
       <div class="footer-section">
         <h3>Let's Connect</h3>
         <div class="connect-card-compact">
           <div class="connect-avatar">
-            <img src="oldmark.jpg" alt="Mark's profile picture">
+            <img src="markgs.jpg" alt="Mark's profile picture">
           </div>
           <div class="connect-info">
             <h4>Hi, I'm Mark</h4>
-            <p>Retired fed sales guy at AWS, F5, Red Hat, and WD. I built this because historical data is your secret sales weapon. It shows you exactly which agencies are buying, who's winning those deals, and seasonal buying patterns.</p>
+            <p>Retired fed sales guy at AWS, F5, Red Hat, and WD, plus former DISA COTR. I built this because historical data is your secret sales weapon. It shows you exactly which agencies are buying, who's winning those deals, and when they spend their money.</p><p>Need more help? Let's jump on a free 15 minute call.</p>
             <div class="connect-buttons">
               <a href="https://www.linkedin.com/in/markflournoy/" class="btn btn-secondary btn-sm" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> Connect</a>
               <a href="mailto:mark@subhoo.com" class="btn btn-secondary btn-sm"><i class="fas fa-envelope"></i> Email</a>
+			  <a href="mailto:mark@subhoo.com" class="btn btn-secondary btn-sm"><i class="fas fa-envelope"></i> Free 15 minute Chat</a>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Who This Is For Section -->
+      <div class="footer-section">
+        <h3>Who's This For?</h3>
+        <div class="user-types">
+          <div class="user-type">
+            <strong>Sales Teams:</strong> Stop flying blind into meetings. See seasonal buying patterns and identify which offices have budget authority.
+          </div>
+          <div class="user-type">
+            <strong>Business Development:</strong> Scope out competition before wasting time on hopeless deals. See who's winning and what contract vehicles they use.
+          </div>
+          <div class="user-type">
+            <strong>Contracting Officers:</strong> New to an agency? See procurement history, successful vendors, and spending patterns instantly.
+          </div>
+          <div class="user-type">
+            <strong>Channel Partners:</strong> Find agencies where your OEM partners win direct deals - those are warm prospects for your services.
+          </div>
+          <div class="user-type">
+            <strong>Program Managers:</strong> Benchmark spending against similar programs and identify proven vendors in your space.
+          </div>
+        </div>
+        <p class="bottom-line"></p>
       </div>
 
       <!-- Resources & Examples -->
@@ -955,7 +1027,7 @@ body {
     
   </div>
 </footer>
-  </div>	
+</div>	
 
 
   <div class="modal-backdrop" id="contractModal">
