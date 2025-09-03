@@ -408,6 +408,219 @@ body {
     justify-content: center;
   }
 }
+/* Remove the old tool-explainer styles and replace with: */
+
+.app-footer-enhanced {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: var(--space-2xl) var(--space-xl);
+  margin-top: var(--space-xl);
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.explainer-section {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--border);
+}
+
+.explainer-section h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space);
+}
+
+.explainer-section p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-xl);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.quick-steps {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xl);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.step-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space);
+  flex: 1;
+  text-align: left;
+}
+
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  background: var(--primary);
+  color: var(--primary-text);
+  border-radius: 50%;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.step-text strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.step-text {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-2xl);
+}
+
+.footer-section h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.connect-card-compact {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-lg);
+  display: flex;
+  gap: var(--space);
+  align-items: flex-start;
+}
+
+.connect-avatar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+
+.connect-info h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.connect-info p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--space);
+  line-height: 1.5;
+}
+
+.connect-buttons {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.search-examples-compact {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+  margin-bottom: var(--space-lg);
+}
+
+.search-example-compact {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-sm);
+}
+
+.search-example-compact strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  margin-bottom: var(--space-xs);
+  font-weight: 600;
+}
+
+.search-example-compact code {
+  background: var(--bg-tertiary);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius);
+  font-size: 0.7rem;
+  font-family: 'Courier New', monospace;
+  color: var(--text-primary);
+  display: block;
+  word-break: break-all;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  transition: var(--transition);
+}
+
+.footer-links a:hover {
+  color: var(--primary);
+}
+
+.footer-links a i {
+  color: var(--text-tertiary);
+  width: 1rem;
+}
+
+.copyright {
+  border-top: 1px solid var(--border);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-xl);
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-tertiary);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .quick-steps {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  
+  .connect-card-compact {
+    flex-direction: column;
+    text-align: center;
+  }
+}
 </style>
 </head>
 <body>
@@ -653,55 +866,100 @@ body {
           </table>
         </div>
       </section>
-	  <footer class="app-footer-personalized">
-      <div class="footer-grid-personalized">
-        <div class="footer-section">
-          <h3>Let's Connect</h3>
-          <div class="connect-card">
-            <div class="connect-avatar">
-              <img src="markgs.jpg" alt="Mark's profile picture">
-            </div>
-            <div class="connect-info">
-              <h4>Hi, I'm Mark</h4>
-              <p>Historical Data is Your Secret Sales Weapon. Looking at old contract awards isn't just about what you missed—it's about seeing the future. By analyzing the government's past buying habits, you can stop guessing and start making strategic decisions. It's like having the competition's playbook before the game starts.</p><p>I've created a suite of Post-Award Intelligence tools that help you find those primes, follow the money, and unlock more opportunities.</p>
-              <div class="connect-buttons">
-                <a href="https://www.linkedin.com/in/markflournoy/" class="btn btn-secondary btn-sm" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> Connect</a>
-                <a href="mailto:mark@subhoo.com" class="btn btn-secondary btn-sm"><i class="fas fa-envelope"></i> Email</a>
-              </div>
+<footer class="app-footer-enhanced">
+  <div class="footer-content">
+    
+    <!-- Main Explainer Section -->
+    <section class="footer-section explainer-section">
+      <h3>Turn Contract History Into Sales Intelligence</h3>
+      <p>Upload FPDS contract data to see who's buying what, when they buy it, and who's winning. Perfect for competitive intelligence, partner identification, and timing your sales cycles.</p>
+      
+      <div class="quick-steps">
+        <div class="step-row">
+          <span class="step-number">1</span>
+          <div class="step-text">
+            <strong>Search FPDS:</strong> Go to <a href="https://www.fpds.gov/ezsearch/fpdsportal" target="_blank">FPDS.gov</a> and export CSV results
+          </div>
+        </div>
+        <div class="step-row">
+          <span class="step-number">2</span>
+          <div class="step-text">
+            <strong>Upload & Analyze:</strong> Upload here for instant competitive intelligence visualization
+          </div>
+        </div>
+        <div class="step-row">
+          <span class="step-number">3</span>
+          <div class="step-text">
+            <strong>Filter & Explore:</strong> Click charts to drill down, identify opportunities and threats
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two Column Layout -->
+    <div class="footer-grid">
+      
+      <!-- Connect Section -->
+      <div class="footer-section">
+        <h3>Let's Connect</h3>
+        <div class="connect-card-compact">
+          <div class="connect-avatar">
+            <img src="oldmark.jpg" alt="Mark's profile picture">
+          </div>
+          <div class="connect-info">
+            <h4>Hi, I'm Mark</h4>
+            <p>Retired fed sales guy at AWS, F5, Red Hat, and WD. I built this because historical data is your secret sales weapon. It shows you exactly which agencies are buying, who's winning those deals, and seasonal buying patterns.</p>
+            <div class="connect-buttons">
+              <a href="https://www.linkedin.com/in/markflournoy/" class="btn btn-secondary btn-sm" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> Connect</a>
+              <a href="mailto:mark@subhoo.com" class="btn btn-secondary btn-sm"><i class="fas fa-envelope"></i> Email</a>
             </div>
           </div>
         </div>
-        <div class="footer-section">
-          <h3>How To Use This Tool</h3>
-          <ul class="how-to-steps">
-            <li>
-              <h4>1. Find Contract Data</h4>
-              <p>Go to FPDS.gov, perform a search, and export the results as a CSV file.</p>
-            </li>
-            <li>
-              <h4>2. Upload & Analyze</h4>
-              <p>Upload the CSV to visualize spending, identify vendors, and find opportunities.</p>
-            </li>
-            <li>
-              <h4>3. Filter & Explore</h4>
-              <p>Use our interactive filters and click on charts to narrow results and gain insights.</p>
-            </li>
-          </ul>
+      </div>
+
+      <!-- Resources & Examples -->
+      <div class="footer-section">
+        <h3>FPDS Search Examples</h3>
+        <div class="search-examples-compact">
+          <div class="search-example-compact">
+            <strong>IT Services:</strong>
+            <code>PRINCIPAL_NAICS_CODE:"541519"</code>
+          </div>
+          <div class="search-example-compact">
+            <strong>Software:</strong>
+            <code>PRINCIPAL_NAICS_CODE:"511210"</code>
+          </div>
+          <div class="search-example-compact">
+            <strong>Cloud/SaaS:</strong>
+            <code>PRINCIPAL_NAICS_CODE:"518210" OR "511210"</code>
+          </div>
+          <div class="search-example-compact">
+            <strong>Specific Agency:</strong>
+            <code>CONTRACTING_AGENCY_NAME:"DEPT OF VETERANS AFFAIRS"</code>
+          </div>
+          <div class="search-example-compact">
+            <strong>Dollar Range:</strong>
+            <code>OBLIGATED_AMOUNT:[1000000,10000000]</code>
+          </div>
         </div>
-        <div class="footer-section">
-          <h3>Useful Resources</h3>
-          <ul class="footer-links">
-            <li><a href="https://www.fpds.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Federal Procurement Data System</a></li>
-            <li><a href="https://www.sba.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Small Business Administration</a></li>
-            <li><a href="https://sam.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> SAM.gov</a></li>
-          </ul>
+        
+        <h4 style="margin-top: var(--space-lg); margin-bottom: var(--space);">Useful Links</h4>
+        <div class="footer-links">
+          <a href="https://www.fpds.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Federal Procurement Data System</a>
+          <a href="https://sam.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> SAM.gov Registration</a>
+          <a href="https://www.sba.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Small Business Administration</a>
         </div>
       </div>
-      <div class="copyright">
-        <p>&copy; 2025 Hoowon. All rights reserved.</p>
-      </div>
-    </footer>
-    </main>
+      
+    </div>
+    
+    <div class="copyright">
+      <p>&copy; 2025 Hoowon. All rights reserved. | Historical Contract Intelligence for Federal Sales Teams</p>
+    </div>
+    
+  </div>
+</footer>
+	</main>
   </div>
 
   <div class="modal-backdrop" id="contractModal">
@@ -1583,6 +1841,39 @@ const dataProcessor = {
     stateManager.showState('errorState', error.message);
   }
 },
+populateFilters() {
+    this.populateSelect('agencyFilter', app.agencies);
+    this.populateSelect('vendorFilter', app.vendors);
+    this.populateSelect('naicsFilter', app.naicsCodes);
+    this.populateSelect('officeFilter', app.offices);
+  },
+
+  populateSelect(selectId, data) {
+    const select = elements[selectId];
+    if (!select) return;
+    
+    const currentVal = select.value;
+    
+    while (select.options.length > 1) {
+      select.remove(1);
+    }
+    
+    const sortedData = Object.values(data)
+      .filter(item => item && (item.name || item.code))
+      .sort((a, b) => (b.count || 0) - (a.count || 0))
+      .slice(0, 200);
+    
+    sortedData.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.name || item.code;
+      option.textContent = `${utils.truncateText(item.name || item.code, 40)} (${(item.count || 0).toLocaleString()})`;
+      select.appendChild(option);
+    });
+    
+    select.value = currentVal;
+  }
+};
+
 const charts = {
   centerTextPlugin: {
     id: 'centerText',
