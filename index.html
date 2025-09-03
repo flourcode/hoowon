@@ -208,94 +208,7 @@ body {
   color: var(--text-primary);
   font-weight: 600;
 }
-/* --- Personalized Footer --- */
-.app-footer-personalized {
-  background: var(--bg-secondary);
-  padding: var(--space-2xl) var(--space-xl);
-  border-top: 1px solid var(--border);
-}
-.footer-grid-personalized {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;
-  gap: var(--space-2xl);
-}
-.footer-section h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-lg);
-}
-.footer-section p {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-.connect-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: var(--space-lg);
-  display: flex;
-  gap: var(--space-lg);
-  align-items: flex-start;
-}
-.connect-avatar img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--border);
-}
-.connect-info h4 {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-.connect-info p {
-  font-size: 0.875rem;
-  margin-bottom: var(--space-lg);
-}
-.connect-buttons {
-  display: flex;
-  gap: var(--space-sm);
-}
-.how-to-steps, .footer-links {
-  list-style: none;
-  padding: 0;
-}
-.how-to-steps li + li, .footer-links li + li {
-  margin-top: var(--space-lg);
-}
-.how-to-steps h4 {
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-.footer-links a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  transition: var(--transition);
-}
-.footer-links a:hover {
-  color: var(--primary);
-}
-.footer-links a i {
-  color: var(--text-tertiary);
-}
-.copyright {
-  border-top: 1px solid var(--border);
-  margin-top: var(--space-xl);
-  padding-top: var(--space-xl);
-  text-align: center;
-  font-size: 0.875rem;
-  color: var(--text-tertiary);
-}
+
 
 /* Mobile Styles */
 @media (max-width: 992px) {
@@ -408,13 +321,11 @@ body {
     justify-content: center;
   }
 }
-/* Remove the old tool-explainer styles and replace with: */
-
 .app-footer-enhanced {
-  background: var(--bg-secondary);
+  background: var(--bg-primary); /* Match main app background */
   border-top: 1px solid var(--border);
   padding: var(--space-2xl) var(--space-xl);
-  margin-top: var(--space-xl);
+  margin-top: 0; /* Remove gap */
 }
 
 .footer-content {
@@ -443,6 +354,23 @@ body {
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+}
+
+/* Links should use primary color for consistency */
+.explainer-section a,
+.step-text a,
+.footer-links a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.explainer-section a:hover,
+.step-text a:hover,
+.footer-links a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
 }
 
 .quick-steps {
@@ -499,8 +427,15 @@ body {
   margin-bottom: var(--space-lg);
 }
 
+.footer-section h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space);
+}
+
 .connect-card-compact {
-  background: var(--bg-primary);
+  background: var(--bg-secondary); /* Subtle background difference */
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--space-lg);
@@ -544,7 +479,7 @@ body {
 }
 
 .search-example-compact {
-  background: var(--bg-primary);
+  background: var(--bg-secondary); /* Consistent with connect card */
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--space-sm);
@@ -567,6 +502,7 @@ body {
   color: var(--text-primary);
   display: block;
   word-break: break-all;
+  border: 1px solid var(--border);
 }
 
 .footer-links {
@@ -576,7 +512,7 @@ body {
 }
 
 .footer-links a {
-  color: var(--text-secondary);
+  color: var(--primary); /* Use primary theme color */
   text-decoration: none;
   font-weight: 500;
   font-size: 0.875rem;
@@ -587,11 +523,12 @@ body {
 }
 
 .footer-links a:hover {
-  color: var(--primary);
+  color: var(--primary-dark);
+  text-decoration: underline;
 }
 
 .footer-links a i {
-  color: var(--text-tertiary);
+  color: var(--primary); /* Icon matches link color */
   width: 1rem;
 }
 
@@ -606,6 +543,10 @@ body {
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
+  .app-footer-enhanced {
+    padding: var(--space-xl) var(--space);
+  }
+  
   .quick-steps {
     flex-direction: column;
     gap: var(--space-lg);
@@ -960,8 +901,8 @@ body {
     
   </div>
 </footer>
-	
-  </div>
+  </div>	
+
 
   <div class="modal-backdrop" id="contractModal">
     <div class="modal">
