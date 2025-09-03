@@ -562,6 +562,60 @@ body {
     text-align: center;
   }
 }
+@media (max-width: 768px) {
+  /* Existing mobile styles... */
+  
+  /* Make tables horizontally scrollable */
+  .table-section {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+  
+  .data-table {
+    min-width: 800px; /* Ensure table maintains readable width */
+    white-space: nowrap; /* Prevent text wrapping in cells */
+  }
+  
+  .data-table th,
+  .data-table td {
+    padding: var(--space-sm) var(--space); /* Slightly reduced padding for mobile */
+    min-width: 100px; /* Minimum column width */
+  }
+  
+  /* Ensure the Actions column (View button) is always visible */
+  .data-table th:last-child,
+  .data-table td:last-child {
+    min-width: 80px;
+    position: sticky;
+    right: 0;
+    background: var(--bg-primary);
+    border-left: 1px solid var(--border);
+    z-index: 1;
+  }
+  
+  /* Make sure row hover doesn't break sticky column */
+  .data-table tr:hover td:last-child {
+    background: var(--bg-tertiary);
+  }
+  
+  /* Add scroll indicator shadow */
+  .table-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(to left, rgba(0,0,0,0.1), transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .table-section.scrollable::after {
+    opacity: 1;
+  }
+}
 </style>
 </head>
 <body>
@@ -2363,6 +2417,9 @@ const dashboard = {
     );
     
     this.updateOfficesTable();
+	if (window.innerWidth <= 768) {
+    eventListeners.setupTableScrollIndicators();
+  }
   },
 
   updateTable(type, data) {
@@ -2531,7 +2588,25 @@ const eventListeners = {
     this.setupModalHandlers();
     this.setupKeyboardHandlers();
     this.setupResizeHandler();
+    this.setupTableScrollIndicators();
     this.setupThemeHandlers();
+  },
+
+  setupTableScrollIndicators() { 
+    const tableSections = document.querySelectorAll('.table-section');
+    
+    tableSections.forEach(section => {
+      section.addEventListener('scroll', () => {
+        const isScrollable = section.scrollWidth > section.clientWidth;
+        section.classList.toggle('scrollable', isScrollable);
+      });
+      
+      // Check on resize
+      window.addEventListener('resize', () => {
+        const isScrollable = section.scrollWidth > section.clientWidth;
+        section.classList.toggle('scrollable', isScrollable);
+      });
+    });
   },
 
   setupThemeHandlers() {
@@ -2546,6 +2621,7 @@ const eventListeners = {
     }
   },
 
+// Call this in your init function or after tables are populated
   setupFileHandlers() {
   // Dataset button handler
   const dataLoadControls = document.querySelector('.data-load-controls');
