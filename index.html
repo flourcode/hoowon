@@ -1484,126 +1484,105 @@ const dataProcessor = {
 },
 
   processData(csvText) {
+  try {
+    stateManager.showState('loadingState');
+    
+    let csvData;
     try {
-      stateManager.showState('loadingState');
-      
-      let csvData;
-      try {
-        csvData = utils.parseCSV(csvText);
-      } catch (parseError) {
-        throw new Error(`CSV parsing failed: ${parseError.message}`);
+      csvData = utils.parseCSV(csvText);
+    } catch (parseError) {
+      throw new Error(`CSV parsing failed: ${parseError.message}`);
+    }
+    
+    // Store warnings globally for display
+    app.parseWarnings = csvData.warnings || [];
+    
+    // Show critical errors
+    if (csvData.errors && csvData.errors.length > 0) {
+      throw new Error(`CSV errors: ${csvData.errors.join(', ')}`);
+    }
+    
+    const requiredFields = [
+      'Contract ID', 'Date Signed', 'Contracting Agency', 
+      'Legal Business Name', 'Action Obligation ($)'
+    ];
+    
+    for (const field of requiredFields) {
+      if (!csvData.headers.includes(field)) {
+        throw new Error(
+          `Required field "${field}" not found in CSV. Available fields: ${csvData.headers.join(', ')}`
+        );
       }
-      
-      // Store warnings globally for display
-      app.parseWarnings = csvData.warnings || [];
-      
-      // Show critical errors
-      if (csvData.errors && csvData.errors.length > 0) {
-        throw new Error(`CSV errors: ${csvData.errors.join(', ')}`);
-      }
-      
-      const requiredFields = [
-        'Contract ID', 'Date Signed', 'Contracting Agency', 
-        'Legal Business Name', 'Action Obligation ($)'
-      ];
-      
-      for (const field of requiredFields) {
-        if (!csvData.headers.includes(field)) {
-          throw new Error(
-            `Required field "${field}" not found in CSV. Available fields: ${csvData.headers.join(', ')}`
-          );
+    }
+    
+    app.data = csvData.data
+      .map((row, index) => {
+        try {
+          const parsedDate = utils.parseDate(row['Date Signed']);
+          const value = utils.parseMoney(row['Action Obligation ($)']);
+          
+          return {
+            id: String(row['Contract ID'] || ''),
+            reference: String(row['Reference IDV'] || ''),
+            modification: String(row['Modification Number'] || ''),
+            date: String(row['Date Signed'] || ''),
+            parsedDate: parsedDate,
+            type: String(row['Award/IDV Type'] || ''),
+            agency: String(row['Contracting Agency'] || ''),
+            office: String(row['Contracting Office Name'] || ''),
+            vendor: String(row['Legal Business Name'] || ''),
+            value: value,
+            naics: String(row['NAICS'] || ''),
+            naicsDescription: String(row['NAICS Description'] || ''),
+            psc: String(row['PSC'] || ''),
+            pscDescription: String(row['PSC Description'] || ''),
+            description: String(row['PSC Description'] || row['Description of Requirement'] || '')
+          };
+        } catch (rowError) {
+          console.warn(`Error processing row ${index + 1}:`, rowError);
+          return null;
         }
-      }
-      
-      app.data = csvData.data
-        .map((row, index) => {
-          try {
-            const parsedDate = utils.parseDate(row['Date Signed']);
-            const value = utils.parseMoney(row['Action Obligation ($)']);
-            
-            return {
-              id: String(row['Contract ID'] || ''),
-              reference: String(row['Reference IDV'] || ''),
-              modification: String(row['Modification Number'] || ''),
-              date: String(row['Date Signed'] || ''),
-              parsedDate: parsedDate,
-              type: String(row['Award/IDV Type'] || ''),
-              agency: String(row['Contracting Agency'] || ''),
-              office: String(row['Contracting Office Name'] || ''),
-              vendor: String(row['Legal Business Name'] || ''),
-              value: value,
-              naics: String(row['NAICS'] || ''),
-              naicsDescription: String(row['NAICS Description'] || ''),
-              psc: String(row['PSC'] || ''),
-              pscDescription: String(row['PSC Description'] || ''),
-              description: String(row['PSC Description'] || row['Description of Requirement'] || '')
-            };
-          } catch (rowError) {
-            console.warn(`Error processing row ${index + 1}:`, rowError);
-            return null;
-          }
-        })
-        .filter(row => row !== null && utils.validateContract(row));
-      
-      if (app.data.length === 0) {
-        throw new Error('No valid data rows could be processed');
-      }
-      
-      app.filteredData = [...app.data];
-      
-      stateManager.analyzeFilteredData();
-      this.populateFilters();
-      
-      // Show warnings if any, but still proceed to dashboard
-      if (app.parseWarnings.length > 0) {
-        console.warn('CSV Parse Warnings:', app.parseWarnings);
-      }
-      
-      stateManager.showState('dashboard');
-      sankeyChart.updateButtons('sankeyLimit10');
-      charts.initAll();
-      dashboard.updateAll();
-      stateManager.updateFilterDisplay();
-      
-    } catch (error) {
-      console.error('Processing error:', error);
-      stateManager.showState('errorState', error.message);
-    }
-  },
-
-  populateFilters() {
-    this.populateSelect('agencyFilter', app.agencies);
-    this.populateSelect('vendorFilter', app.vendors);
-    this.populateSelect('naicsFilter', app.naicsCodes);
-    this.populateSelect('officeFilter', app.offices);
-  },
-
-  populateSelect(selectId, data) {
-    const select = elements[selectId];
-    if (!select) return;
+      })
+      .filter(row => row !== null && utils.validateContract(row));
     
-    const currentVal = select.value;
-    
-    while (select.options.length > 1) {
-      select.remove(1);
+    if (app.data.length === 0) {
+      throw new Error('No valid data rows could be processed');
     }
     
-    const sortedData = Object.values(data)
-      .filter(item => item && (item.name || item.code))
-      .sort((a, b) => (b.count || 0) - (a.count || 0))
-      .slice(0, 200);
+    app.filteredData = [...app.data];
     
-    sortedData.forEach(item => {
-      const option = document.createElement('option');
-      option.value = item.name || item.code;
-      option.textContent = `${utils.truncateText(item.name || item.code, 40)} (${(item.count || 0).toLocaleString()})`;
-      select.appendChild(option);
-    });
+    // Reset filters when loading new data
+    app.filters = {
+      search: null,
+      agency: null,
+      vendor: null,
+      naics: null,
+      office: null,
+      startDate: null,
+      endDate: null,
+      valueRange: null
+    };
     
-    select.value = currentVal;
+    stateManager.analyzeFilteredData();
+    this.populateFilters();
+    
+    // Show warnings if any, but still proceed to dashboard
+    if (app.parseWarnings.length > 0) {
+      console.warn('CSV Parse Warnings:', app.parseWarnings);
+    }
+    
+    stateManager.showState('dashboard');
+    sankeyChart.updateButtons('sankeyLimit10');
+    charts.initAll();
+    dashboard.updateAll();
+    stateManager.updateFilterDisplay();
+    stateManager.syncFiltersToUI();
+    
+  } catch (error) {
+    console.error('Processing error:', error);
+    stateManager.showState('errorState', error.message);
   }
-};
-
+},
 const charts = {
   centerTextPlugin: {
     id: 'centerText',
