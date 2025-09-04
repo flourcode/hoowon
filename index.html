@@ -91,7 +91,8 @@ body {
 .search-wrapper { position: relative; }
 .search-input { padding-left: var(--space); }
 .btn { display: inline-flex; align-items: center; gap: var(--space-sm); padding: var(--space) var(--space-lg); font-size: 0.875rem; font-weight: 500; border: 1px solid transparent; border-radius: var(--radius); cursor: pointer; transition: all 0.2s ease-in-out; text-decoration: none; background: transparent; }
-.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+.btn:active { transform: translateY(0); }
 .btn-primary { background: var(--primary); color: var(--bg-primary); font-weight: 600; }
 .btn-primary:hover { background: var(--primary-dark); }
 .btn-secondary { background: var(--bg-tertiary); color: var(--text-secondary); border-color: var(--border); font-weight: 500; }
@@ -142,7 +143,6 @@ body {
 .error-state { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: var(--radius); }
 .hidden { display: none !important; }
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-@media (max-width: 768px) { .app-header { padding: var(--space) var(--space-lg); } .dashboard { padding: var(--space-lg); } .main-filters { grid-template-columns: 1fr; } .primary-charts { grid-template-columns: 1fr; height: auto; gap: var(--space-lg); } .chart-container { height: 300px; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .chart-section { padding: var(--space-lg); } }
 .active-filters-display { font-size: 1rem; color: var(--text-secondary); margin-top: var(--space-xs); font-weight: 500; height: 1.5em; }
 .active-filters-display strong { color: var(--text-primary); font-weight: 600; }
 .logo-mark { display: inline-flex; align-items: center; background: var(--primary); color: var(--primary-text); padding: var(--space) var(--space-lg); border-radius: 6px; font-size: 2rem; font-weight: 700; line-height: 1; }
@@ -196,11 +196,6 @@ body {
 .footer-links a:hover { color: var(--primary-dark); text-decoration: underline; }
 .footer-links a i { color: var(--primary); width: 1rem; }
 .copyright { border-top: 1px solid var(--border); margin-top: var(--space-xl); padding-top: var(--space-xl); text-align: center; font-size: 0.875rem; color: var(--text-tertiary); }
-@media (max-width: 768px) {
-  .primary-charts, .main-filters, .footer-grid-expanded { grid-template-columns: 1fr; }
-  .sankey-container, .chart-container { height: 300px; }
-  .table-section { overflow-x: auto; }
-}
 
 /* --- NEW COMBO BOX & UPDATED COMPARISON STYLES --- */
 .comparison-controls { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space); margin-top: var(--space); }
@@ -217,7 +212,10 @@ body {
 
 /* Searchable Dropdown (Combo Box) */
 .combo-box { position: relative; }
-.combo-box-input { width: 100%; cursor: pointer; }
+.combo-box-input { width: 100%; cursor: pointer; transition: border-color 0.2s; }
+.combo-box-input::placeholder { color: var(--text-secondary); transition: color 0.2s; }
+.combo-box-input.error { border-color: #dc3545; }
+.combo-box-input.error::placeholder { color: #dc3545; }
 .combo-box-arrow { position: absolute; right: var(--space); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary); }
 .combo-box-options { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); z-index: 100; max-height: 250px; overflow-y: auto; box-shadow: var(--shadow); }
 .combo-box.open .combo-box-options { display: block; }
@@ -230,6 +228,7 @@ body {
   font-size: 10px;
   max-width: 200px;
 }
+
 /* Loading States */
 .comparison-loading {
   display: flex;
@@ -272,76 +271,279 @@ body {
   color: var(--text-primary);
   margin-bottom: var(--space-sm);
 }
+
+/* Mobile fixes - comprehensive layout improvements */
 @media (max-width: 768px) {
-  .vendor-selectors { 
+  /* Ensure main container doesn't overflow */
+  body, html {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .app-container {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .app-header { 
+    padding: var(--space) var(--space-lg); 
+  }
+  
+  .dashboard { 
+    padding: var(--space-lg); 
+  }
+
+  /* Fix chart section and header layout */
+  .chart-section {
+    padding: var(--space) var(--space-sm);
+    overflow-x: hidden;
+  }
+
+  .chart-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space);
+  }
+
+  /* Fix chart controls - make them wrap and fit container */
+  .chart-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .chart-controls .btn {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.7rem;
+    white-space: nowrap;
+    max-width: calc(33.333% - var(--space-xs));
+  }
+
+  /* Fix sankeyControls container specifically */
+  #sankeyControls {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  #sankeyControls .btn {
+    min-width: 0;
+    flex: 1;
+    max-width: calc(33.333% - var(--space-xs));
+  }
+
+  /* Fix section title to prevent overflow */
+  .section-title {
+    font-size: 1.5rem;
+    line-height: 1.3;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* Fix main filters layout */
+  .main-filters { 
     grid-template-columns: 1fr; 
     gap: var(--space-sm);
   }
+
+  /* Fix comparison controls layout */
+  .vendor-selectors {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+  }
+
+  .comparison-controls {
+    margin-top: var(--space-sm);
+    padding: var(--space-sm);
+  }
+
+  .comparison-header {
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-items: stretch;
+  }
+
   .comparison-stat-grid .stat-value { 
     font-size: 1.2rem; 
   }
+
+  /* Fix combo box dropdowns for mobile */
+  .combo-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .combo-box-input {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: var(--space) var(--space-sm);
+  }
+
   .combo-box-options {
     max-height: 200px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-sizing: border-box;
   }
+
   .combo-box-option {
     padding: var(--space) var(--space-lg);
     font-size: 0.9rem;
     min-height: 44px;
     display: flex;
     align-items: center;
+    word-wrap: break-word;
+    hyphens: auto;
   }
-  .combo-box-input {
-    min-height: 44px;
+
+  /* Fix advanced filters */
+  .filters-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space);
+  }
+
+  /* Fix select elements */
+  .form-select, .form-input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     font-size: 16px; /* Prevents zoom on iOS */
   }
-}
-/* Searchable Dropdown (Combo Box) */
-.combo-box { position: relative; }
-.combo-box-input { width: 100%; cursor: pointer; transition: border-color 0.2s; }
-.combo-box-input::placeholder { color: var(--text-secondary); transition: color 0.2s; }
-.combo-box-input.error { border-color: #dc3545; }
-.combo-box-input.error::placeholder { color: #dc3545; }
-.combo-box-arrow { position: absolute; right: var(--space); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary); }
-.combo-box-options { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); z-index: 100; max-height: 250px; overflow-y: auto; box-shadow: var(--shadow); }
-.combo-box.open .combo-box-options { display: block; }
-.combo-box-option { padding: var(--space-sm) var(--space); cursor: pointer; font-size: 0.875rem; }
-.combo-box-option:hover, .combo-box-option.highlighted { background: var(--bg-tertiary); }
-.combo-box-option.hidden { display: none; }
-/* Add this to your existing CSS */
-@media (max-width: 768px) {
-  .data-table td:first-child {
-    white-space: nowrap;
-    min-width: 60px;
-    font-size: 0.75rem;
+
+  /* Fix button groups */
+  .dataset-buttons {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .dataset-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Fix stats grid */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+
+  /* Fix primary charts container */
+  .primary-charts { 
+    grid-template-columns: 1fr; 
+    height: auto; 
+    gap: var(--space-lg); 
   }
   
-  /* Also make the table more mobile-friendly */
+  .chart-container { 
+    height: 300px;
+    max-height: 300px;
+  }
+
+  .sankey-container { 
+    height: 300px; 
+    overflow: hidden;
+  }
+
+  /* Fix table sections */
+  .table-section { 
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .data-table {
+    min-width: 600px; /* Ensure table doesn't compress too much */
     font-size: 0.75rem;
   }
   
   .data-table th,
   .data-table td {
-    padding: var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
+    white-space: nowrap;
   }
-  
-  /* Adjust date format for mobile */
+
   .data-table td:first-child {
+    white-space: nowrap;
+    min-width: 60px;
+    font-size: 0.75rem;
     font-family: 'Courier New', monospace;
     letter-spacing: -0.5px;
   }
-}
-.btn {
-  transition: all 0.2s ease;
+
+  /* Fix tabs */
+  .tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Fix modal for mobile */
+  .modal {
+    width: 95%;
+    max-width: 95%;
+    margin: var(--space);
+    max-height: 90vh;
+  }
+
+  /* Fix footer layout */
+  .footer-grid-expanded {
+    grid-template-columns: 1fr;
+    gap: var(--space);
+  }
+
+  .quick-steps {
+    flex-direction: column;
+    gap: var(--space);
+  }
+
+  /* Ensure no horizontal scrolling */
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
 }
 
-.btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Additional fixes for very small screens */
+@media (max-width: 480px) {
+  .chart-controls .btn {
+    font-size: 0.65rem;
+    padding: var(--space-xs);
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+  }
+
+  .combo-box-option {
+    font-size: 0.8rem;
+    padding: var(--space-sm);
+  }
 }
 
-.btn:active {
-  transform: translateY(0);
+/* Landscape mobile fixes */
+@media (max-width: 768px) and (orientation: landscape) {
+  .chart-container {
+    height: 250px;
+  }
+  
+  .sankey-container {
+    height: 250px;
+  }
 }
 </style>
 </head>
