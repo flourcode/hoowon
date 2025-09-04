@@ -556,6 +556,35 @@ body {
     height: 250px;
   }
 }
+@media (max-width: 768px) {
+  .data-table th,
+  .data-table td {
+    padding: var(--space-xs) var(--space-sm);
+  }
+  
+  /* Make specific columns narrower */
+  .data-table td:nth-child(1), /* Date */
+  .data-table th:nth-child(1) {
+    width: 70px;
+    padding: var(--space-xs) var(--space-xs);
+  }
+  
+  .data-table td:nth-child(2), /* Contract ID */
+  .data-table th:nth-child(2) {
+    width: 80px;
+    padding: var(--space-xs) var(--space-xs);
+  }
+  
+  .data-table td:nth-child(8), /* Actions */
+  .data-table th:nth-child(8) {
+    width: 60px;
+    padding: var(--space-xs) var(--space-xs);
+    position: sticky;
+    right: 0;
+    background: var(--bg-primary);
+    border-left: 1px solid var(--border);
+  }
+}
 </style>
 </head>
 <body>
