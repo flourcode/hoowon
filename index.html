@@ -86,17 +86,91 @@ body {
 .data-load-controls { display: flex; gap: var(--space); margin-bottom: var(--space); }
 .controls-section { display: flex; flex-direction: column; gap: var(--space-lg); }
 .main-filters { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: var(--space); align-items: end; }
-.form-input, .form-select { padding: var(--space) var(--space-lg); border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-primary); color: var(--text-primary); font-size: 0.875rem; transition: var(--transition); }
-.form-input:focus, .form-select:focus { outline: none; border-color: var(--text-primary); box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.1); }
+.form-input, .form-select { 
+  padding: var(--space) var(--space-lg); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  background: var(--bg-primary); 
+  color: var(--text-primary); 
+  font-size: 0.875rem; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+}
+.form-input:focus, .form-select:focus { 
+  outline: none; 
+  border-color: var(--primary); 
+  box-shadow: 0 0 0 3px rgba(26, 89, 58, 0.1); 
+  transform: scale(1.02);
+}
 .search-wrapper { position: relative; }
 .search-input { padding-left: var(--space); }
-.btn { display: inline-flex; align-items: center; gap: var(--space-sm); padding: var(--space) var(--space-lg); font-size: 0.875rem; font-weight: 500; border: 1px solid transparent; border-radius: var(--radius); cursor: pointer; transition: all 0.2s ease-in-out; text-decoration: none; background: transparent; }
-.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-.btn-primary { background: var(--primary); color: var(--bg-primary); font-weight: 600; }
-.btn-primary:hover { background: var(--primary-dark); }
-.btn-secondary { background: var(--bg-tertiary); color: var(--text-secondary); border-color: var(--border); font-weight: 500; }
-.btn-secondary:hover { background: var(--bg-tertiary); color: var(--text-primary); }
-.btn-sm { padding: var(--space-sm) var(--space); font-size: 0.75rem; }
+.btn { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: var(--space-sm); 
+  padding: var(--space) var(--space-lg); 
+  font-size: 0.875rem; 
+  font-weight: 500; 
+  border: 1px solid transparent; 
+  border-radius: var(--radius); 
+  cursor: pointer; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+  text-decoration: none; 
+  background: transparent; 
+  position: relative;
+  overflow: hidden;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+  pointer-events: none;
+}
+.btn:active::before {
+  width: 300px;
+  height: 300px;
+}
+.btn:hover { 
+  transform: translateY(-1px); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+}
+.btn:active { 
+  transform: translateY(0) scale(0.98); 
+}
+.btn-primary { 
+  background: var(--primary); 
+  color: var(--bg-primary); 
+  font-weight: 600; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-primary:hover { 
+  background: var(--primary-dark); 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 25px rgba(26, 89, 58, 0.3);
+}
+.btn-secondary { 
+  background: var(--bg-tertiary); 
+  color: var(--text-secondary); 
+  border-color: var(--border); 
+  font-weight: 500; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.btn-secondary:hover { 
+  background: var(--bg-secondary); 
+  color: var(--text-primary); 
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+.btn-sm { 
+  padding: var(--space-sm) var(--space); 
+  font-size: 0.75rem; 
+}
 .file-input { display: none; }
 .advanced-filters { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-lg); margin-top: var(--space-lg); display: none; }
 .advanced-filters.active { display: block; }
@@ -107,7 +181,37 @@ body {
 .section-title { font-size: 2.25rem; color: var(--text-primary); margin-bottom: var(--space-lg); border-bottom: none; padding-bottom: var(--space-sm); font-weight: 600; line-height: 1.2; letter-spacing: -1.5px; }
 .section-title strong { font-weight: 700; color: var(--text-primary); }
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space); margin-bottom: var(--space-sm); }
-.stat-card { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space); }
+.stat-card { 
+  background: var(--bg-primary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding: var(--space); 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.6s ease;
+}
+.stat-card:hover::before {
+  left: 100%;
+}
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+}
+.stat-card:active {
+  transform: translateY(0) scale(0.98);
+}
 .stat-label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-sm); }
 .stat-value { font-family: var(--font-family); font-size: 2.5rem; font-weight: 600; color: var(--text-primary); letter-spacing: -1px; }
 .stat-company { font-size: 1.8rem; font-weight: 600; color: var(--text-primary); }
@@ -120,16 +224,84 @@ body {
 .industry-chart-container { display: flex; flex-direction: column; justify-content: center; align-items: center; padding-top: var(--space-lg); }
 .table-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
 .tabs { display: flex; background: var(--bg-tertiary); border-bottom: 1px solid var(--border); }
-.tab-btn { padding: var(--space) var(--space-lg); background: none; border: none; color: var(--text-secondary); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: var(--transition); }
-.tab-btn.active, .tab-btn:hover { color: var(--text-primary); background: var(--bg-primary); }
-.tab-content { display: none; padding: var(--space-xl); }
-.tab-content.active { display: block; }
+.tab-btn { 
+  padding: var(--space) var(--space-lg); 
+  background: none; 
+  border: none; 
+  color: var(--text-secondary); 
+  font-size: 0.875rem; 
+  font-weight: 500; 
+  cursor: pointer; 
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+  position: relative;
+  overflow: hidden;
+}
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+.tab-btn.active::before {
+  width: 100%;
+}
+.tab-btn.active, .tab-btn:hover { 
+  color: var(--text-primary); 
+  background: var(--bg-primary); 
+}
+.tab-content { 
+  display: none; 
+  padding: var(--space-xl); 
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+.tab-content.active { 
+  display: block; 
+  opacity: 1;
+  transform: translateY(0);
+}
 .data-table { width: 100%; border-collapse: collapse; }
 .data-table th { background: var(--bg-secondary); padding: var(--space); text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
 .data-table td { padding: var(--space); border-bottom: 1px solid var(--border); color: var(--text-primary); font-size: 0.875rem; }
-.data-table tr:hover { background: var(--bg-tertiary); }
-.entity-badge { display: inline-flex; align-items: center; gap: var(--space-sm); }
-.entity-icon { width: 1.5rem; height: 1.5rem; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; flex-shrink: 0; }
+.data-table tr:hover { 
+  background: var(--bg-tertiary); 
+  transform: translateX(2px);
+  transition: all 0.2s ease;
+}
+.entity-badge { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: var(--space-sm); 
+  transition: all 0.3s ease;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.entity-badge:hover {
+  background: var(--bg-tertiary);
+  transform: scale(1.02);
+}
+.entity-icon { 
+  width: 1.5rem; 
+  height: 1.5rem; 
+  border-radius: 2px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 0.625rem; 
+  font-weight: 700; 
+  flex-shrink: 0; 
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.entity-badge:hover .entity-icon {
+  transform: rotate(5deg) scale(1.1);
+}
 .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: var(--transition); }
 .modal-backdrop.active { opacity: 1; visibility: visible; }
 .modal { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); width: 90%; max-width: 600px; max-height: 80vh; overflow: auto; }
@@ -154,16 +326,86 @@ body {
 
 /* Empty State Styles */
 .empty-state-content { max-width: 800px; }
-.empty-state-title { font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-lg); }
-.empty-state-intro { font-size: 1.125rem; color: var(--text-secondary); margin-bottom: var(--space-2xl); line-height: 1.6; }
-.how-to-guide { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-2xl); margin-bottom: var(--space-2xl); text-align: left; }
+.empty-state-title { 
+  font-size: 2.5rem; 
+  font-weight: 700; 
+  color: var(--text-primary); 
+  margin-bottom: var(--space-lg); 
+  animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.empty-state-intro { 
+  font-size: 1.125rem; 
+  color: var(--text-secondary); 
+  margin-bottom: var(--space-2xl); 
+  line-height: 1.6; 
+  animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.how-to-guide { 
+  background: var(--bg-secondary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding: var(--space-2xl); 
+  margin-bottom: var(--space-2xl); 
+  text-align: left; 
+  animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
 .how-to-guide h3 { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-lg); text-align: center; }
 .how-to-guide ol { list-style: none; counter-reset: step-counter; }
-.how-to-guide li { counter-increment: step-counter; margin-bottom: var(--space-lg); padding-left: var(--space-2xl); position: relative; }
-.how-to-guide li:before { content: counter(step-counter); position: absolute; left: 0; top: 0; background: var(--primary); color: var(--primary-text); width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; }
+.how-to-guide li { 
+  counter-increment: step-counter; 
+  margin-bottom: var(--space-lg); 
+  padding-left: var(--space-2xl); 
+  position: relative; 
+  animation: fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+.how-to-guide li:nth-child(1) { animation-delay: 0.6s; }
+.how-to-guide li:nth-child(2) { animation-delay: 0.7s; }
+.how-to-guide li:nth-child(3) { animation-delay: 0.8s; }
+.how-to-guide li:before { 
+  content: counter(step-counter); 
+  position: absolute; 
+  left: 0; 
+  top: 0; 
+  background: var(--primary); 
+  color: var(--primary-text); 
+  width: 1.5rem; 
+  height: 1.5rem; 
+  border-radius: 50%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-weight: 600; 
+  font-size: 0.875rem; 
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.how-to-guide li:hover:before { 
+  transform: scale(1.1) rotate(360deg); 
+  box-shadow: 0 4px 12px rgba(var(--primary), 0.3);
+}
 .how-to-guide li strong { color: var(--text-primary); font-weight: 600; }
 .how-to-guide li p { margin-top: var(--space-xs); color: var(--text-secondary); }
-.empty-state-prompt { font-size: 1rem; color: var(--text-secondary); }
+.empty-state-prompt { 
+  font-size: 1rem; 
+  color: var(--text-secondary); 
+  animation: fadeInUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1s forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 .app-footer-enhanced { background: var(--bg-primary); border-top: 1px solid var(--border); padding: var(--space-2xl) var(--space-xl); margin-top: 0; }
 .footer-content { max-width: 1200px; margin: 0 auto; }
@@ -217,7 +459,10 @@ body {
 
 /* Searchable Dropdown (Combo Box) */
 .combo-box { position: relative; }
-.combo-box-input { width: 100%; cursor: pointer; }
+.combo-box-input { width: 100%; cursor: pointer; transition: border-color 0.2s; }
+.combo-box-input::placeholder { color: var(--text-secondary); transition: color 0.2s; }
+.combo-box-input.error { border-color: #dc3545; }
+.combo-box-input.error::placeholder { color: #dc3545; }
 .combo-box-arrow { position: absolute; right: var(--space); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary); }
 .combo-box-options { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); z-index: 100; max-height: 250px; overflow-y: auto; box-shadow: var(--shadow); }
 .combo-box.open .combo-box-options { display: block; }
@@ -230,6 +475,7 @@ body {
   font-size: 10px;
   max-width: 200px;
 }
+
 /* Loading States */
 .comparison-loading {
   display: flex;
@@ -272,6 +518,7 @@ body {
   color: var(--text-primary);
   margin-bottom: var(--space-sm);
 }
+
 @media (max-width: 768px) {
   .vendor-selectors { 
     grid-template-columns: 1fr; 
@@ -295,18 +542,44 @@ body {
     font-size: 16px; /* Prevents zoom on iOS */
   }
 }
-/* Searchable Dropdown (Combo Box) */
-.combo-box { position: relative; }
-.combo-box-input { width: 100%; cursor: pointer; transition: border-color 0.2s; }
-.combo-box-input::placeholder { color: var(--text-secondary); transition: color 0.2s; }
-.combo-box-input.error { border-color: #dc3545; }
-.combo-box-input.error::placeholder { color: #dc3545; }
-.combo-box-arrow { position: absolute; right: var(--space); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary); }
-.combo-box-options { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); z-index: 100; max-height: 250px; overflow-y: auto; box-shadow: var(--shadow); }
-.combo-box.open .combo-box-options { display: block; }
-.combo-box-option { padding: var(--space-sm) var(--space); cursor: pointer; font-size: 0.875rem; }
-.combo-box-option:hover, .combo-box-option.highlighted { background: var(--bg-tertiary); }
-.combo-box-option.hidden { display: none; }
+
+/* ===== MICRO-INTERACTIONS & ANIMATIONS ===== */
+@keyframes rippleEffect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); filter: brightness(1.1); }
+}
+
+.loading-shimmer {
+  background: linear-gradient(90deg, 
+    var(--bg-secondary) 25%, 
+    var(--bg-tertiary) 50%, 
+    var(--bg-secondary) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Success state animation */
+@keyframes checkmarkDraw {
+  0% { stroke-dashoffset: 20; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.success-checkmark {
+  stroke-dasharray: 20;
+  animation: checkmarkDraw 0.3s ease-in-out;
+}
 </style>
 </head>
 <body>
@@ -578,7 +851,6 @@ const themeManager = {
     document.querySelectorAll('.theme-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.theme === themeName);
     });
-    // Note: localStorage removed for Claude.ai compatibility
     if (app.data.length > 0) {
       if (comparisonManager.isActive) {
           charts.initAll(true); 
@@ -590,7 +862,6 @@ const themeManager = {
     }
   },
   init() {
-    // Default to dark theme since localStorage is not available
     this.applyTheme('dark');
   }
 };
@@ -621,6 +892,167 @@ const app = {
   sankeyTotal: 0,
   isUpdating: false,
   parseWarnings: []
+};
+
+// ===== MICRO-INTERACTIONS & HAPTIC FEEDBACK =====
+const microInteractions = {
+  hapticPatterns: {
+    light: [5],
+    medium: [15],
+    heavy: [25],
+    success: [10, 50, 10],
+    error: [100, 50, 100, 50, 100]
+  },
+  
+  triggerHaptic(intensity = 'medium') {
+    if (!navigator.vibrate) return;
+    navigator.vibrate(this.hapticPatterns[intensity] || this.hapticPatterns.medium);
+  },
+  
+  addRipple(element, event) {
+    const rect = element.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    const size = Math.max(rect.width, rect.height);
+    const x = event.clientX - rect.left - size / 2;
+    const y = event.clientY - rect.top - size / 2;
+    
+    ripple.style.cssText = `
+      position: absolute;
+      width: ${size}px;
+      height: ${size}px;
+      left: ${x}px;
+      top: ${y}px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: rippleEffect 0.6s linear;
+      pointer-events: none;
+    `;
+    
+    element.style.position = 'relative';
+    element.style.overflow = 'hidden';
+    element.appendChild(ripple);
+    
+    setTimeout(() => ripple.remove(), 600);
+  },
+  
+  init() {
+    this.setupButtonInteractions();
+    this.setupStatCardAnimations();
+    this.setupTableRowAnimations();
+    this.setupFormInteractions();
+  },
+  
+  setupButtonInteractions() {
+    document.addEventListener('click', (e) => {
+      const button = e.target.closest('.btn');
+      if (button) {
+        this.triggerHaptic('light');
+        this.addRipple(button, e);
+        
+        if (button.classList.contains('btn-primary')) {
+          this.triggerHaptic('medium');
+          this.addButtonSuccessState(button);
+        }
+      }
+    });
+    
+    document.addEventListener('mousedown', (e) => {
+      const button = e.target.closest('.btn');
+      if (button) {
+        button.style.transform = 'translateY(0) scale(0.98)';
+      }
+    });
+    
+    document.addEventListener('mouseup', (e) => {
+      const button = e.target.closest('.btn');
+      if (button) {
+        setTimeout(() => {
+          button.style.transform = '';
+        }, 100);
+      }
+    });
+  },
+  
+  setupStatCardAnimations() {
+    document.querySelectorAll('.stat-card').forEach(card => {
+      card.addEventListener('click', () => {
+        this.triggerHaptic('light');
+        const value = card.querySelector('.stat-value');
+        if (value) {
+          value.style.animation = 'none';
+          setTimeout(() => {
+            value.style.animation = 'pulseGlow 0.6s ease';
+          }, 10);
+        }
+      });
+    });
+  },
+  
+  setupTableRowAnimations() {
+    document.addEventListener('mouseenter', (e) => {
+      const row = e.target.closest('.data-table tr');
+      if (row && !row.querySelector('th')) {
+        row.style.transform = 'translateX(4px)';
+        row.style.boxShadow = '4px 0 12px rgba(0,0,0,0.1)';
+      }
+    }, true);
+    
+    document.addEventListener('mouseleave', (e) => {
+      const row = e.target.closest('.data-table tr');
+      if (row && !row.querySelector('th')) {
+        row.style.transform = '';
+        row.style.boxShadow = '';
+      }
+    }, true);
+  },
+  
+  setupFormInteractions() {
+    document.querySelectorAll('.form-input, .form-select').forEach(input => {
+      input.addEventListener('focus', () => {
+        this.triggerHaptic('light');
+      });
+    });
+  },
+  
+  addButtonSuccessState(button) {
+    const originalContent = button.innerHTML;
+    const hasIcon = button.querySelector('i');
+    
+    if (hasIcon) {
+      setTimeout(() => {
+        const icon = button.querySelector('i');
+        if (icon) {
+          icon.className = 'fas fa-check success-checkmark';
+          button.style.background = '#34c759';
+          
+          setTimeout(() => {
+            button.innerHTML = originalContent;
+            button.style.background = '';
+          }, 1000);
+        }
+      }, 200);
+    }
+  }
+};
+
+const loadingStates = {
+  animateValueChange(element, newValue) {
+    if (!element) return;
+    
+    element.style.transform = 'scale(0.9)';
+    element.style.opacity = '0.7';
+    
+    setTimeout(() => {
+      element.textContent = newValue;
+      element.style.transform = 'scale(1.05)';
+      element.style.opacity = '1';
+      
+      setTimeout(() => {
+        element.style.transform = '';
+      }, 200);
+    }, 150);
+  }
 };
 
 let PALETTE = [];
@@ -1878,6 +2310,7 @@ const dashboard = {
   updateStats() {
     if(comparisonManager.isActive) return;
     
+    const prevValue = app.totalFilteredValue;
     app.totalFilteredValue = app.filteredData.reduce((sum, item) => {
       return sum + utils.safeParseFloat(item ? item.value : 0);
     }, 0);
@@ -1893,10 +2326,32 @@ const dashboard = {
       .filter(vendor => vendor && vendor.value > 0)
       .sort((a, b) => (b.value || 0) - (a.value || 0))[0];
     
-    elements.statCard1.innerHTML = `<div class="stat-label">Total Value</div><div class="stat-value" id="totalValue">${utils.formatMoney(app.totalFilteredValue)}</div>`;
-    elements.statCard2.innerHTML = `<div class="stat-label">Contracts</div><div class="stat-value" id="totalContracts">${totalContracts.toLocaleString()}</div>`;
-    elements.statCard3.innerHTML = `<div class="stat-label">Companies</div><div class="stat-value" id="totalCompanies">${uniqueCompanies.toLocaleString()}</div>`;
-    elements.statCard4.innerHTML = `<div class="stat-label">Market Leader</div><div class="stat-company" id="topCompany">${utils.truncateText(topCompany?.name || 'N/A', 20)}</div>`;
+    // Animate value changes if significant
+    const totalValueEl = document.getElementById('totalValue');
+    const totalContractsEl = document.getElementById('totalContracts');
+    const totalCompaniesEl = document.getElementById('totalCompanies');
+    const topCompanyEl = document.getElementById('topCompany');
+    
+    if (prevValue !== app.totalFilteredValue && totalValueEl) {
+      loadingStates.animateValueChange(totalValueEl, utils.formatMoney(app.totalFilteredValue));
+    } else if (totalValueEl) {
+      totalValueEl.textContent = utils.formatMoney(app.totalFilteredValue);
+    }
+    
+    if (totalContractsEl) {
+      loadingStates.animateValueChange(totalContractsEl, totalContracts.toLocaleString());
+    }
+    if (totalCompaniesEl) {
+      loadingStates.animateValueChange(totalCompaniesEl, uniqueCompanies.toLocaleString());
+    }
+    if (topCompanyEl) {
+      loadingStates.animateValueChange(topCompanyEl, utils.truncateText(topCompany?.name || 'N/A', 20));
+    }
+    
+    // Trigger haptic feedback for significant changes
+    if (Math.abs(prevValue - app.totalFilteredValue) > prevValue * 0.1) {
+      microInteractions.triggerHaptic('medium');
+    }
   },
   
   updateCharts() {
@@ -1935,10 +2390,19 @@ const dashboard = {
     if (!tbody) return;
     
     tbody.innerHTML = '';
-    data.forEach(contract => {
+    data.forEach((contract, index) => {
       if (utils.validateContract(contract)) {
         const row = this.createTableRow(contract);
+        row.style.opacity = '0';
+        row.style.transform = 'translateY(10px)';
         tbody.appendChild(row);
+        
+        // Staggered animation for rows
+        setTimeout(() => {
+          row.style.transition = 'all 0.3s ease';
+          row.style.opacity = '1';
+          row.style.transform = 'translateY(0)';
+        }, index * 50);
       }
     });
   },
@@ -1983,7 +2447,7 @@ const dashboard = {
     
     tbody.innerHTML = '';
     
-    top15.forEach(office => {
+    top15.forEach((office, index) => {
       const topNaics = Object.values(office.naicsCodes || {})
         .sort((a, b) => (b.value || 0) - (a.value || 0))[0] || { code: 'N/A' };
       
@@ -2003,6 +2467,8 @@ const dashboard = {
         .sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
       
       const row = document.createElement('tr');
+      row.style.opacity = '0';
+      row.style.transform = 'translateY(10px)';
       row.innerHTML = `
         <td>
           <div class="entity-badge">
@@ -2033,6 +2499,13 @@ const dashboard = {
         </td>
       `;
       tbody.appendChild(row);
+      
+      // Staggered animation
+      setTimeout(() => {
+        row.style.transition = 'all 0.3s ease';
+        row.style.opacity = '1';
+        row.style.transform = 'translateY(0)';
+      }, index * 50);
     });
   }
 };
@@ -2139,7 +2612,6 @@ const comparisonManager = {
     }
     
     if (vendorA.length > 0 && vendorB.length > 0) {
-      // Check for agency overlap
       const agenciesA = new Set(vendorA.map(c => c.agency));
       const agenciesB = new Set(vendorB.map(c => c.agency));
       const overlap = [...agenciesA].filter(x => agenciesB.has(x));
@@ -2205,7 +2677,6 @@ const comparisonManager = {
     this.populateComboBox(vendorType === 'A' ? 'B' : 'A');
     this.filterComboBox(vendorType, '');
     
-    // Clear any existing error display if both vendors are now selected
     if (this.vendorA && this.vendorB && this.vendorA !== this.vendorB) {
       const errorDisplay = elements.sankeyChart.querySelector('.comparison-error');
       if (errorDisplay) {
@@ -2225,100 +2696,92 @@ const comparisonManager = {
   },
   
   async runComparison() {
-  // Clear any previous error states
-  elements.vendorAInput.style.borderColor = '';
-  elements.vendorBInput.style.borderColor = '';
-  
-  let hasErrors = false;
-  let errorMessage = '';
-  
-  if (!this.vendorA) {
-      elements.vendorAInput.style.borderColor = '#dc3545';
-      elements.vendorAInput.placeholder = 'Please select Vendor A';
-      hasErrors = true;
-      errorMessage = 'Please select both vendors to compare';
-  }
-  
-  if (!this.vendorB) {
-      elements.vendorBInput.style.borderColor = '#dc3545';
-      elements.vendorBInput.placeholder = 'Please select Vendor B';
-      hasErrors = true;
-      errorMessage = 'Please select both vendors to compare';
-  }
-  
-  if (this.vendorA === this.vendorB) {
-      elements.vendorAInput.style.borderColor = '#dc3545';
-      elements.vendorBInput.style.borderColor = '#dc3545';
-      hasErrors = true;
-      errorMessage = 'Please select two different vendors';
-  }
-  
-  if (hasErrors) {
-      this.showError(
-        elements.sankeyChart,
-        'Selection Required',
-        errorMessage
-      );
-      return;
-  }
-  
-  this.isLoading = true;
-  elements.runComparison.textContent = "Loading...";
-  elements.runComparison.disabled = true;
-  
-  try {
-    // Show loading state for main comparison area
-    this.showLoading(elements.sankeyChart, 'Analyzing vendor competition...');
+    elements.vendorAInput.style.borderColor = '';
+    elements.vendorBInput.style.borderColor = '';
     
-    // Small delay to show loading state
-    await new Promise(resolve => setTimeout(resolve, 100));
+    let hasErrors = false;
+    let errorMessage = '';
     
-    const vendorAData = app.filteredData.filter(c => c.vendor === this.vendorA);
-    const vendorBData = app.filteredData.filter(c => c.vendor === this.vendorB);
-    
-    // Validate data
-    const errors = this.validateVendorData(vendorAData, vendorBData);
-    
-    if (errors.length > 0) {
-      this.showError(
-        elements.sankeyChart,
-        'Comparison Not Possible',
-        errors.join('. '),
-        true
-      );
-      return;
+    if (!this.vendorA) {
+        elements.vendorAInput.style.borderColor = '#dc3545';
+        elements.vendorAInput.placeholder = 'Please select Vendor A';
+        hasErrors = true;
+        errorMessage = 'Please select both vendors to compare';
     }
     
-    await this.createComparisonView(vendorAData, vendorBData);
+    if (!this.vendorB) {
+        elements.vendorBInput.style.borderColor = '#dc3545';
+        elements.vendorBInput.placeholder = 'Please select Vendor B';
+        hasErrors = true;
+        errorMessage = 'Please select both vendors to compare';
+    }
     
-  } catch (error) {
-    console.error('Comparison error:', error);
-    this.showError(
-      elements.sankeyChart,
-      'Comparison Failed',
-      'An error occurred while creating the comparison. Please try again.',
-      true
-    );
-  } finally {
-    this.isLoading = false;
-    elements.runComparison.textContent = "Update Comparison";
-    elements.runComparison.disabled = false;
-  }
+    if (this.vendorA === this.vendorB) {
+        elements.vendorAInput.style.borderColor = '#dc3545';
+        elements.vendorBInput.style.borderColor = '#dc3545';
+        hasErrors = true;
+        errorMessage = 'Please select two different vendors';
+    }
+    
+    if (hasErrors) {
+        this.showError(
+          elements.sankeyChart,
+          'Selection Required',
+          errorMessage
+        );
+        return;
+    }
+    
+    this.isLoading = true;
+    elements.runComparison.textContent = "Loading...";
+    elements.runComparison.disabled = true;
+    
+    try {
+      this.showLoading(elements.sankeyChart, 'Analyzing vendor competition...');
+      
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      const vendorAData = app.filteredData.filter(c => c.vendor === this.vendorA);
+      const vendorBData = app.filteredData.filter(c => c.vendor === this.vendorB);
+      
+      const errors = this.validateVendorData(vendorAData, vendorBData);
+      
+      if (errors.length > 0) {
+        this.showError(
+          elements.sankeyChart,
+          'Comparison Not Possible',
+          errors.join('. '),
+          true
+        );
+        return;
+      }
+      
+      await this.createComparisonView(vendorAData, vendorBData);
+      
+    } catch (error) {
+      console.error('Comparison error:', error);
+      this.showError(
+        elements.sankeyChart,
+        'Comparison Failed',
+        'An error occurred while creating the comparison. Please try again.',
+        true
+      );
+    } finally {
+      this.isLoading = false;
+      elements.runComparison.textContent = "Update Comparison";
+      elements.runComparison.disabled = false;
+    }
 },
   
   async createComparisonView(dataA, dataB) {
     try {
-      // Update stats first (fastest)
       this.updateComparisonStats(dataA, dataB);
       
-      // Show loading for overlap chart
       this.showLoading(elements.sankeyChart, 'Building competitive analysis...');
       await new Promise(resolve => setTimeout(resolve, 50));
       
-      // Create overlap chart
       this.createOverlapChart(dataA, dataB);
       
-      // Update other charts
       await this.updateComparisonTimeline(dataA, dataB);
       await this.updateComparisonIndustry(dataA, dataB);
       
@@ -2489,7 +2952,6 @@ const comparisonManager = {
       
     } catch (error) {
       console.error('Timeline comparison error:', error);
-      // Timeline errors are less critical, so just log them
     }
   },
   
@@ -2534,7 +2996,6 @@ const comparisonManager = {
       
     } catch (error) {
       console.error('Industry comparison error:', error);
-      // Industry chart errors are less critical
     }
   },
   
@@ -2564,6 +3025,7 @@ const comparisonManager = {
     dashboard.updateAll();
   }
 };
+
 const eventListeners = {
   setup() {
     this.setupFileHandlers();
@@ -2670,13 +3132,24 @@ const eventListeners = {
     if (tabsContainer) {
       tabsContainer.addEventListener('click', (e) => {
         if (e.target.matches('.tab-btn')) {
+          microInteractions.triggerHaptic('light');
+          
           document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
           document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
           
           e.target.classList.add('active');
           const tabId = e.target.dataset.tab + 'Tab';
           const tabContent = document.getElementById(tabId);
-          if (tabContent) tabContent.classList.add('active');
+          if (tabContent) {
+            tabContent.classList.add('active');
+            // Animate tab content
+            tabContent.style.transform = 'translateY(10px)';
+            tabContent.style.opacity = '0.7';
+            setTimeout(() => {
+              tabContent.style.transform = '';
+              tabContent.style.opacity = '';
+            }, 50);
+          }
         }
       });
     }
@@ -2685,6 +3158,7 @@ const eventListeners = {
     if (tableSection) {
       tableSection.addEventListener('click', (e) => {
         if (e.target.matches('.view-details-btn')) {
+          microInteractions.triggerHaptic('medium');
           const contractId = e.target.dataset.contractId;
           if (contractId) modal.show(contractId);
         }
@@ -2697,6 +3171,7 @@ const eventListeners = {
     if (chartControls) {
       chartControls.addEventListener('click', (e) => {
         if (e.target.matches('.btn')) {
+          microInteractions.triggerHaptic('light');
           const limitMap = { sankeyLimit10: 10, sankeyLimit25: 25, sankeyLimitAll: 0 };
           if (limitMap.hasOwnProperty(e.target.id)) {
             app.sankeyDisplayLimit = limitMap[e.target.id];
@@ -2761,6 +3236,7 @@ const eventListeners = {
     if (themeControls) {
       themeControls.addEventListener('click', (e) => {
         if (e.target.matches('.theme-btn')) {
+          microInteractions.triggerHaptic('light');
           themeManager.applyTheme(e.target.dataset.theme);
         }
       });
@@ -2782,6 +3258,7 @@ const eventListeners = {
 function init() {
   cacheElements();
   themeManager.init();
+  microInteractions.init();
   eventListeners.setup();
   stateManager.showState('emptyState');
 }
