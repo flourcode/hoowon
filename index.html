@@ -280,7 +280,33 @@ body {
   .comparison-stat-grid .stat-value { 
     font-size: 1.2rem; 
   }
+  .combo-box-options {
+    max-height: 200px;
+  }
+  .combo-box-option {
+    padding: var(--space) var(--space-lg);
+    font-size: 0.9rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .combo-box-input {
+    min-height: 44px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
 }
+/* Searchable Dropdown (Combo Box) */
+.combo-box { position: relative; }
+.combo-box-input { width: 100%; cursor: pointer; transition: border-color 0.2s; }
+.combo-box-input::placeholder { color: var(--text-secondary); transition: color 0.2s; }
+.combo-box-input.error { border-color: #dc3545; }
+.combo-box-input.error::placeholder { color: #dc3545; }
+.combo-box-arrow { position: absolute; right: var(--space); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary); }
+.combo-box-options { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); z-index: 100; max-height: 250px; overflow-y: auto; box-shadow: var(--shadow); }
+.combo-box.open .combo-box-options { display: block; }
+.combo-box-option { padding: var(--space-sm) var(--space); cursor: pointer; font-size: 0.875rem; }
+.combo-box-option:hover, .combo-box-option.highlighted { background: var(--bg-tertiary); }
+.combo-box-option.hidden { display: none; }
 </style>
 </head>
 <body>
@@ -2167,13 +2193,25 @@ const comparisonManager = {
   },
   
   selectOption(vendorType, vendorName) {
-      this[`vendor${vendorType}`] = vendorName;
-      elements[`vendor${vendorType}Input`].value = vendorName;
-      document.getElementById(`vendor${vendorType}ComboBox`).classList.remove('open');
-      
-      this.populateComboBox(vendorType === 'A' ? 'B' : 'A');
-      this.filterComboBox(vendorType, '');
-  },
+    this[`vendor${vendorType}`] = vendorName;
+    const input = elements[`vendor${vendorType}Input`];
+    input.value = vendorName;
+    input.style.borderColor = '';
+    input.placeholder = `Vendor ${vendorType} selected`;
+    
+    document.getElementById(`vendor${vendorType}ComboBox`).classList.remove('open');
+    
+    this.populateComboBox(vendorType === 'A' ? 'B' : 'A');
+    this.filterComboBox(vendorType, '');
+    
+    // Clear any existing error display if both vendors are now selected
+    if (this.vendorA && this.vendorB && this.vendorA !== this.vendorB) {
+      const errorDisplay = elements.sankeyChart.querySelector('.comparison-error');
+      if (errorDisplay) {
+        elements.sankeyChart.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary);">Ready to compare vendors</div>';
+      }
+    }
+},
   
   filterComboBox(vendorType, searchTerm) {
       const optionsContainer = elements[`vendor${vendorType}Options`];
@@ -2186,59 +2224,86 @@ const comparisonManager = {
   },
   
   async runComparison() {
-    if (!this.vendorA || !this.vendorB) {
-        alert("Please select two different vendors to compare.");
-        return;
-    }
-    
-    if (this.vendorA === this.vendorB) {
-        alert("Please select two different vendors.");
-        return;
-    }
-    
-    this.isLoading = true;
-    elements.runComparison.textContent = "Loading...";
-    elements.runComparison.disabled = true;
-    
-    try {
-      // Show loading state for main comparison area
-      this.showLoading(elements.sankeyChart, 'Analyzing vendor competition...');
-      
-      // Small delay to show loading state
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      const vendorAData = app.filteredData.filter(c => c.vendor === this.vendorA);
-      const vendorBData = app.filteredData.filter(c => c.vendor === this.vendorB);
-      
-      // Validate data
-      const errors = this.validateVendorData(vendorAData, vendorBData);
-      
-      if (errors.length > 0) {
-        this.showError(
-          elements.sankeyChart,
-          'Comparison Not Possible',
-          errors.join('. '),
-          true
-        );
-        return;
-      }
-      
-      await this.createComparisonView(vendorAData, vendorBData);
-      
-    } catch (error) {
-      console.error('Comparison error:', error);
+  // Clear any previous error states
+  elements.vendorAInput.style.borderColor = '';
+  elements.vendorBInput.style.borderColor = '';
+  
+  let hasErrors = false;
+  let errorMessage = '';
+  
+  if (!this.vendorA) {
+      elements.vendorAInput.style.borderColor = '#dc3545';
+      elements.vendorAInput.placeholder = 'Please select Vendor A';
+      hasErrors = true;
+      errorMessage = 'Please select both vendors to compare';
+  }
+  
+  if (!this.vendorB) {
+      elements.vendorBInput.style.borderColor = '#dc3545';
+      elements.vendorBInput.placeholder = 'Please select Vendor B';
+      hasErrors = true;
+      errorMessage = 'Please select both vendors to compare';
+  }
+  
+  if (this.vendorA === this.vendorB) {
+      elements.vendorAInput.style.borderColor = '#dc3545';
+      elements.vendorBInput.style.borderColor = '#dc3545';
+      hasErrors = true;
+      errorMessage = 'Please select two different vendors';
+  }
+  
+  if (hasErrors) {
       this.showError(
         elements.sankeyChart,
-        'Comparison Failed',
-        'An error occurred while creating the comparison. Please try again.',
+        'Selection Required',
+        errorMessage
+      );
+      return;
+  }
+  
+  this.isLoading = true;
+  elements.runComparison.textContent = "Loading...";
+  elements.runComparison.disabled = true;
+  
+  try {
+    // Show loading state for main comparison area
+    this.showLoading(elements.sankeyChart, 'Analyzing vendor competition...');
+    
+    // Small delay to show loading state
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    const vendorAData = app.filteredData.filter(c => c.vendor === this.vendorA);
+    const vendorBData = app.filteredData.filter(c => c.vendor === this.vendorB);
+    
+    // Validate data
+    const errors = this.validateVendorData(vendorAData, vendorBData);
+    
+    if (errors.length > 0) {
+      this.showError(
+        elements.sankeyChart,
+        'Comparison Not Possible',
+        errors.join('. '),
         true
       );
-    } finally {
-      this.isLoading = false;
-      elements.runComparison.textContent = "Update Comparison";
-      elements.runComparison.disabled = false;
+      return;
     }
-  },
+    
+    await this.createComparisonView(vendorAData, vendorBData);
+    
+  } catch (error) {
+    console.error('Comparison error:', error);
+    this.showError(
+      elements.sankeyChart,
+      'Comparison Failed',
+      'An error occurred while creating the comparison. Please try again.',
+      true
+    );
+  } finally {
+    this.isLoading = false;
+    elements.runComparison.textContent = "Update Comparison";
+    elements.runComparison.disabled = false;
+  }
+},
   
   async createComparisonView(dataA, dataB) {
     try {
