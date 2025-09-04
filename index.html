@@ -585,6 +585,65 @@ body {
     border-left: 1px solid var(--border);
   }
 }
+@media (max-width: 768px) {
+  .connect-card-compact {
+    flex-direction: column;
+    gap: var(--space);
+    padding: var(--space);
+    text-align: center;
+  }
+  
+  .connect-avatar {
+    align-self: center;
+  }
+  
+  .connect-avatar img {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .connect-info {
+    text-align: left;
+  }
+  
+  .connect-info h4 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .connect-info p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .connect-buttons {
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    justify-content: center;
+  }
+  
+  .connect-buttons .btn {
+    flex: 1;
+    min-width: 80px;
+    font-size: 0.75rem;
+    padding: var(--space-sm);
+  }
+  
+  /* Ensure the entire footer section has proper mobile constraints */
+  .footer-section {
+    padding: 0 var(--space);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  .footer-content {
+    padding: 0 var(--space);
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
 </style>
 </head>
 <body>
