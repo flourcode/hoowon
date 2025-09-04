@@ -7,13 +7,12 @@
   <title>Hoowon - Federal Contract Intelligence</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3-sankey/0.12.3/d3-sankey.min.js"></script>
-  
-<!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZM1YXC1RQ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -22,8 +21,6 @@
 
   gtag('config', 'G-BZM1YXC1RQ');
 </script>
-
-  
 <style>
 :root {
   /* Structural Variables (Unchanged by themes) */
@@ -76,8 +73,6 @@ body {
   color: var(--text-primary);
   box-shadow: var(--shadow);
 }
-
-/* --- (rest of your CSS) --- */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -148,532 +143,142 @@ body {
 .hidden { display: none !important; }
 .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @media (max-width: 768px) { .app-header { padding: var(--space) var(--space-lg); } .dashboard { padding: var(--space-lg); } .main-filters { grid-template-columns: 1fr; } .primary-charts { grid-template-columns: 1fr; height: auto; gap: var(--space-lg); } .chart-container { height: 300px; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .chart-section { padding: var(--space-lg); } }
-/* --- Mobile Optimization --- */
+.active-filters-display { font-size: 1rem; color: var(--text-secondary); margin-top: var(--space-xs); font-weight: 500; height: 1.5em; }
+.active-filters-display strong { color: var(--text-primary); font-weight: 600; }
+.logo-mark { display: inline-flex; align-items: center; background: var(--primary); color: var(--primary-text); padding: var(--space) var(--space-lg); border-radius: 6px; font-size: 2rem; font-weight: 700; line-height: 1; }
+.data-load-controls { display: flex; flex-direction: column; gap: var(--space); }
+.example-datasets { display: flex; flex-direction: column; gap: var(--space-sm); }
+.dataset-label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+.dataset-buttons { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
+.upload-section { padding-top: var(--space); border-top: 1px solid var(--border); }
+
+/* Empty State Styles */
+.empty-state-content { max-width: 800px; }
+.empty-state-title { font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-lg); }
+.empty-state-intro { font-size: 1.125rem; color: var(--text-secondary); margin-bottom: var(--space-2xl); line-height: 1.6; }
+.how-to-guide { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-2xl); margin-bottom: var(--space-2xl); text-align: left; }
+.how-to-guide h3 { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-lg); text-align: center; }
+.how-to-guide ol { list-style: none; counter-reset: step-counter; }
+.how-to-guide li { counter-increment: step-counter; margin-bottom: var(--space-lg); padding-left: var(--space-2xl); position: relative; }
+.how-to-guide li:before { content: counter(step-counter); position: absolute; left: 0; top: 0; background: var(--primary); color: var(--primary-text); width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; }
+.how-to-guide li strong { color: var(--text-primary); font-weight: 600; }
+.how-to-guide li p { margin-top: var(--space-xs); color: var(--text-secondary); }
+.empty-state-prompt { font-size: 1rem; color: var(--text-secondary); }
+
+.app-footer-enhanced { background: var(--bg-primary); border-top: 1px solid var(--border); padding: var(--space-2xl) var(--space-xl); margin-top: 0; }
+.footer-content { max-width: 1200px; margin: 0 auto; }
+.explainer-section { text-align: center; margin-bottom: var(--space-2xl); padding-bottom: var(--space-xl); border-bottom: 1px solid var(--border); }
+.explainer-section h3 { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space); }
+.explainer-section p { font-size: 1rem; color: var(--text-secondary); margin-bottom: var(--space-xl); max-width: 800px; margin-left: auto; margin-right: auto; }
+.explainer-section a, .step-text a, .footer-links a { color: var(--primary); text-decoration: none; font-weight: 500; transition: var(--transition); }
+.explainer-section a:hover, .step-text a:hover, .footer-links a:hover { color: var(--primary-dark); text-decoration: underline; }
+.quick-steps { display: flex; justify-content: center; gap: var(--space-xl); max-width: 900px; margin: 0 auto; }
+.step-row { display: flex; align-items: flex-start; gap: var(--space); flex: 1; text-align: left; }
+.step-number { display: flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; background: var(--primary); color: var(--primary-text); border-radius: 50%; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
+.step-text strong { color: var(--text-primary); font-weight: 600; }
+.step-text { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5; }
+.footer-grid-expanded { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--space-xl); }
+.footer-section h3 { font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-lg); }
+.connect-card-compact { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-lg); display: flex; gap: var(--space); align-items: flex-start; }
+.connect-avatar img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+.connect-info h4 { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-xs); }
+.connect-info p { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: var(--space); line-height: 1.5; }
+.connect-buttons { display: flex; gap: var(--space-sm); }
+.user-types { display: flex; flex-direction: column; gap: var(--space); margin-bottom: var(--space); }
+.user-type { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-sm); font-size: 0.875rem; line-height: 1.4; }
+.user-type strong { color: var(--text-primary); font-weight: 600; display: block; margin-bottom: var(--space-xs); }
+.search-examples-compact { display: flex; flex-direction: column; gap: var(--space); margin-bottom: var(--space-lg); }
+.search-example-compact { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-sm); }
+.search-example-compact strong { display: block; color: var(--text-primary); font-size: 0.8rem; margin-bottom: var(--space-xs); font-weight: 600; }
+.search-example-compact code { background: var(--bg-tertiary); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius); font-size: 0.7rem; font-family: 'Courier New', monospace; color: var(--text-primary); display: block; word-break: break-all; border: 1px solid var(--border); }
+.footer-links { display: flex; flex-direction: column; gap: var(--space-sm); }
+.footer-links a { color: var(--primary); text-decoration: none; font-weight: 500; font-size: 0.875rem; display: inline-flex; align-items: center; gap: var(--space-sm); transition: var(--transition); }
+.footer-links a:hover { color: var(--primary-dark); text-decoration: underline; }
+.footer-links a i { color: var(--primary); width: 1rem; }
+.copyright { border-top: 1px solid var(--border); margin-top: var(--space-xl); padding-top: var(--space-xl); text-align: center; font-size: 0.875rem; color: var(--text-tertiary); }
 @media (max-width: 768px) {
-  /* -- General Layout & Spacing -- */
-  .app-header, .dashboard, .chart-section {
-    padding: var(--space); /* Reduce padding on mobile */
-  }
-.primary-charts {
-    grid-template-columns: 1fr;
-    height: auto;
-    gap: var(--space-xl);
-  }
-  
-  .sankey-container {
-    height: 250px; /* Shorter height for mobile */
-    position: relative;
-  }
-  /* -- Header -- */
-  .logo-main {
-    flex-direction: column; /* Stack logo and theme controls */
-    align-items: flex-start;
-    gap: var(--space);
-  }
-
-  /* -- Filters -- */
-  .main-filters {
-    grid-template-columns: 1fr; /* Stack all filters into a single column */
-  }
-  
-  /* -- Typography -- */
-  .section-title {
-    font-size: 1.5rem; /* Reduce title size for readability */
-    letter-spacing: -0.5px;
-  }
-  .stat-value, .stat-company {
-    font-size: 2rem; /* Reduce stat font size */
-  }
-
-  /* -- Stat Cards -- */
-  .stats-grid {
-    grid-template-columns: 1fr 1fr; /* Keep the 2x2 grid for stats */
-  }
-
-  /* -- Chart Stacking -- */
-  .primary-charts {
-    grid-template-columns: 1fr; /* Stack Sankey and Donut charts vertically */
-    height: auto;
-    gap: var(--space-xl); /* Add more space between stacked charts */
-  }
-
-.chart-container,
-.sankey-container { /* Add .sankey-container to the rule */
-  height: 350px; /* Give charts a consistent, touch-friendly height */
+  .primary-charts, .main-filters, .footer-grid-expanded { grid-template-columns: 1fr; }
+  .sankey-container, .chart-container { height: 300px; }
+  .table-section { overflow-x: auto; }
 }
 
-  /* -- Tables -- */
-  .tabs {
-    overflow-x: auto; /* Allow tabs to scroll horizontally on small screens */
-    white-space: nowrap;
-  }
-}
+/* --- NEW COMBO BOX & UPDATED COMPARISON STYLES --- */
+.comparison-controls { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space); margin-top: var(--space); }
+.comparison-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space); }
+.vendor-selectors { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--space); align-items: end; padding: var(--space); background: var(--bg-secondary); border-radius: var(--radius); border: 1px solid var(--border); }
+.comparison-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); text-align: center; }
+.comparison-stat-grid .stat-label { font-size: 0.7rem; margin-bottom: var(--space-xs); }
+.comparison-stat-grid .stat-value { font-size: 1.5rem; line-height: 1; }
+.comparison-close { background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--text-secondary); }
+.comparison-close:hover { background: var(--bg-secondary); color: var(--text-primary); }
+.overlap-chart-container .axis .domain, .overlap-chart-container .axis .tick line { stroke: var(--text-secondary); }
+.overlap-chart-container .axis .tick text { fill: var(--text-secondary); font-size: 10px; }
+.overlap-chart-container .y-axis text { fill: var(--text-primary); font-size: 11px; }
 
-.active-filters-display {
-  font-size: 1rem;
+/* Searchable Dropdown (Combo Box) */
+.combo-box { position: relative; }
+.combo-box-input { width: 100%; cursor: pointer; }
+.combo-box-arrow { position: absolute; right: var(--space); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary); }
+.combo-box-options { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); z-index: 100; max-height: 250px; overflow-y: auto; box-shadow: var(--shadow); }
+.combo-box.open .combo-box-options { display: block; }
+.combo-box-option { padding: var(--space-sm) var(--space); cursor: pointer; font-size: 0.875rem; }
+.combo-box-option:hover, .combo-box-option.highlighted { background: var(--bg-tertiary); }
+.combo-box-option.hidden { display: none; }
+
+.text-right { text-align: right; }
+.overlap-chart-container .y-axis text {
+  font-size: 10px;
+  max-width: 200px;
+}
+/* Loading States */
+.comparison-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
   color: var(--text-secondary);
-  margin-top: var(--space-xs);
-  font-weight: 500;
-  height: 1.5em; /
-}
-.active-filters-display strong {
-  color: var(--text-primary);
-  font-weight: 600;
+  font-size: 0.875rem;
 }
 
-
-/* Mobile Styles */
-@media (max-width: 992px) {
-  .footer-grid-personalized {
-    grid-template-columns: 1fr; /* Stack columns on mobile/tablet */
-  }
+.comparison-loading .loading-spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: var(--space);
 }
-/* --- Enhanced Empty State --- */
-.empty-state-content {
-  max-width: 800px;
-  text-align: left;
-  border: 1px solid var(--border);
+
+.chart-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: var(--bg-primary);
-  padding: var(--space-2xl);
+  padding: var(--space);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
+  z-index: 10;
 }
-.empty-state-title {
-  font-size: 1.75rem;
-  color: var(--text-primary);
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  line-height: 1.2;
-}
-.empty-state-intro {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  margin: var(--space) 0 var(--space-xl) 0;
-  max-width: 90%;
-}
-.how-to-guide h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-lg);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: var(--space-sm);
-}
-.how-to-guide ol {
-  list-style: none;
-  padding-left: 0;
-}
-.how-to-guide li + li {
-  margin-top: var(--space-lg);
-}
-.how-to-guide li strong {
-  display: block;
-  font-size: 1rem;
-  color: var(--text-primary);
-  font-weight: 600;
-  margin-bottom: var(--space-xs);
-}
-.how-to-guide li p {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-}
-.empty-state-prompt {
-    text-align: center;
-    font-weight: 500;
-    color: var(--text-secondary);
-    margin-top: var(--space-xl);
-    padding-top: var(--space-xl);
-    border-top: 1px solid var(--border);
-}
-.logo-mark {
-  display: inline-flex;
-  align-items: center;
-  background: var(--primary);
-  color: var(--primary-text);
-  padding: var(--space) var(--space-lg); /* Adjusted padding for better balance */
-  border-radius: 6px;
-  font-size: 2rem; /* Updated font size */
-  font-weight: 700;
-  line-height: 1;
-}
-.data-load-controls {
+
+.comparison-error {
   display: flex;
   flex-direction: column;
-  gap: var(--space);
-}
-
-.example-datasets {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.dataset-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.dataset-buttons {
-  display: flex;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-}
-
-.upload-section {
-  padding-top: var(--space);
-  border-top: 1px solid var(--border);
-}
-
-@media (max-width: 768px) {
-  .dataset-buttons {
-    justify-content: center;
-  }
-}
-.app-footer-enhanced {
-  background: var(--bg-primary); /* Match main app background */
-  border-top: 1px solid var(--border);
-  padding: var(--space-2xl) var(--space-xl);
-  margin-top: 0; /* Remove gap */
-}
-
-.footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.explainer-section {
-  text-align: center;
-  margin-bottom: var(--space-2xl);
-  padding-bottom: var(--space-xl);
-  border-bottom: 1px solid var(--border);
-}
-
-.explainer-section h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space);
-}
-
-.explainer-section p {
-  font-size: 1rem;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-xl);
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Links should use primary color for consistency */
-.explainer-section a,
-.step-text a,
-.footer-links a {
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 500;
-  transition: var(--transition);
-}
-
-.explainer-section a:hover,
-.step-text a:hover,
-.footer-links a:hover {
-  color: var(--primary-dark);
-  text-decoration: underline;
-}
-
-.quick-steps {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-xl);
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.step-row {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space);
-  flex: 1;
-  text-align: left;
-}
-
-.step-number {
-  display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  background: var(--primary);
-  color: var(--primary-text);
-  border-radius: 50%;
-  font-weight: 600;
-  font-size: 0.875rem;
-  flex-shrink: 0;
-}
-
-.step-text strong {
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-.step-text {
-  font-size: 0.875rem;
+  height: 200px;
   color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: var(--space-2xl);
-}
-
-.footer-section h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-lg);
-}
-
-.footer-section h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space);
-}
-
-.connect-card-compact {
-  background: var(--bg-secondary); /* Subtle background difference */
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: var(--space-lg);
-  display: flex;
-  gap: var(--space);
-  align-items: flex-start;
-}
-
-.connect-avatar img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--border);
-}
-
-.connect-info h4 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-
-.connect-info p {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin-bottom: var(--space);
-  line-height: 1.5;
-}
-
-.connect-buttons {
-  display: flex;
-  gap: var(--space-sm);
-}
-
-.search-examples-compact {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space);
-  margin-bottom: var(--space-lg);
-}
-
-.search-example-compact {
-  background: var(--bg-secondary); /* Consistent with connect card */
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: var(--space-sm);
-}
-
-.search-example-compact strong {
-  display: block;
-  color: var(--text-primary);
-  font-size: 0.8rem;
-  margin-bottom: var(--space-xs);
-  font-weight: 600;
-}
-
-.search-example-compact code {
-  background: var(--bg-tertiary);
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius);
-  font-size: 0.7rem;
-  font-family: 'Courier New', monospace;
-  color: var(--text-primary);
-  display: block;
-  word-break: break-all;
-  border: 1px solid var(--border);
-}
-
-.footer-links {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-.footer-links a {
-  color: var(--primary); /* Use primary theme color */
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.875rem;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-sm);
-  transition: var(--transition);
-}
-
-.footer-links a:hover {
-  color: var(--primary-dark);
-  text-decoration: underline;
-}
-
-.footer-links a i {
-  color: var(--primary); /* Icon matches link color */
-  width: 1rem;
-}
-
-.copyright {
-  border-top: 1px solid var(--border);
-  margin-top: var(--space-xl);
-  padding-top: var(--space-xl);
   text-align: center;
-  font-size: 0.875rem;
-  color: var(--text-tertiary);
+  padding: var(--space);
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .app-footer-enhanced {
-    padding: var(--space-xl) var(--space);
-  }
-  
-  .quick-steps {
-    flex-direction: column;
-    gap: var(--space-lg);
-  }
-  
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
-  }
-  
-  .connect-card-compact {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-@media (max-width: 768px) {
-  /* Existing mobile styles... */
-  
-  /* Make tables horizontally scrollable */
-  .table-section {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-  }
-  
-  .data-table {
-    min-width: 800px; /* Ensure table maintains readable width */
-    white-space: nowrap; /* Prevent text wrapping in cells */
-  }
-  
-  .data-table th,
-  .data-table td {
-    padding: var(--space-sm) var(--space); /* Slightly reduced padding for mobile */
-    min-width: 100px; /* Minimum column width */
-  }
-  
-  /* Ensure the Actions column (View button) is always visible */
-  .data-table th:last-child,
-  .data-table td:last-child {
-    min-width: 80px;
-    position: sticky;
-    right: 0;
-    background: var(--bg-primary);
-    border-left: 1px solid var(--border);
-    z-index: 1;
-  }
-  
-  /* Make sure row hover doesn't break sticky column */
-  .data-table tr:hover td:last-child {
-    background: var(--bg-tertiary);
-  }
-  
-  /* Add scroll indicator shadow */
-  .table-section::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 20px;
-    height: 100%;
-    background: linear-gradient(to left, rgba(0,0,0,0.1), transparent);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  
-  .table-section.scrollable::after {
-    opacity: 1;
-  }
-}
-/* Update the grid to three columns */
-.footer-grid-expanded {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr;
-  gap: var(--space-xl);
-}
-
-/* Style the user types section */
-.user-types {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space);
-  margin-bottom: var(--space);
-}
-
-.user-type {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: var(--space-sm);
-  font-size: 0.875rem;
-  line-height: 1.4;
-}
-
-.user-type strong {
+.comparison-error h4 {
   color: var(--text-primary);
-  font-weight: 600;
-  display: block;
-  margin-bottom: var(--space-xs);
+  margin-bottom: var(--space-sm);
 }
-
-.bottom-line {
-  font-style: italic;
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  text-align: center;
-  margin-top: var(--space);
-  padding-top: var(--space);
-  border-top: 1px solid var(--border);
-}
-
-/* Mobile responsiveness */
 @media (max-width: 768px) {
-  .footer-grid-expanded {
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
+  .vendor-selectors { 
+    grid-template-columns: 1fr; 
+    gap: var(--space-sm);
+  }
+  .comparison-stat-grid .stat-value { 
+    font-size: 1.2rem; 
   }
 }
 </style>
@@ -684,9 +289,7 @@ body {
       <div class="header-content">
         <div class="logo-main">
           <div>
-            <div class="logo-brand">
-  <div class="logo-mark">Hoowon?</div>
-</div>
+            <div class="logo-brand"><div class="logo-mark">Hoowon?</div></div>
             <div class="logo-subtitle">Historical Contract Intelligence</div>
           </div>
           <div class="theme-controls" id="themeControls">
@@ -694,151 +297,96 @@ body {
             <button class="theme-btn" data-theme="dark">Dark</button>
           </div>
         </div>
-        
         <div class="data-load-controls">
-  <div class="example-datasets">
-    <div class="dataset-label">Load Example Data:</div>
-    <div class="dataset-buttons">
-      <button class="btn btn-primary btn-sm" data-dataset="511210_Software_Publishers">NAICS 511210 Software</button>
-      <button class="btn btn-primary btn-sm" data-dataset="dhs_CY24_25">DHS Awards CY24-25</button>
-	        <button class="btn btn-primary btn-sm" data-dataset="541519_Other_Computer">NAICS 541519 Computer</button>
-    </div>
-  </div>
-  <div class="upload-section">
-    <input type="file" id="csvFile" class="file-input" accept=".csv">
-    <label for="csvFile" class="btn btn-secondary">
-      Upload any fpds.gov CSV
-    </label>
-  </div>
-</div>
-        
-        <div class="controls-section" id="controlsSection" style="display: none;">
-          <div class="main-filters">
-            <div class="search-wrapper">
-              <input type="text" id="searchInput" class="form-input search-input" placeholder="Search contracts, agencies, vendors...">
-            </div>
-            <select id="agencyFilter" class="form-select">
-              <option value="">All Agencies</option>
-            </select>
-            <select id="vendorFilter" class="form-select">
-              <option value="">All Vendors</option>
-            </select>
-            <select id="naicsFilter" class="form-select">
-              <option value="">All NAICS</option>
-            </select>
-            <div style="display: flex; gap: var(--space-sm);">
-              <button id="resetBtn" class="btn btn-secondary btn-sm">
-                Reset
-              </button>
-              <button id="moreFiltersBtn" class="btn btn-secondary btn-sm">
-                More
-              </button>
+          <div class="example-datasets">
+            <div class="dataset-label">Load Example Data:</div>
+            <div class="dataset-buttons">
+              <button class="btn btn-primary btn-sm" data-dataset="511210_Software_Publishers">NAICS 511210 Software</button>
+              <button class="btn btn-primary btn-sm" data-dataset="dhs_CY24_25">DHS Awards CY24-25</button>
+              <button class="btn btn-primary btn-sm" data-dataset="541519_Other_Computer">NAICS 541519 Computer</button>
             </div>
           </div>
-          
+          <div class="upload-section">
+            <input type="file" id="csvFile" class="file-input" accept=".csv"><label for="csvFile" class="btn btn-secondary">Upload any fpds.gov CSV</label>
+          </div>
+        </div>
+        <div class="controls-section" id="controlsSection" style="display: none;">
+          <div class="main-filters">
+            <div class="search-wrapper"><input type="text" id="searchInput" class="form-input search-input" placeholder="Search contracts, agencies, vendors..."></div>
+            <select id="agencyFilter" class="form-select"><option value="">All Agencies</option></select>
+            <select id="vendorFilter" class="form-select"><option value="">All Vendors</option></select>
+            <select id="naicsFilter" class="form-select"><option value="">All NAICS</option></select>
+            <div style="display: flex; gap: var(--space-sm);">
+              <button id="resetBtn" class="btn btn-secondary btn-sm">Reset</button>
+              <button id="moreFiltersBtn" class="btn btn-secondary btn-sm">More</button>
+            </div>
+          </div>
+          <div class="comparison-controls" id="comparisonControls" style="display: none;">
+            <div class="comparison-header">
+              <button id="toggleComparison" class="btn btn-secondary comparison-toggle-btn"><i class="fas fa-balance-scale"></i> Compare Vendors</button>
+              <button id="closeComparison" class="btn btn-secondary btn-sm comparison-close hidden"><i class="fas fa-times"></i> Exit Comparison</button>
+            </div>
+            <div class="vendor-selectors hidden" id="vendorSelectors">
+              <div class="combo-box" id="vendorAComboBox">
+                  <input type="text" id="vendorAInput" placeholder="Select Vendor A" class="form-input combo-box-input" autocomplete="off">
+                  <i class="fas fa-chevron-down combo-box-arrow"></i>
+                  <div class="combo-box-options" id="vendorAOptions"></div>
+              </div>
+              <div class="combo-box" id="vendorBComboBox">
+                  <input type="text" id="vendorBInput" placeholder="Select Vendor B" class="form-input combo-box-input" autocomplete="off">
+                  <i class="fas fa-chevron-down combo-box-arrow"></i>
+                  <div class="combo-box-options" id="vendorBOptions"></div>
+              </div>
+              <button id="runComparison" class="btn btn-primary btn-sm">Compare</button>
+            </div>
+          </div>
           <div class="advanced-filters" id="advancedFilters">
             <div class="filters-grid">
-              <div class="form-group">
-                <label class="form-label">Start Date</label>
-                <input type="date" id="startDate" class="form-input">
-              </div>
-              <div class="form-group">
-                <label class="form-label">End Date</label>
-                <input type="date" id="endDate" class="form-input">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Office</label>
-                <select id="officeFilter" class="form-select">
-                  <option value="">Any Office</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Value Range</label>
-                <select id="valueFilter" class="form-select">
-                  <option value="">Any Value</option>
-                  <option value="0-100000">Under $100K</option>
-                  <option value="100000-500000">$100K - $500K</option>
-                  <option value="500000-1000000">$500K - $1M</option>
-                  <option value="1000000-5000000">$1M - $5M</option>
-                  <option value="5000000-10000000">$5M - $10M</option>
-                  <option value="10000000-999999999999">Over $10M</option>
-                </select>
-              </div>
+              <div class="form-group"><label class="form-label">Start Date</label><input type="date" id="startDate" class="form-input"></div>
+              <div class="form-group"><label class="form-label">End Date</label><input type="date" id="endDate" class="form-input"></div>
+              <div class="form-group"><label class="form-label">Office</label><select id="officeFilter" class="form-select"><option value="">Any Office</option></select></div>
+              <div class="form-group"><label class="form-label">Value Range</label><select id="valueFilter" class="form-select"><option value="">Any Value</option><option value="0-100000">Under $100K</option><option value="100000-500000">$100K - $500K</option><option value="500000-1000000">$500K - $1M</option><option value="1000000-5000000">$1M - $5M</option><option value="5000000-10000000">$5M - $10M</option><option value="10000000-999999999999">Over $10M</option></select></div>
             </div>
           </div>
         </div>
       </div>
     </header>
 
-    <div id="loadingState" class="loading-state hidden">
-      <div class="loading-spinner"></div>
-      <p>Processing contract data...</p>
-    </div>
-
-    <div id="errorState" class="error-state hidden">
-      <h2>Error Loading Data</h2>
-      <p id="errorMessage"></p>
-      <div id="parseWarnings" class="hidden" style="margin-top: var(--space); padding: var(--space); background: #fff3cd; color: #856404; border-radius: var(--radius);"></div>
-    </div>
-
+    <div id="loadingState" class="loading-state hidden"><div class="loading-spinner"></div><p>Processing contract data...</p></div>
+    <div id="errorState" class="error-state hidden"><h2>Error Loading Data</h2><p id="errorMessage"></p><div id="parseWarnings" class="hidden" style="margin-top: var(--space); padding: var(--space); background: #fff3cd; color: #856404; border-radius: var(--radius);"></div></div>
+    
     <div id="emptyState" class="empty-state">
-  <div class="empty-state-content">
-    <h2 class="empty-state-title">Historical Data is Your Secret Sales Weapon</h2>
-    <p class="empty-state-intro">
-      Looking at old contract awards isn't just about what you missed—it's about seeing the future. By analyzing the government's past buying habits, you can stop guessing and start making strategic decisions. It's like having the competition's playbook before the game starts.
-    </p>
-    <div class="how-to-guide">
-      <h3>How To Use This Tool</h3>
-      <ol>
-        <li>
-          <strong>1. Find Contract Data</strong>
-          <p>Go to FPDS.gov, perform a search, and export the results as a CSV file.</p>
-        </li>
-        <li>
-          <strong>2. Upload & Analyze</strong>
-          <p>Upload the CSV to visualize spending, identify vendors, and find opportunities.</p>
-        </li>
-        <li>
-          <strong>3. Filter & Explore</strong>
-          <p>Use the interactive filters and click on charts to narrow results and gain insights.</p>
-        </li>
-      </ol>
+      <div class="empty-state-content">
+        <h2 class="empty-state-title">Historical Data is Your Secret Sales Weapon</h2>
+        <p class="empty-state-intro">Looking at old contract awards isn't just about what you missed—it's about seeing the future. By analyzing the government's past buying habits, you can stop guessing and start making strategic decisions. It's like having the competition's playbook before the game starts.</p>
+        <div class="how-to-guide">
+          <h3>How To Use This Tool</h3>
+          <ol>
+            <li><strong>Find Contract Data</strong><p>Go to FPDS.gov, perform a search, and export the results as a CSV file.</p></li>
+            <li><strong>Upload & Analyze</strong><p>Upload the CSV to visualize spending, identify vendors, and find opportunities.</p></li>
+            <li><strong>Filter & Explore</strong><p>Use the interactive filters and click on charts to narrow results and gain insights.</p></li>
+          </ol>
+        </div>
+        <p class="empty-state-prompt">Use the buttons in the header to load example data or upload your own CSV to begin.</p>
+      </div>
     </div>
-    <p class="empty-state-prompt">
-      Use the buttons in the header to load example data or upload your own CSV to begin.
-    </p>
-  </div>
-</div>
 
     <main class="dashboard hidden" id="dashboard">
       <section>
         <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-label">Total Value</div>
-            <div class="stat-value" id="totalValue">$0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Contracts</div>
-            <div class="stat-value" id="totalContracts">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Companies</div>
-            <div class="stat-value" id="totalCompanies">0</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Market Leader</div>
-            <div class="stat-company" id="topCompany">-</div>
-          </div>
+          <div class="stat-card" id="statCard1"><div class="stat-label">Total Value</div><div class="stat-value" id="totalValue">$0</div></div>
+          <div class="stat-card" id="statCard2"><div class="stat-label">Contracts</div><div class="stat-value" id="totalContracts">0</div></div>
+          <div class="stat-card" id="statCard3"><div class="stat-label">Companies</div><div class="stat-value" id="totalCompanies">0</div></div>
+          <div class="stat-card" id="statCard4"><div class="stat-label">Market Leader</div><div class="stat-company" id="topCompany">-</div></div>
         </div>
       </section>
-
       <section class="chart-section">
         <div class="chart-header">
          <div>
-  <h2 class="section-title">Award Flow & NAICS Distribution</h2>
-  <div id="filterDisplay" class="active-filters-display"></div>
-</div>
-          <div class="chart-controls">
+          <h2 class="section-title" id="primaryChartTitle">Award Flow & NAICS Distribution</h2>
+          <div id="filterDisplay" class="active-filters-display"></div>
+        </div>
+          <div class="chart-controls" id="sankeyControls">
             <button id="sankeyLimit10" class="btn btn-sm btn-primary">Top 10</button>
             <button id="sankeyLimit25" class="btn btn-sm btn-secondary">Top 25</button>
             <button id="sankeyLimitAll" class="btn btn-sm btn-secondary">All</button>
@@ -846,87 +394,26 @@ body {
         </div>
         <div class="primary-charts">
           <div id="sankeyChart" class="sankey-container"></div>
-         <div class="chart-container industry-chart-container">
-  <canvas id="industryChart"></canvas>
-</div>
+          <div class="chart-container industry-chart-container"><canvas id="industryChart"></canvas></div>
         </div>
       </section>
-      
       <section class="chart-section">
         <h2 class="section-title" style="margin-bottom: var(--space);">Seasonal Buying Pattern</h2>
-        <div class="chart-container" style="height: 200px; max-height: 200px; padding-bottom: 5px;">
-          <canvas id="timelineChart"></canvas>
-        </div>
+        <div class="chart-container" style="height: 200px; max-height: 200px; padding-bottom: 5px;"><canvas id="timelineChart"></canvas></div>
       </section>
-      
       <section class="table-section">
-        <div class="tabs">
-          <button class="tab-btn active" data-tab="recent">Recent Awards</button>
-          <button class="tab-btn" data-tab="largest">Largest Awards</button>
-          <button class="tab-btn" data-tab="offices">Top Offices</button>
-        </div>
-        
-        <div class="tab-content active" id="recentTab">
-          <table class="data-table" id="recentTable">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Contract ID</th>
-                <th>Agency</th>
-                <th>Office</th>
-                <th>Vendor</th>
-                <th>Description</th>
-                <th>Value</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        
-        <div class="tab-content" id="largestTab">
-          <table class="data-table" id="largestTable">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Contract ID</th>
-                <th>Agency</th>
-                <th>Office</th>
-                <th>Vendor</th>
-                <th>Description</th>
-                <th>Value</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        
-        <div class="tab-content" id="officesTab">
-          <table class="data-table" id="officesTable">
-            <thead>
-              <tr>
-                <th>Agency</th>
-                <th>Office</th>
-                <th>Contracts</th>
-                <th>Total Value</th>
-                <th>Top NAICS</th>
-                <th>Top Vendor</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
+        <div class="tabs"><button class="tab-btn active" data-tab="recent">Recent Awards</button><button class="tab-btn" data-tab="largest">Largest Awards</button><button class="tab-btn" data-tab="offices">Top Offices</button></div>
+        <div class="tab-content active" id="recentTab"><table class="data-table" id="recentTable"><thead><tr><th>Date</th><th>Contract ID</th><th>Agency</th><th>Office</th><th>Vendor</th><th>Description</th><th>Value</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+        <div class="tab-content" id="largestTab"><table class="data-table" id="largestTable"><thead><tr><th>Date</th><th>Contract ID</th><th>Agency</th><th>Office</th><th>Vendor</th><th>Description</th><th>Value</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
+        <div class="tab-content" id="officesTab"><table class="data-table" id="officesTable"><thead><tr><th>Agency</th><th>Office</th><th>Contracts</th><th>Total Value</th><th>Top NAICS</th><th>Top Vendor</th></tr></thead><tbody></tbody></table></div>
       </section>
-</main>
+    </main>
+
 <footer class="app-footer-enhanced">
   <div class="footer-content">
-    
-    <!-- Main Explainer Section -->
     <section class="footer-section explainer-section">
       <h3>Turn Contract History Into Sales Intelligence</h3>
       <p>Upload FPDS contract data to see who's buying what, when they buy it, and who's winning. Perfect for competitive intelligence, partner identification, and timing your sales cycles.</p>
-      
       <div class="quick-steps">
         <div class="step-row">
           <span class="step-number">1</span>
@@ -948,11 +435,7 @@ body {
         </div>
       </div>
     </section>
-
-    <!-- Three Column Layout for expanded content -->
     <div class="footer-grid-expanded">
-      
-      <!-- Connect Section -->
       <div class="footer-section">
         <h3>Let's Connect</h3>
         <div class="connect-card-compact">
@@ -960,68 +443,37 @@ body {
             <img src="oldmark.jpg" alt="Mark's profile picture">
           </div>
           <div class="connect-info">
-            <h4>Hi, I’m Mark</h4>
-<p>I spent my sales career at AWS, F5, and Red Hat, and before that, I was a DISA COTR. I know one truth most people overlook: historical data is a secret sales weapon. Everyone talks about chasing net new, but the pros know the past shows you where the future is headed.</p>
-<p>That's why I built Hoowon.com. Hoowon helps you see which agencies are spending, who’s winning the contracts, and the exact times of year money moves. It’s insight you can take straight into customer conversations to make those cold calls a little warmer.</p>
-<p>Want to dig deeper? Let’s jump on a quick chat.</p>
-
+            <h4>Hi, I'm Mark</h4>
+            <p>I spent my sales career at AWS, F5, and Red Hat, and before that, I was a DISA COTR. I know one truth most people overlook: historical data is a secret sales weapon. Everyone talks about chasing net new, but the pros know the past shows you where the future is headed.</p>
+            <p>That's why I built Hoowon.com. Hoowon helps you see which agencies are spending, who's winning the contracts, and the exact times of year money moves. It's insight you can take straight into customer conversations to make those cold calls a little warmer.</p>
+            <p>Want to dig deeper? Let's jump on a quick chat.</p>
             <div class="connect-buttons">
               <a href="https://www.linkedin.com/in/markflournoy/" class="btn btn-secondary btn-sm" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> Connect</a>
               <a href="mailto:mark@subhoo.com" class="btn btn-secondary btn-sm"><i class="fas fa-envelope"></i> Email</a>
-			  <a href="https://calendly.com/markflournoy/intro" class="btn btn-secondary btn-sm"><i class="fas fa-calendar"></i> Chat</a>
+              <a href="https://calendly.com/markflournoy/intro" class="btn btn-secondary btn-sm"><i class="fas fa-calendar"></i> Chat</a>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Who This Is For Section -->
       <div class="footer-section">
         <h3>Who's This For?</h3>
         <div class="user-types">
-          <div class="user-type">
-            <strong>Sales Teams:</strong> Stop flying blind into meetings. See seasonal buying patterns and identify which offices have budget authority.
-          </div>
-          <div class="user-type">
-            <strong>Business Development:</strong> Scope out competition before wasting time on hopeless deals. See who's winning and what contract vehicles they use.
-          </div>
-          <div class="user-type">
-            <strong>Contracting Officers:</strong> New to an agency? See procurement history, successful vendors, and spending patterns instantly.
-          </div>
-          <div class="user-type">
-            <strong>Channel Partners:</strong> Find agencies where your OEM partners win direct deals - those are warm prospects for your services.
-          </div>
-          <div class="user-type">
-            <strong>Program Managers:</strong> Benchmark spending against similar programs and identify proven vendors in your space.
-          </div>
+          <div class="user-type"><strong>Sales Teams:</strong> Stop flying blind into meetings. See seasonal buying patterns and identify which offices have budget authority.</div>
+          <div class="user-type"><strong>Business Development:</strong> Scope out competition before wasting time on hopeless deals. See who's winning and what contract vehicles they use.</div>
+          <div class="user-type"><strong>Contracting Officers:</strong> New to an agency? See procurement history, successful vendors, and spending patterns instantly.</div>
+          <div class="user-type"><strong>Channel Partners:</strong> Find agencies where your OEM partners win direct deals - those are warm prospects for your services.</div>
+          <div class="user-type"><strong>Program Managers:</strong> Benchmark spending against similar programs and identify proven vendors in your space.</div>
         </div>
       </div>
-
-      <!-- Resources & Examples -->
       <div class="footer-section">
         <h3>FPDS Search Examples</h3>
         <div class="search-examples-compact">
-          <div class="search-example-compact">
-            <strong>IT Services:</strong>
-            <code>PRINCIPAL_NAICS_CODE:"541519"</code>
-          </div>
-          <div class="search-example-compact">
-            <strong>Software:</strong>
-            <code>PRINCIPAL_NAICS_CODE:"511210"</code>
-          </div>
-          <div class="search-example-compact">
-            <strong>Cloud/SaaS:</strong>
-            <code>PRINCIPAL_NAICS_CODE:"518210" OR "511210"</code>
-          </div>
-          <div class="search-example-compact">
-            <strong>Specific Agency:</strong>
-            <code>CONTRACTING_AGENCY_NAME:"DEPT OF VETERANS AFFAIRS"</code>
-          </div>
-          <div class="search-example-compact">
-            <strong>Dollar Range:</strong>
-            <code>OBLIGATED_AMOUNT:[1000000,10000000]</code>
-          </div>
+          <div class="search-example-compact"><strong>IT Services:</strong><code>PRINCIPAL_NAICS_CODE:"541519"</code></div>
+          <div class="search-example-compact"><strong>Software:</strong><code>PRINCIPAL_NAICS_CODE:"511210"</code></div>
+          <div class="search-example-compact"><strong>Cloud/SaaS:</strong><code>PRINCIPAL_NAICS_CODE:"518210" OR "511210"</code></div>
+          <div class="search-example-compact"><strong>Specific Agency:</strong><code>CONTRACTING_AGENCY_NAME:"DEPT OF VETERANS AFFAIRS"</code></div>
+          <div class="search-example-compact"><strong>Dollar Range:</strong><code>OBLIGATED_AMOUNT:[1000000,10000000]</code></div>
         </div>
-        
         <h4 style="margin-top: var(--space-lg); margin-bottom: var(--space);">Useful Links</h4>
         <div class="footer-links">
           <a href="https://www.fpds.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Federal Procurement Data System</a>
@@ -1029,29 +481,19 @@ body {
           <a href="https://www.sba.gov" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> Small Business Administration</a>
         </div>
       </div>
-      
     </div>
-    
     <div class="copyright">
       <p>&copy; 2025 Hoowon. All rights reserved. | Historical Contract Intelligence for Federal Sales Teams</p>
     </div>
-    
   </div>
 </footer>
-</div>	
-
+  </div>
 
   <div class="modal-backdrop" id="contractModal">
     <div class="modal">
-      <div class="modal-header">
-        <h3>Contract Details</h3>
-        <button class="btn btn-sm" id="closeModal">×
-        </button>
-      </div>
+      <div class="modal-header"><h3>Contract Details</h3><button class="btn btn-sm" id="closeModal">×</button></div>
       <div class="modal-body" id="modalContent"></div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="closeModalBtn">Close</button>
-      </div>
+      <div class="modal-footer"><button class="btn btn-secondary" id="closeModalBtn">Close</button></div>
     </div>
   </div>
 
@@ -1059,72 +501,69 @@ body {
 const themeManager = {
   themes: {
     light: {
-  cssVars: {
-    '--primary': '#1A593A',
-    '--primary-dark': '#004225',
-    '--primary-text': '#FFFFFF',
-    '--text-primary': '#004225',
-    '--text-secondary': '#5B7568',
-    '--text-tertiary': '#8DA396',
-    '--bg-primary': '#F9FAF8',
-    '--bg-secondary': '#F0F2EF',
-    '--bg-tertiary': '#E8EBE6',
-    '--border': '#E8EBE6',
-  },
-  chartPalette: [
-    '#004225', '#1A593A', '#3B7051', '#5B8A6F', 
-    '#8DA396', '#B9C9C0', '#DDE6E2', '#F5F8F2'
-  ]
-},
+      cssVars: {
+        '--primary': '#1A593A',
+        '--primary-dark': '#004225',
+        '--primary-text': '#FFFFFF',
+        '--text-primary': '#004225',
+        '--text-secondary': '#5B7568',
+        '--text-tertiary': '#8DA396',
+        '--bg-primary': '#F9FAF8',
+        '--bg-secondary': '#F0F2EF',
+        '--bg-tertiary': '#E8EBE6',
+        '--border': '#E8EBE6',
+      },
+      chartPalette: [
+        '#004225', '#1A593A', '#3B7051', '#5B8A6F', 
+        '#8DA396', '#B9C9C0', '#DDE6E2', '#F5F8F2'
+      ]
+    },
     dark: {
-  cssVars: {
-    '--primary': '#73C69D',
-    '--primary-dark': '#5FAA83',
-    '--primary-text': '#1B2B23',
-    '--text-primary': '#F5F8F2',
-    '--text-secondary': '#B9C9C0',
-    '--text-tertiary': '#8DA396',
-    '--bg-primary': '#1B2B23',
-    '--bg-secondary': '#2A3F33',
-    '--bg-tertiary': '#3A5143',
-    '--border': '#3A5143',
+      cssVars: {
+        '--primary': '#73C69D',
+        '--primary-dark': '#5FAA83',
+        '--primary-text': '#1B2B23',
+        '--text-primary': '#F5F8F2',
+        '--text-secondary': '#B9C9C0',
+        '--text-tertiary': '#8DA396',
+        '--bg-primary': '#1B2B23',
+        '--bg-secondary': '#2A3F33',
+        '--bg-tertiary': '#3A5143',
+        '--border': '#3A5143',
+      },
+      chartPalette: [
+        '#F5F8F2', '#DDE6E2', '#B9C9C0', '#8DA396', 
+        '#6DD499', '#5ABF83', '#47AA6F', '#3A8C5A'
+      ]
+    }
   },
-  chartPalette: [
-    '#F5F8F2', '#DDE6E2', '#B9C9C0', '#8DA396', 
-    '#6DD499', '#5ABF83', '#47AA6F', '#3A8C5A'
-  ]
-}
-},
-
   applyTheme(themeName) {
     const theme = this.themes[themeName];
     if (!theme) {
       console.warn(`Theme "${themeName}" not found.`);
       return;
     }
-
     for (const [key, value] of Object.entries(theme.cssVars)) {
       document.documentElement.style.setProperty(key, value);
     }
-    
     PALETTE = theme.chartPalette;
-
     document.querySelectorAll('.theme-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.theme === themeName);
     });
-
-    localStorage.setItem('selectedTheme', themeName);
-
+    // Note: localStorage removed for Claude.ai compatibility
     if (app.data.length > 0) {
-      charts.initAll();
-      dashboard.updateCharts();
+      if (comparisonManager.isActive) {
+          charts.initAll(true); 
+          comparisonManager.runComparison();
+      } else {
+          charts.initAll();
+          dashboard.updateCharts();
+      }
     }
   },
-
   init() {
-    const savedTheme = localStorage.getItem('selectedTheme');
-    const defaultTheme = 'dark';
-    this.applyTheme(savedTheme || defaultTheme);
+    // Default to dark theme since localStorage is not available
+    this.applyTheme('dark');
   }
 };
 
@@ -1157,25 +596,25 @@ const app = {
 };
 
 let PALETTE = [];
- 
-const chartConfig = { fillOpacity: 0.65, lineOpacity: 0.25 };
+const chartConfig = { fillOpacity: 0.65, lineOpacity: 0.25, comparisonColorB: '#4A90E2' };
 const elements = {};
 
 function cacheElements() {
   const elementIds = [
-    'csvFile', 'loadExampleBtn', 'searchInput', 'agencyFilter', 'vendorFilter',
+    'csvFile', 'searchInput', 'agencyFilter', 'vendorFilter',
     'naicsFilter', 'officeFilter', 'valueFilter', 'startDate', 'endDate',
     'resetBtn', 'moreFiltersBtn', 'advancedFilters', 'controlsSection',
     'loadingState', 'errorState', 'emptyState', 'dashboard', 'totalValue',
-    'totalContracts', 'totalCompanies', 'topCompany', 'sankeyChart',
+    'totalContracts', 'totalCompanies', 'topCompany', 'sankeyChart', 'primaryChartTitle', 'sankeyControls',
     'sankeyLimit10', 'sankeyLimit25', 'sankeyLimitAll', 'contractModal',
-    'closeModal', 'closeModalBtn', 'modalContent', 'parseWarnings'
+    'closeModal', 'closeModalBtn', 'modalContent', 'parseWarnings',
+    'comparisonControls', 'vendorSelectors', 'toggleComparison', 'closeComparison', 
+    'vendorAInput', 'vendorAOptions', 'vendorBInput', 'vendorBOptions', 'runComparison',
+    'statCard1', 'statCard2', 'statCard3', 'statCard4'
   ];
-
   elementIds.forEach(id => {
     elements[id] = document.getElementById(id);
   });
-
   elements.timelineChart = document.getElementById('timelineChart')?.getContext('2d');
   elements.industryChart = document.getElementById('industryChart')?.getContext('2d');
   elements.recentTable = document.querySelector('#recentTable tbody');
@@ -1185,28 +624,23 @@ function cacheElements() {
 
 const utils = {
   formatMoney: function(value) {
-   if (!value && value !== 0) return '$0';
-   const number = parseFloat(value);
-   if (isNaN(number)) return '$0';
-
-   const formatNumber = (num) => {
-     return num % 1 === 0 ? num.toFixed(0) : num.toFixed(1);
-   };
-
-   if (number >= 1e9) return '$' + formatNumber(number / 1e9) + 'B';
-   if (number >= 1e6) return '$' + formatNumber(number / 1e6) + 'M';
-   if (number >= 1e3) return '$' + formatNumber(number / 1e3) + 'K';
-   
-   return '$' + number.toFixed(0);
- },
-
+    if (!value && value !== 0) return '$0';
+    const number = parseFloat(value);
+    if (isNaN(number)) return '$0';
+    const formatNumber = (num) => {
+      return num % 1 === 0 ? num.toFixed(0) : num.toFixed(1);
+    };
+    if (Math.abs(number) >= 1e9) return '$' + formatNumber(number / 1e9) + 'B';
+    if (Math.abs(number) >= 1e6) return '$' + formatNumber(number / 1e6) + 'M';
+    if (Math.abs(number) >= 1e3) return '$' + formatNumber(number / 1e3) + 'K';
+    return '$' + number.toLocaleString(undefined, { maximumFractionDigits: 0 });
+  },
   getOpacityHex: function(opacity) {
     if (opacity < 0) opacity = 0;
     if (opacity > 1) opacity = 1;
     const alpha = Math.round(opacity * 255);
     return (alpha < 16 ? '0' : '') + alpha.toString(16).toUpperCase();
   },
-
   formatDate: function(dateInput) { 
     if (!dateInput) return 'N/A';
     const date = this.parseDate(dateInput);
@@ -1217,30 +651,22 @@ const utils = {
       timeZone: 'UTC' 
     }) : 'N/A';
   },
-  
   parseMoney: function(value) {
     if (value === null || value === undefined || value === '') return 0;
     const cleanValue = String(value).replace(/[$,\s]/g, '');
     return this.safeParseFloat(cleanValue);
   },
-  
   safeParseFloat: function(value) {
     if (value === null || value === undefined || value === '') return 0;
     const parsed = parseFloat(value);
     return isNaN(parsed) ? 0 : parsed;
   },
-
   detectDataType: function(value, columnName) {
     if (!value || value === '') return { type: 'string', value: value };
-    
     const str = String(value).trim();
-    
-    // Money detection
     if (str.match(/^\$?[\d,]+\.?\d*$/)) {
       return { type: 'number', value: this.parseMoney(str) };
     }
-    
-    // Date detection for common formats
     if (str.match(/^\d{1,2}[-\/]\w{3}[-\/]\d{2,4}$/) || 
         str.match(/^\d{4}-\d{2}-\d{2}$/) ||
         str.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
@@ -1249,25 +675,18 @@ const utils = {
         return { type: 'date', value: parsedDate, originalValue: str };
       }
     }
-    
-    // Number detection
     if (str.match(/^[\d,]+\.?\d*$/) && !isNaN(parseFloat(str.replace(/,/g, '')))) {
       return { type: 'number', value: parseFloat(str.replace(/,/g, '')) };
     }
-    
-    // Boolean detection
     if (str.toLowerCase() === 'true' || str.toLowerCase() === 'false') {
       return { type: 'boolean', value: str.toLowerCase() === 'true' };
     }
-    
     return { type: 'string', value: str };
   },
-  
   parseCSV: function(text) {
     if (!text || typeof text !== 'string') {
       return { headers: [], data: [], errors: ['Invalid input: expected string'], warnings: [] };
     }
-
     const errors = [];
     const warnings = [];
     const lines = [];
@@ -1277,76 +696,63 @@ const utils = {
     let i = 0;
     let lineNumber = 1;
 
-    // More efficient character-by-character parsing
     while (i < text.length) {
       const char = text[i];
       const nextChar = i + 1 < text.length ? text[i + 1] : '';
-
+      
       if (inQuotes) {
         if (char === '"') {
           if (nextChar === '"') {
-            // Escaped quote: ""
             currentField.push('"');
             i += 2;
             continue;
           } else {
-            // End quote
             inQuotes = false;
             i++;
             continue;
           }
         } else {
-          // Regular character inside quotes (including line breaks)
           currentField.push(char);
           if (char === '\n') lineNumber++;
         }
       } else {
-        // Outside quotes
         if (char === '"') {
-          // Start quote (should only happen at field start)
           if (currentField.length > 0) {
             warnings.push(`Unexpected quote at line ${lineNumber}, position ${i}`);
           }
           inQuotes = true;
         } else if (char === ',') {
-          // Field separator
           currentLine.push(currentField.join('').trim());
           currentField = [];
         } else if (char === '\r' && nextChar === '\n') {
-          // Windows line ending
           currentLine.push(currentField.join('').trim());
           lines.push({ line: currentLine, lineNumber });
           currentLine = [];
           currentField = [];
           lineNumber++;
-          i++; // Skip the \n
+          i++;
         } else if (char === '\r' || char === '\n') {
-          // Unix/Mac line ending
           currentLine.push(currentField.join('').trim());
           lines.push({ line: currentLine, lineNumber });
           currentLine = [];
           currentField = [];
           lineNumber++;
         } else {
-          // Regular character
           currentField.push(char);
         }
       }
       i++;
     }
 
-    // Handle end of file
     if (inQuotes) {
       errors.push(`Unclosed quoted field at line ${lineNumber}`);
     }
-    
-    // Add final field and line if any content remains
+
     if (currentField.length > 0 || currentLine.length > 0) {
       currentLine.push(currentField.join('').trim());
       lines.push({ line: currentLine, lineNumber });
     }
 
-    // Filter empty lines
     const nonEmptyLines = lines.filter(lineObj => 
       lineObj.line.length > 0 && lineObj.line.some(field => field.length > 0)
     );
@@ -1357,8 +763,7 @@ const utils = {
 
     const headers = nonEmptyLines[0].line;
     const data = [];
-
-    // Validate and clean headers
+    
     const cleanHeaders = headers.map(header => {
       const cleaned = header.trim();
       if (!cleaned) {
@@ -1369,15 +774,13 @@ const utils = {
     });
 
     const headerCount = cleanHeaders.length;
-    
-    // Process data rows with validation and type detection
+
     for (let i = 1; i < nonEmptyLines.length; i++) {
       const lineObj = nonEmptyLines[i];
       const values = lineObj.line;
-      
+
       if (values.length !== headerCount) {
         warnings.push(`Row ${lineObj.lineNumber}: Expected ${headerCount} fields, got ${values.length}`);
-        // Pad or truncate to match header count
         while (values.length < headerCount) values.push('');
         values.length = headerCount;
       }
@@ -1386,8 +789,6 @@ const utils = {
       for (let j = 0; j < headerCount; j++) {
         const rawValue = values[j] || '';
         const typedValue = this.detectDataType(rawValue, cleanHeaders[j]);
-        
-        // Store both original and typed values
         row[cleanHeaders[j]] = rawValue;
         if (typedValue.type !== 'string') {
           row[`${cleanHeaders[j]}_typed`] = typedValue.value;
@@ -1399,14 +800,11 @@ const utils = {
 
     return { headers: cleanHeaders, data, errors, warnings };
   },
-  
   parseDate: function(dateString) {
     if (!dateString) return null;
     if (dateString instanceof Date && !isNaN(dateString)) return dateString;
-    
     const s = String(dateString).trim();
     
-    // Handle DD-MMM-YY format (e.g., "15-Jan-23")
     let parts = s.match(/^(\d{1,2})-(\w{3})-(\d{2,4})$/);
     if (parts) {
       const months = {
@@ -1431,17 +829,14 @@ const utils = {
       ));
       return utcDate;
     }
-    
     return null;
   },
-  
   truncateText: function(text, maxLength) {
     if (!text) return '';
     if (typeof text !== 'string') text = String(text);
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
   },
-  
   getEntityColor: function(entityName) {
     if (!entityName) return PALETTE[0];
     let hash = 0;
@@ -1451,7 +846,6 @@ const utils = {
     }
     return PALETTE[Math.abs(hash) % PALETTE.length];
   },
-  
   getInitials: function(name) {
     if (!name) return '?'; 
     const nameStr = String(name);
@@ -1460,7 +854,6 @@ const utils = {
       ? (words[0].charAt(0) + words[1].charAt(0)).toUpperCase() 
       : nameStr.charAt(0).toUpperCase();
   },
-
   parseValueRange: function(rangeStr) {
     if (!rangeStr || typeof rangeStr !== 'string') return null;
     const parts = rangeStr.split('-');
@@ -1469,7 +862,6 @@ const utils = {
     const max = this.safeParseFloat(parts[1]);
     return { min, max };
   },
-
   validateContract: function(contract) {
     return contract && 
            typeof contract === 'object' &&
@@ -1493,8 +885,6 @@ const stateManager = {
       if (message && document.getElementById('errorMessage')) {
         document.getElementById('errorMessage').textContent = message;
       }
-      
-      // Show parse warnings if any
       if (app.parseWarnings.length > 0 && elements.parseWarnings) {
         elements.parseWarnings.innerHTML = `
           <h4>Parse Warnings:</h4>
@@ -1508,31 +898,25 @@ const stateManager = {
       elements.controlsSection.style.display = state === 'dashboard' ? 'block' : 'none';
     }
   },
-
   updateFilters: function(filterUpdates, skipSync = false) {
     if (app.isUpdating) return;
-    
     Object.assign(app.filters, filterUpdates);
-    
     if (!skipSync) {
       this.syncFiltersToUI();
     }
-    
     this.applyFilters();
   },
-
   syncFiltersToUI: function() {
     if (elements.searchInput) {
       elements.searchInput.value = app.filters.search || '';
     }
-
     if (elements.startDate) {
       elements.startDate.value = app.filters.startDate || '';
     }
-	if (elements.endDate) {
+    if (elements.endDate) {
       elements.endDate.value = app.filters.endDate || '';
     }
-
+    
     const selectFilters = ['agency', 'vendor', 'naics', 'office'];
     selectFilters.forEach(filter => {
       const element = elements[`${filter}Filter`];
@@ -1540,7 +924,7 @@ const stateManager = {
         element.value = app.filters[filter] || '';
       }
     });
-
+    
     if (elements.valueFilter) {
       if (app.filters.valueRange) {
         const range = app.filters.valueRange;
@@ -1556,10 +940,8 @@ const stateManager = {
       }
     }
   },
-
   applyFilters: function() {
     if (!app.data || app.data.length === 0) return;
-    
     app.isUpdating = true;
     
     let filtered = [...app.data];
@@ -1613,17 +995,17 @@ const stateManager = {
     }
     
     app.filteredData = filtered;
-    
     this.analyzeFilteredData();
     dashboard.updateAll();
     this.updateFilterDisplay();
     
+    if (comparisonManager.isActive) {
+        comparisonManager.runComparison();
+    }
     app.isUpdating = false;
   },
-
   analyzeFilteredData: function() {
     const data = app.filteredData;
-    
     app.agencies = {};
     app.offices = {};
     app.vendors = {};
@@ -1693,7 +1075,7 @@ const stateManager = {
         app.naicsCodes[contract.naics].count++;
         app.naicsCodes[contract.naics].value += value;
       }
-
+      
       if (contract.psc) {
         if (!app.pscCodes[contract.psc]) {
           app.pscCodes[contract.psc] = {
@@ -1708,8 +1090,10 @@ const stateManager = {
       }
     });
   },
-
   resetFilters: function() {
+    if (comparisonManager.isActive) {
+        comparisonManager.clearComparison();
+    }
     app.filters = {
       search: null,
       agency: null,
@@ -1720,7 +1104,6 @@ const stateManager = {
       endDate: null,
       valueRange: null
     };
-    
     app.selection = { type: null, value: null, container: null };
     app.filteredData = [...app.data];
     app.sankeyDisplayLimit = 10;
@@ -1736,7 +1119,6 @@ const stateManager = {
     this.updateFilterDisplay();
     this.syncFiltersToUI();
   },
-
   applySelectionFilter: function(type, value) {
     if (app.filters[type] === value) {
       const updates = { [type]: null };
@@ -1746,9 +1128,8 @@ const stateManager = {
       this.updateFilters(updates);
       return;
     }
-
-    const updates = { [type]: value };
     
+    const updates = { [type]: value };
     if (type === 'office') {
       const parentAgency = app.offices[value]?.agency;
       if (parentAgency && parentAgency !== app.filters.agency) {
@@ -1762,17 +1143,15 @@ const stateManager = {
         }
       }
     }
-    
     this.updateFilters(updates);
   },
-
   updateFilterDisplay() {
     const displayElement = document.getElementById('filterDisplay');
     if (!displayElement) return;
-
+    
     const parts = [];
     const filters = app.filters;
-
+    
     if (filters.agency) {
       parts.push(`<strong>${utils.truncateText(filters.agency, 40)}</strong>`);
     }
@@ -1785,154 +1164,157 @@ const stateManager = {
     if (filters.naics) {
       parts.push(`<strong>${filters.naics}</strong>`);
     }
-
+    
     displayElement.innerHTML = parts.length > 0 
-      ? parts.join(' &nbsp;|&nbsp; ')
+      ? `Filtering by: ${parts.join(' &nbsp;|&nbsp; ')}`
       : '<em></em>';
   }
 };
 
 const dataProcessor = {
   async loadExampleData(dataset = 'it-software') {
-  try {
-    stateManager.showState('loadingState');
-    
-    const datasetMap = {
-      '541519_Other_Computer': '541519_Other_Computer.csv',
-      '511210_Software_Publishers': '511210_Software_Publishers.csv', 
-      '334111_Electronic_Computer': '334111_Electronic_Computer.csv',
-	  '541512_Computer_Systems_Design': '541512_Computer_Systems_Design.csv',
-      'dhs_CY24_25': 'dhs_CY24_25.csv',
-      '332813_Electroplating': '332813_Electroplating.csv'
-    };
-    
-    const filename = datasetMap[dataset] || datasetMap['it-software'];
-    const response = await fetch(`${app.s3BaseUrl}${filename}`);
-    
-    if (!response.ok) {
-      throw new Error(`Failed to load ${dataset} data (Status: ${response.status})`);
-    }
-    const csvText = await response.text();
-    this.processData(csvText);
-  } catch (error) {
-    console.error('Load error:', error);
-    stateManager.showState('errorState', error.message);
-  }
-},
-
-  processData(csvText) {
-  try {
-    stateManager.showState('loadingState');
-    
-    let csvData;
     try {
-      csvData = utils.parseCSV(csvText);
-    } catch (parseError) {
-      throw new Error(`CSV parsing failed: ${parseError.message}`);
-    }
-    
-    // Store warnings globally for display
-    app.parseWarnings = csvData.warnings || [];
-    
-    // Show critical errors
-    if (csvData.errors && csvData.errors.length > 0) {
-      throw new Error(`CSV errors: ${csvData.errors.join(', ')}`);
-    }
-    
-    const requiredFields = [
-      'Contract ID', 'Date Signed', 'Contracting Agency', 
-      'Legal Business Name', 'Action Obligation ($)'
-    ];
-    
-    for (const field of requiredFields) {
-      if (!csvData.headers.includes(field)) {
-        throw new Error(
-          `Required field "${field}" not found in CSV. Available fields: ${csvData.headers.join(', ')}`
-        );
+      stateManager.showState('loadingState');
+      const datasetMap = {
+        '541519_Other_Computer': '541519_Other_Computer.csv',
+        '511210_Software_Publishers': '511210_Software_Publishers.csv', 
+        '334111_Electronic_Computer': '334111_Electronic_Computer.csv',
+        '541512_Computer_Systems_Design': '541512_Computer_Systems_Design.csv',
+        'dhs_CY24_25': 'dhs_CY24_25.csv',
+        '332813_Electroplating': '332813_Electroplating.csv'
+      };
+      
+      const filename = datasetMap[dataset] || datasetMap['it-software'];
+      const response = await fetch(`${app.s3BaseUrl}${filename}`);
+      
+      if (!response.ok) {
+        throw new Error(`Failed to load ${dataset} data (Status: ${response.status})`);
       }
+      
+      const csvText = await response.text();
+      this.processData(csvText);
+    } catch (error) {
+      console.error('Load error:', error);
+      stateManager.showState('errorState', error.message);
     }
-    
-    app.data = csvData.data
-      .map((row, index) => {
-        try {
-          const parsedDate = utils.parseDate(row['Date Signed']);
-          const value = utils.parseMoney(row['Action Obligation ($)']);
-          
-          return {
-            id: String(row['Contract ID'] || ''),
-            reference: String(row['Reference IDV'] || ''),
-            modification: String(row['Modification Number'] || ''),
-            date: String(row['Date Signed'] || ''),
-            parsedDate: parsedDate,
-            type: String(row['Award/IDV Type'] || ''),
-            agency: String(row['Contracting Agency'] || ''),
-            office: String(row['Contracting Office Name'] || ''),
-            vendor: String(row['Legal Business Name'] || ''),
-            value: value,
-            naics: String(row['NAICS'] || ''),
-            naicsDescription: String(row['NAICS Description'] || ''),
-            psc: String(row['PSC'] || ''),
-            pscDescription: String(row['PSC Description'] || ''),
-            description: String(row['PSC Description'] || row['Description of Requirement'] || '')
-          };
-        } catch (rowError) {
-          console.warn(`Error processing row ${index + 1}:`, rowError);
-          return null;
+  },
+  
+  processData(csvText) {
+    try {
+      stateManager.showState('loadingState');
+      
+      if(comparisonManager.isActive) {
+        comparisonManager.clearComparison();
+      }
+      
+      let csvData;
+      try {
+        csvData = utils.parseCSV(csvText);
+      } catch (parseError) {
+        throw new Error(`CSV parsing failed: ${parseError.message}`);
+      }
+      
+      app.parseWarnings = csvData.warnings || [];
+      
+      if (csvData.errors && csvData.errors.length > 0) {
+        throw new Error(`CSV errors: ${csvData.errors.join(', ')}`);
+      }
+      
+      const requiredFields = [
+        'Contract ID', 'Date Signed', 'Contracting Agency', 
+        'Legal Business Name', 'Action Obligation ($)'
+      ];
+      
+      for (const field of requiredFields) {
+        if (!csvData.headers.includes(field)) {
+          throw new Error(
+            `Required field "${field}" not found in CSV. Available fields: ${csvData.headers.join(', ')}`
+          );
         }
-      })
-      .filter(row => row !== null && utils.validateContract(row));
-    
-    if (app.data.length === 0) {
-      throw new Error('No valid data rows could be processed');
+      }
+      
+      app.data = csvData.data
+        .map((row, index) => {
+          try {
+            const parsedDate = utils.parseDate(row['Date Signed']);
+            const value = utils.parseMoney(row['Action Obligation ($)']);
+            
+            return {
+              id: String(row['Contract ID'] || ''),
+              reference: String(row['Reference IDV'] || ''),
+              modification: String(row['Modification Number'] || ''),
+              date: String(row['Date Signed'] || ''),
+              parsedDate: parsedDate,
+              type: String(row['Award/IDV Type'] || ''),
+              agency: String(row['Contracting Agency'] || ''),
+              office: String(row['Contracting Office Name'] || ''),
+              vendor: String(row['Legal Business Name'] || ''),
+              value: value,
+              naics: String(row['NAICS'] || ''),
+              naicsDescription: String(row['NAICS Description'] || ''),
+              psc: String(row['PSC'] || ''),
+              pscDescription: String(row['PSC Description'] || ''),
+              description: String(row['PSC Description'] || row['Description of Requirement'] || '')
+            };
+          } catch (rowError) {
+            console.warn(`Error processing row ${index + 1}:`, rowError);
+            return null;
+          }
+        })
+        .filter(row => row !== null && utils.validateContract(row));
+      
+      if (app.data.length === 0) {
+        throw new Error('No valid data rows could be processed');
+      }
+      
+      app.filteredData = [...app.data];
+      app.filters = {
+        search: null,
+        agency: null,
+        vendor: null,
+        naics: null,
+        office: null,
+        startDate: null,
+        endDate: null,
+        valueRange: null
+      };
+      
+      stateManager.analyzeFilteredData();
+      this.populateFilters();
+      
+      if (app.parseWarnings.length > 0) {
+        console.warn('CSV Parse Warnings:', app.parseWarnings);
+      }
+      
+      stateManager.showState('dashboard');
+      sankeyChart.updateButtons('sankeyLimit10');
+      charts.initAll();
+      dashboard.updateAll();
+      stateManager.updateFilterDisplay();
+      stateManager.syncFiltersToUI();
+      
+      if (elements.comparisonControls) {
+        elements.comparisonControls.style.display = 'block';
+        comparisonManager.cacheAllVendors();
+      }
+    } catch (error) {
+      console.error('Processing error:', error);
+      stateManager.showState('errorState', error.message);
     }
-    
-    app.filteredData = [...app.data];
-    
-    // Reset filters when loading new data
-    app.filters = {
-      search: null,
-      agency: null,
-      vendor: null,
-      naics: null,
-      office: null,
-      startDate: null,
-      endDate: null,
-      valueRange: null
-    };
-    
-    stateManager.analyzeFilteredData();
-    this.populateFilters();
-    
-    // Show warnings if any, but still proceed to dashboard
-    if (app.parseWarnings.length > 0) {
-      console.warn('CSV Parse Warnings:', app.parseWarnings);
-    }
-    
-    stateManager.showState('dashboard');
-    sankeyChart.updateButtons('sankeyLimit10');
-    charts.initAll();
-    dashboard.updateAll();
-    stateManager.updateFilterDisplay();
-    stateManager.syncFiltersToUI();
-    
-  } catch (error) {
-    console.error('Processing error:', error);
-    stateManager.showState('errorState', error.message);
-  }
-},
-populateFilters() {
+  },
+  
+  populateFilters() {
     this.populateSelect('agencyFilter', app.agencies);
     this.populateSelect('vendorFilter', app.vendors);
     this.populateSelect('naicsFilter', app.naicsCodes);
     this.populateSelect('officeFilter', app.offices);
   },
-
+  
   populateSelect(selectId, data) {
     const select = elements[selectId];
     if (!select) return;
     
     const currentVal = select.value;
-    
     while (select.options.length > 1) {
       select.remove(1);
     }
@@ -1957,18 +1339,18 @@ const charts = {
   centerTextPlugin: {
     id: 'centerText',
     afterDraw: function(chart) {
-      if (chart.config.type !== 'doughnut' || app.totalFilteredValue === undefined) {
-        return;
-      }
+      if (chart.config.type !== 'doughnut') return;
       
       const ctx = chart.ctx;
       const chartArea = chart.chartArea;
+      
       if (chartArea.width <= 0 || chartArea.height <= 0) return;
-
+      
       const centerX = (chartArea.left + chartArea.right) / 2;
       const centerY = (chartArea.top + chartArea.bottom) / 2;
       
-      const valueText = utils.formatMoney(app.totalFilteredValue);
+      const totalValue = app.totalFilteredValue;
+      const valueText = utils.formatMoney(totalValue);
       const labelText = 'Total Value';
       
       const innerRadius = chart.getDatasetMeta(0).data[0]?.innerRadius || chart.width / 4;
@@ -1976,7 +1358,6 @@ const charts = {
       const labelFontSize = Math.min((innerRadius * 2) / 10, 14);
       
       ctx.save();
-      
       ctx.font = `600 ${valueFontSize}px ${Chart.defaults.font.family}`;
       ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-primary');
       ctx.textAlign = 'center';
@@ -1990,22 +1371,27 @@ const charts = {
       ctx.restore();
     }
   },
-
-  initAll() {
+  
+  initAll(skipUpdate = false) {
     Object.values(app.charts).forEach(chart => {
       if (chart && typeof chart.destroy === 'function') chart.destroy();
     });
     app.charts = {};
+    
     if (window.Chart) {
       Chart.defaults.font.family = "'Atkinson Hyperlegible Next', sans-serif";
       Chart.defaults.font.size = 12;
       Chart.defaults.color = getComputedStyle(document.documentElement).getPropertyValue('--text-primary');
     }
+    
     this.initTimelineChart();
     this.initIndustryChart();
-    sankeyChart.init();
+    
+    if(!skipUpdate) {
+        sankeyChart.init();
+    }
   },
-
+  
   initTimelineChart() {
     if (!elements.timelineChart) return;
     
@@ -2019,7 +1405,7 @@ const charts = {
         datasets: [{ 
           data: [], 
           borderColor: `transparent`, 
-		      borderWidth: 0.5,    
+          borderWidth: 0.5,    
           backgroundColor: `${timelineColor}${fillOpacityHex}`,
           tension: 0.4, 
           fill: true,
@@ -2049,9 +1435,13 @@ const charts = {
       }
     });
   },
-
+  
   initIndustryChart() {
     if (!elements.industryChart) return;
+    
+    if (app.charts.industry && typeof app.charts.industry.destroy === 'function') {
+        app.charts.industry.destroy();
+    }
     
     app.charts.industry = new Chart(elements.industryChart, {
       type: 'doughnut',
@@ -2095,10 +1485,10 @@ const charts = {
       plugins: [this.centerTextPlugin]
     });
   },
-
+  
   updateTimeline() {
     const chart = app.charts.timeline;
-    if (!chart || !app.filteredData) return;
+    if (!chart || !app.filteredData || comparisonManager.isActive) return;
     
     const monthlyData = {};
     app.filteredData.forEach(contract => {
@@ -2109,6 +1499,7 @@ const charts = {
     });
     
     const sortedMonths = Object.keys(monthlyData).sort();
+    
     chart.data.labels = sortedMonths.map(month => {
       const [year, monthNum] = month.split('-');
       return new Date(Date.UTC(parseInt(year), parseInt(monthNum) - 1))
@@ -2118,13 +1509,14 @@ const charts = {
           timeZone: 'UTC'
         });
     });
+    
     chart.data.datasets[0].data = sortedMonths.map(month => monthlyData[month] || 0);
     chart.update('none');
   },
-
+  
   updateIndustry() {
     const chart = app.charts.industry;
-    if (!chart || !app.naicsCodes) return;
+    if (!chart || !app.naicsCodes || comparisonManager.isActive || chart.config.type !== 'doughnut') return;
     
     const naicsArray = Object.values(app.naicsCodes)
       .filter(naics => naics && naics.value > 0)
@@ -2160,13 +1552,17 @@ const sankeyChart = {
   init() {
     this.update();
   },
-
+  
   update() {
-    if (!elements.sankeyChart || !window.d3) return;
+    if (!elements.sankeyChart || !window.d3 || comparisonManager.isActive) {
+      if (comparisonManager.isActive) return;
+      elements.sankeyChart.innerHTML = '';
+      return;
+    };
     
     elements.sankeyChart.innerHTML = '';
-    const data = this.generateData();
     
+    const data = this.generateData();
     if (!data.nodes.length || !data.links.length) {
       elements.sankeyChart.innerHTML = `
         <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary);">
@@ -2182,17 +1578,17 @@ const sankeyChart = {
     const svg = d3.select(elements.sankeyChart).append('svg')
       .attr('width', width)
       .attr('height', height);
-        
+    
     const sankey = d3.sankey()
       .nodeWidth(15)
       .nodePadding(10)
       .extent([[1, 5], [width - 1, height - 5]]);
-        
+    
     const {nodes, links} = sankey({
       nodes: data.nodes.map(d => Object.assign({}, d)),
       links: data.links.map(d => Object.assign({}, d))
     });
-
+    
     app.sankeyTotal = app.filteredData
       .filter(c => c && c.vendor && data.vendorNames.has(c.vendor))
       .reduce((sum, c) => sum + utils.safeParseFloat(c.value), 0);
@@ -2201,19 +1597,21 @@ const sankeyChart = {
     this.renderNodes(svg, nodes);
     this.renderLabels(svg, nodes, width);
   },
-
+  
   renderLinks(svg, links) {
     const defs = svg.append('defs');
+    
     links.forEach((link, i) => {
       const gradient = defs.append('linearGradient')
         .attr('id', `gradient-${i}`)
         .attr('gradientUnits', 'userSpaceOnUse')
         .attr('x1', link.source.x1)
         .attr('x2', link.target.x0);
-
+      
       gradient.append('stop')
         .attr('offset', '0%')
         .attr('stop-color', utils.getEntityColor(link.source.name));
+      
       gradient.append('stop')
         .attr('offset', '100%')
         .attr('stop-color', utils.getEntityColor(link.target.name));
@@ -2233,7 +1631,7 @@ const sankeyChart = {
       .append('title')
       .text(d => `${d.source.name} → ${d.target.name}\n${utils.formatMoney(d.value)}`);
   },
-
+  
   renderNodes(svg, nodes) {
     svg.append('g')
       .selectAll('rect')
@@ -2252,7 +1650,7 @@ const sankeyChart = {
         if (app.agencies[d.name]) filterType = 'agency';
         else if (app.offices[d.name]) filterType = 'office';
         else if (app.vendors[d.name]) filterType = 'vendor';
-
+        
         if (filterType) {
           stateManager.applySelectionFilter(filterType, d.name);
         }
@@ -2260,174 +1658,173 @@ const sankeyChart = {
       .append('title')
       .text(d => `${d.name}\n${utils.formatMoney(d.value)}`);
   },
-
+  
   renderLabels(svg, nodes, width) {
-  const isMobile = window.innerWidth <= 768;
-  const fontSize = isMobile ? '10px' : '12px';
-  const maxChars = isMobile ? 15 : 25;
+    const isMobile = window.innerWidth <= 768;
+    const fontSize = isMobile ? '10px' : '12px';
+    const maxChars = isMobile ? 15 : 25;
+    
+    svg.append('g')
+      .selectAll('text')
+      .data(nodes)
+      .join('text')
+      .attr('x', d => {
+        if (isMobile) {
+          return d.x0 < width / 2 ? d.x1 + 4 : d.x0 - 4;
+        }
+        return d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6;
+      })
+      .attr('y', d => (d.y1 + d.y0) / 2)
+      .attr('dy', '0.35em')
+      .attr('text-anchor', d => d.x0 < width / 2 ? 'start' : 'end')
+      .attr('font-size', fontSize)
+      .attr('fill', 'var(--text-primary)')
+      .text(d => utils.truncateText(d.name, maxChars));
+  },
   
-  svg.append('g')
-    .selectAll('text')
-    .data(nodes)
-    .join('text')
-    .attr('x', d => {
-      if (isMobile) {
-        // Center alignment for mobile
-        return d.x0 < width / 2 ? d.x1 + 4 : d.x0 - 4;
-      }
-      return d.x0 < width / 2 ? d.x1 + 6 : d.x0 - 6;
-    })
-    .attr('y', d => (d.y1 + d.y0) / 2)
-    .attr('dy', '0.35em')
-    .attr('text-anchor', d => d.x0 < width / 2 ? 'start' : 'end')
-    .attr('font-size', fontSize)
-    .attr('fill', 'var(--text-primary)')
-    .text(d => utils.truncateText(d.name, maxChars));
-},
-
   generateData() {
-  if (!app.filteredData || app.filteredData.length === 0) {
-    return { nodes: [], links: [], vendorNames: new Set() };
-  }
-
-  // Mobile detection and responsive limits
-  const isMobile = window.innerWidth <= 768;
-  const isTablet = window.innerWidth <= 1024;
-  
-  // Adjust limits based on screen size
-  let vendorLimit = app.sankeyDisplayLimit;
-  let officeLimit = 25;
-  let agencyLimit = 15;
-  
-  if (isMobile) {
-    vendorLimit = Math.min(app.sankeyDisplayLimit > 0 ? app.sankeyDisplayLimit : 10, 5);
-    officeLimit = 8;
-    agencyLimit = 5;
-  } else if (isTablet) {
-    vendorLimit = Math.min(app.sankeyDisplayLimit > 0 ? app.sankeyDisplayLimit : 10, 8);
-    officeLimit = 15;
-    agencyLimit = 10;
-  }
-
-  const vendorTotals = {};
-  app.filteredData.forEach(contract => {
-    if (contract && contract.vendor && utils.safeParseFloat(contract.value) > 0) {
-      const vendor = contract.vendor;
-      const value = utils.safeParseFloat(contract.value);
-      vendorTotals[vendor] = (vendorTotals[vendor] || 0) + value;
+    if (!app.filteredData || app.filteredData.length === 0) {
+      return { nodes: [], links: [], vendorNames: new Set() };
     }
-  });
-  
-  if (Object.keys(vendorTotals).length === 0) {
-    return { nodes: [], links: [], vendorNames: new Set() };
-  }
-
-  const sortedVendors = Object.keys(vendorTotals)
-    .sort((a, b) => vendorTotals[b] - vendorTotals[a]);
-  const actualVendorLimit = vendorLimit > 0 ? Math.min(vendorLimit, sortedVendors.length) : sortedVendors.length;
-  const topVendorNames = new Set(sortedVendors.slice(0, actualVendorLimit));
-
-  const topVendorContracts = app.filteredData.filter(c => 
-    c && c.vendor && topVendorNames.has(c.vendor)
-  );
-  
-  const relevantOfficeTotals = {};
-  const relevantAgencyTotals = {};
-  
-  topVendorContracts.forEach(c => {
-    const value = utils.safeParseFloat(c.value);
-    if (c.office && value > 0) {
-      relevantOfficeTotals[c.office] = (relevantOfficeTotals[c.office] || 0) + value;
-    }
-    if (c.agency && value > 0) {
-      relevantAgencyTotals[c.agency] = (relevantAgencyTotals[c.agency] || 0) + value;
-    }
-  });
-
-  const sortedRelevantOffices = Object.keys(relevantOfficeTotals)
-    .sort((a, b) => relevantOfficeTotals[b] - relevantOfficeTotals[a]);
-  const topOfficeNames = new Set(sortedRelevantOffices.slice(0, officeLimit));
-
-  const sortedRelevantAgencies = Object.keys(relevantAgencyTotals)
-    .sort((a, b) => relevantAgencyTotals[b] - relevantAgencyTotals[a]);
-  const topAgencyNames = new Set(sortedRelevantAgencies.slice(0, agencyLimit));
-
-  const agencyOfficeFlows = {};
-  const officeVendorFlows = {};
-  
-  topVendorContracts.forEach(contract => {
-    if (!contract.agency || !contract.office || !contract.vendor) return;
     
-    const value = utils.safeParseFloat(contract.value);
-    if (value <= 0) return;
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth <= 1024;
     
-    if (topAgencyNames.has(contract.agency) &&
-        topOfficeNames.has(contract.office) &&
-        topVendorNames.has(contract.vendor)) {
-      
-      const aoKey = `${contract.agency}|${contract.office}`;
-      agencyOfficeFlows[aoKey] = (agencyOfficeFlows[aoKey] || 0) + value;
-      
-      const ovKey = `${contract.office}|${contract.vendor}`;
-      officeVendorFlows[ovKey] = (officeVendorFlows[ovKey] || 0) + value;
+    let vendorLimit = app.sankeyDisplayLimit;
+    let officeLimit = 25;
+    let agencyLimit = 15;
+    
+    if (isMobile) {
+      vendorLimit = Math.min(app.sankeyDisplayLimit > 0 ? app.sankeyDisplayLimit : 10, 5);
+      officeLimit = 8;
+      agencyLimit = 5;
+    } else if (isTablet) {
+      vendorLimit = Math.min(app.sankeyDisplayLimit > 0 ? app.sankeyDisplayLimit : 10, 8);
+      officeLimit = 15;
+      agencyLimit = 10;
     }
-  });
-
-  const sortedAgencyOfficeFlows = Object.entries(agencyOfficeFlows)
-    .sort(([,a], [,b]) => b - a);
-  const sortedOfficeVendorFlows = Object.entries(officeVendorFlows)
-    .sort(([,a], [,b]) => b - a);
-
-  const allFlows = [
-    ...sortedAgencyOfficeFlows.map(([key, value]) => ({
-      source: key.split('|')[0],
-      target: key.split('|')[1],
-      value
-    })),
-    ...sortedOfficeVendorFlows.map(([key, value]) => ({
-      source: key.split('|')[0],
-      target: key.split('|')[1],
-      value
-    }))
-  ];
-
-  if (allFlows.length === 0) {
-    return { nodes: [], links: [], vendorNames: topVendorNames };
-  }
-
-  const nodeMap = new Map();
-  allFlows.forEach(flow => {
-    if (!nodeMap.has(flow.source)) {
-      nodeMap.set(flow.source, { name: flow.source });
+    
+    const vendorTotals = {};
+    app.filteredData.forEach(contract => {
+      if (contract && contract.vendor && utils.safeParseFloat(contract.value) > 0) {
+        const vendor = contract.vendor;
+        const value = utils.safeParseFloat(contract.value);
+        vendorTotals[vendor] = (vendorTotals[vendor] || 0) + value;
+      }
+    });
+    
+    if (Object.keys(vendorTotals).length === 0) {
+      return { nodes: [], links: [], vendorNames: new Set() };
     }
-    if (!nodeMap.has(flow.target)) {
-      nodeMap.set(flow.target, { name: flow.target });
-    }
-  });
-
-  const nodesArray = Array.from(nodeMap.values());
-  const nodeIndexMap = new Map(nodesArray.map((node, i) => [node.name, i]));
-  
-  const links = allFlows
-    .map(flow => ({
-      source: nodeIndexMap.get(flow.source),
-      target: nodeIndexMap.get(flow.target),
-      value: flow.value
-    }))
-    .filter(link => 
-      link.source !== undefined && 
-      link.target !== undefined && 
-      link.source !== link.target &&
-      link.value > 0
+    
+    const sortedVendors = Object.keys(vendorTotals)
+      .sort((a, b) => vendorTotals[b] - vendorTotals[a]);
+    
+    const actualVendorLimit = vendorLimit > 0 ? Math.min(vendorLimit, sortedVendors.length) : sortedVendors.length;
+    const topVendorNames = new Set(sortedVendors.slice(0, actualVendorLimit));
+    
+    const topVendorContracts = app.filteredData.filter(c => 
+      c && c.vendor && topVendorNames.has(c.vendor)
     );
     
-  return { 
-    nodes: nodesArray, 
-    links, 
-    vendorNames: topVendorNames 
-  };
-},
-
+    const relevantOfficeTotals = {};
+    const relevantAgencyTotals = {};
+    
+    topVendorContracts.forEach(c => {
+      const value = utils.safeParseFloat(c.value);
+      if (c.office && value > 0) {
+        relevantOfficeTotals[c.office] = (relevantOfficeTotals[c.office] || 0) + value;
+      }
+      if (c.agency && value > 0) {
+        relevantAgencyTotals[c.agency] = (relevantAgencyTotals[c.agency] || 0) + value;
+      }
+    });
+    
+    const sortedRelevantOffices = Object.keys(relevantOfficeTotals)
+      .sort((a, b) => relevantOfficeTotals[b] - relevantOfficeTotals[a]);
+    const topOfficeNames = new Set(sortedRelevantOffices.slice(0, officeLimit));
+    
+    const sortedRelevantAgencies = Object.keys(relevantAgencyTotals)
+      .sort((a, b) => relevantAgencyTotals[b] - relevantAgencyTotals[a]);
+    const topAgencyNames = new Set(sortedRelevantAgencies.slice(0, agencyLimit));
+    
+    const agencyOfficeFlows = {};
+    const officeVendorFlows = {};
+    
+    topVendorContracts.forEach(contract => {
+      if (!contract.agency || !contract.office || !contract.vendor) return;
+      
+      const value = utils.safeParseFloat(contract.value);
+      if (value <= 0) return;
+      
+      if (topAgencyNames.has(contract.agency) &&
+          topOfficeNames.has(contract.office) &&
+          topVendorNames.has(contract.vendor)) {
+        
+        const aoKey = `${contract.agency}|${contract.office}`;
+        agencyOfficeFlows[aoKey] = (agencyOfficeFlows[aoKey] || 0) + value;
+        
+        const ovKey = `${contract.office}|${contract.vendor}`;
+        officeVendorFlows[ovKey] = (officeVendorFlows[ovKey] || 0) + value;
+      }
+    });
+    
+    const sortedAgencyOfficeFlows = Object.entries(agencyOfficeFlows)
+      .sort(([,a], [,b]) => b - a);
+    
+    const sortedOfficeVendorFlows = Object.entries(officeVendorFlows)
+      .sort(([,a], [,b]) => b - a);
+    
+    const allFlows = [
+      ...sortedAgencyOfficeFlows.map(([key, value]) => ({
+        source: key.split('|')[0],
+        target: key.split('|')[1],
+        value
+      })),
+      ...sortedOfficeVendorFlows.map(([key, value]) => ({
+        source: key.split('|')[0],
+        target: key.split('|')[1],
+        value
+      }))
+    ];
+    
+    if (allFlows.length === 0) {
+      return { nodes: [], links: [], vendorNames: topVendorNames };
+    }
+    
+    const nodeMap = new Map();
+    allFlows.forEach(flow => {
+      if (!nodeMap.has(flow.source)) {
+        nodeMap.set(flow.source, { name: flow.source });
+      }
+      if (!nodeMap.has(flow.target)) {
+        nodeMap.set(flow.target, { name: flow.target });
+      }
+    });
+    
+    const nodesArray = Array.from(nodeMap.values());
+    const nodeIndexMap = new Map(nodesArray.map((node, i) => [node.name, i]));
+    
+    const links = allFlows
+      .map(flow => ({
+        source: nodeIndexMap.get(flow.source),
+        target: nodeIndexMap.get(flow.target),
+        value: flow.value
+      }))
+      .filter(link => 
+        link.source !== undefined && 
+        link.target !== undefined && 
+        link.source !== link.target &&
+        link.value > 0
+      );
+    
+    return { 
+      nodes: nodesArray, 
+      links, 
+      vendorNames: topVendorNames 
+    };
+  },
+  
   updateButtons(activeId) {
     const buttons = document.querySelectorAll('.chart-controls .btn');
     buttons.forEach(btn => {
@@ -2439,12 +1836,18 @@ const sankeyChart = {
 
 const dashboard = {
   updateAll() {
-    this.updateStats();
-    this.updateCharts();
+    if(comparisonManager.isActive) {
+        comparisonManager.runComparison();
+    } else {
+        this.updateStats();
+        this.updateCharts();
+    }
     this.updateTables();
   },
-
+  
   updateStats() {
+    if(comparisonManager.isActive) return;
+    
     app.totalFilteredValue = app.filteredData.reduce((sum, item) => {
       return sum + utils.safeParseFloat(item ? item.value : 0);
     }, 0);
@@ -2460,28 +1863,19 @@ const dashboard = {
       .filter(vendor => vendor && vendor.value > 0)
       .sort((a, b) => (b.value || 0) - (a.value || 0))[0];
     
-    if (elements.totalValue) {
-      elements.totalValue.textContent = utils.formatMoney(app.totalFilteredValue);
-    }
-    if (elements.totalContracts) {
-      elements.totalContracts.textContent = totalContracts.toLocaleString();
-    }
-    if (elements.totalCompanies) {
-      elements.totalCompanies.textContent = uniqueCompanies.toLocaleString();
-    }
-    if (elements.topCompany) {
-      elements.topCompany.textContent = utils.truncateText(
-        topCompany?.name || 'N/A', 20
-      );
-    }
+    elements.statCard1.innerHTML = `<div class="stat-label">Total Value</div><div class="stat-value" id="totalValue">${utils.formatMoney(app.totalFilteredValue)}</div>`;
+    elements.statCard2.innerHTML = `<div class="stat-label">Contracts</div><div class="stat-value" id="totalContracts">${totalContracts.toLocaleString()}</div>`;
+    elements.statCard3.innerHTML = `<div class="stat-label">Companies</div><div class="stat-value" id="totalCompanies">${uniqueCompanies.toLocaleString()}</div>`;
+    elements.statCard4.innerHTML = `<div class="stat-label">Market Leader</div><div class="stat-company" id="topCompany">${utils.truncateText(topCompany?.name || 'N/A', 20)}</div>`;
   },
-
+  
   updateCharts() {
+    if (comparisonManager.isActive) return;
     charts.updateTimeline();
     charts.updateIndustry();
     sankeyChart.update();
   },
-
+  
   updateTables() {
     this.updateTable('recent', 
       [...app.filteredData]
@@ -2500,11 +1894,12 @@ const dashboard = {
     );
     
     this.updateOfficesTable();
-	if (window.innerWidth <= 768) {
-    eventListeners.setupTableScrollIndicators();
-  }
+    
+    if (window.innerWidth <= 768) {
+        eventListeners.setupTableScrollIndicators();
+    }
   },
-
+  
   updateTable(type, data) {
     const tbody = elements[`${type}Table`];
     if (!tbody) return;
@@ -2517,13 +1912,13 @@ const dashboard = {
       }
     });
   },
-
+  
   createTableRow(contract) {
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${utils.formatDate(contract.date)}</td>
-<td>${utils.truncateText(contract.id, 12)}</td>
-<td>
+      <td>${utils.truncateText(contract.id, 12)}</td>
+      <td>
         <div class="entity-badge">
           <div class="entity-icon" style="background-color: ${utils.getEntityColor(contract.agency)}">
             ${utils.getInitials(contract.agency)}
@@ -2546,7 +1941,7 @@ const dashboard = {
     `;
     return row;
   },
-
+  
   updateOfficesTable() {
     const tbody = elements.officesTable;
     if (!tbody) return;
@@ -2565,6 +1960,7 @@ const dashboard = {
       const officeContracts = app.filteredData.filter(c => 
         c && c.office === office.name
       );
+      
       const vendorValues = {};
       officeContracts.forEach(c => {
         if (c && c.vendor) {
@@ -2575,7 +1971,7 @@ const dashboard = {
       
       const topVendorName = Object.entries(vendorValues)
         .sort((a, b) => b[1] - a[1])[0]?.[0] || 'N/A';
-
+      
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>
@@ -2606,7 +2002,6 @@ const dashboard = {
           </div>
         </td>
       `;
-      
       tbody.appendChild(row);
     });
   }
@@ -2654,7 +2049,7 @@ const modal = {
       elements.contractModal.classList.add('active');
     }
   },
-
+  
   close() {
     if (elements.contractModal) {
       elements.contractModal.classList.remove('active');
@@ -2662,6 +2057,444 @@ const modal = {
   }
 };
 
+const comparisonManager = {
+  isActive: false,
+  vendorA: null,
+  vendorB: null,
+  allVendors: [],
+  isLoading: false,
+  
+  showLoading(container, message = 'Loading comparison...') {
+    const loadingHtml = `
+      <div class="comparison-loading">
+        <div class="loading-spinner"></div>
+        <span>${message}</span>
+      </div>
+    `;
+    if (typeof container === 'string') {
+      document.getElementById(container).innerHTML = loadingHtml;
+    } else {
+      container.innerHTML = loadingHtml;
+    }
+  },
+  
+  showError(container, title, message, showRetry = false) {
+    const retryButton = showRetry ? 
+      '<button class="btn btn-sm btn-secondary" onclick="comparisonManager.runComparison()">Try Again</button>' : '';
+    
+    const errorHtml = `
+      <div class="comparison-error">
+        <h4>${title}</h4>
+        <p>${message}</p>
+        ${retryButton}
+      </div>
+    `;
+    
+    if (typeof container === 'string') {
+      document.getElementById(container).innerHTML = errorHtml;
+    } else {
+      container.innerHTML = errorHtml;
+    }
+  },
+  
+  validateVendorData(vendorA, vendorB) {
+    const errors = [];
+    
+    if (!vendorA || vendorA.length === 0) {
+      errors.push(`${this.vendorA} has no contracts in the current filter`);
+    }
+    
+    if (!vendorB || vendorB.length === 0) {
+      errors.push(`${this.vendorB} has no contracts in the current filter`);
+    }
+    
+    if (vendorA.length > 0 && vendorB.length > 0) {
+      // Check for agency overlap
+      const agenciesA = new Set(vendorA.map(c => c.agency));
+      const agenciesB = new Set(vendorB.map(c => c.agency));
+      const overlap = [...agenciesA].filter(x => agenciesB.has(x));
+      
+      if (overlap.length === 0) {
+        errors.push('These vendors have no competing agencies in common');
+      }
+    }
+    
+    return errors;
+  },
+  
+  toggleMode() {
+    this.isActive = !this.isActive;
+    elements.vendorSelectors.classList.toggle('hidden', !this.isActive);
+    elements.closeComparison.classList.toggle('hidden', !this.isActive);
+    
+    if (this.isActive) {
+        elements.toggleComparison.classList.add('btn-primary');
+        elements.toggleComparison.classList.remove('btn-secondary');
+    } else {
+        this.clearComparison();
+    }
+  },
+  
+  cacheAllVendors() {
+    this.allVendors = Object.values(app.vendors)
+        .sort((a, b) => (b.value || 0) - (a.value || 0))
+        .map(v => ({ name: v.name, value: v.value }));
+    this.populateComboBox('A');
+    this.populateComboBox('B');
+  },
+  
+  populateComboBox(vendorType) {
+      const optionsContainer = elements[`vendor${vendorType}Options`];
+      optionsContainer.innerHTML = '';
+      
+      const otherVendor = vendorType === 'A' ? this.vendorB : this.vendorA;
+      
+      this.allVendors.forEach(vendor => {
+          if (vendor.name === otherVendor) return;
+          
+          const option = document.createElement('div');
+          option.className = 'combo-box-option';
+          option.dataset.value = vendor.name;
+          option.innerHTML = `${vendor.name} <span style="color: var(--text-secondary); font-size: 0.8em;">(${utils.formatMoney(vendor.value)})</span>`;
+          option.addEventListener('mousedown', () => {
+              this.selectOption(vendorType, vendor.name);
+          });
+          optionsContainer.appendChild(option);
+      });
+  },
+  
+  selectOption(vendorType, vendorName) {
+      this[`vendor${vendorType}`] = vendorName;
+      elements[`vendor${vendorType}Input`].value = vendorName;
+      document.getElementById(`vendor${vendorType}ComboBox`).classList.remove('open');
+      
+      this.populateComboBox(vendorType === 'A' ? 'B' : 'A');
+      this.filterComboBox(vendorType, '');
+  },
+  
+  filterComboBox(vendorType, searchTerm) {
+      const optionsContainer = elements[`vendor${vendorType}Options`];
+      const options = optionsContainer.getElementsByClassName('combo-box-option');
+      
+      for (const option of options) {
+          const isVisible = option.dataset.value.toLowerCase().includes(searchTerm);
+          option.classList.toggle('hidden', !isVisible);
+      }
+  },
+  
+  async runComparison() {
+    if (!this.vendorA || !this.vendorB) {
+        alert("Please select two different vendors to compare.");
+        return;
+    }
+    
+    if (this.vendorA === this.vendorB) {
+        alert("Please select two different vendors.");
+        return;
+    }
+    
+    this.isLoading = true;
+    elements.runComparison.textContent = "Loading...";
+    elements.runComparison.disabled = true;
+    
+    try {
+      // Show loading state for main comparison area
+      this.showLoading(elements.sankeyChart, 'Analyzing vendor competition...');
+      
+      // Small delay to show loading state
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      const vendorAData = app.filteredData.filter(c => c.vendor === this.vendorA);
+      const vendorBData = app.filteredData.filter(c => c.vendor === this.vendorB);
+      
+      // Validate data
+      const errors = this.validateVendorData(vendorAData, vendorBData);
+      
+      if (errors.length > 0) {
+        this.showError(
+          elements.sankeyChart,
+          'Comparison Not Possible',
+          errors.join('. '),
+          true
+        );
+        return;
+      }
+      
+      await this.createComparisonView(vendorAData, vendorBData);
+      
+    } catch (error) {
+      console.error('Comparison error:', error);
+      this.showError(
+        elements.sankeyChart,
+        'Comparison Failed',
+        'An error occurred while creating the comparison. Please try again.',
+        true
+      );
+    } finally {
+      this.isLoading = false;
+      elements.runComparison.textContent = "Update Comparison";
+      elements.runComparison.disabled = false;
+    }
+  },
+  
+  async createComparisonView(dataA, dataB) {
+    try {
+      // Update stats first (fastest)
+      this.updateComparisonStats(dataA, dataB);
+      
+      // Show loading for overlap chart
+      this.showLoading(elements.sankeyChart, 'Building competitive analysis...');
+      await new Promise(resolve => setTimeout(resolve, 50));
+      
+      // Create overlap chart
+      this.createOverlapChart(dataA, dataB);
+      
+      // Update other charts
+      await this.updateComparisonTimeline(dataA, dataB);
+      await this.updateComparisonIndustry(dataA, dataB);
+      
+    } catch (error) {
+      console.error('Error creating comparison view:', error);
+      throw error;
+    }
+  },
+  
+  updateComparisonStats(dataA, dataB) {
+    const valueA = dataA.reduce((sum, c) => sum + utils.safeParseFloat(c.value), 0);
+    const valueB = dataB.reduce((sum, c) => sum + utils.safeParseFloat(c.value), 0);
+    const contractsA = dataA.length;
+    const contractsB = dataB.length;
+    const avgA = contractsA > 0 ? valueA / contractsA : 0;
+    const avgB = contractsB > 0 ? valueB / contractsB : 0;
+    const largestA = Math.max(0, ...dataA.map(c => c.value));
+    const largestB = Math.max(0, ...dataB.map(c => c.value));
+    
+    elements.statCard3.style.display = 'none';
+    elements.statCard4.style.display = 'none';
+    
+    elements.statCard1.innerHTML = `
+        <div class="stat-label">${utils.truncateText(this.vendorA, 20)}</div>
+        <div class="comparison-stat-grid">
+            <div><div class="stat-label">Total Value</div><div class="stat-value">${utils.formatMoney(valueA)}</div></div>
+            <div><div class="stat-label">Contracts</div><div class="stat-value">${contractsA}</div></div>
+            <div><div class="stat-label">Avg Value</div><div class="stat-value">${utils.formatMoney(avgA)}</div></div>
+            <div><div class="stat-label">Largest</div><div class="stat-value">${utils.formatMoney(largestA)}</div></div>
+        </div>
+    `;
+    
+    elements.statCard2.innerHTML = `
+        <div class="stat-label">${utils.truncateText(this.vendorB, 20)}</div>
+        <div class="comparison-stat-grid">
+            <div><div class="stat-label">Total Value</div><div class="stat-value">${utils.formatMoney(valueB)}</div></div>
+            <div><div class="stat-label">Contracts</div><div class="stat-value">${contractsB}</div></div>
+            <div><div class="stat-label">Avg Value</div><div class="stat-value">${utils.formatMoney(avgB)}</div></div>
+            <div><div class="stat-label">Largest</div><div class="stat-value">${utils.formatMoney(largestB)}</div></div>
+        </div>
+    `;
+  },
+  
+  createOverlapChart(dataA, dataB) {
+    elements.primaryChartTitle.textContent = "Competitive Overlap";
+    elements.sankeyControls.classList.add('hidden');
+    
+    const container = elements.sankeyChart;
+    
+    try {
+      const agencyData = {};
+      dataA.forEach(c => {
+          if (!agencyData[c.agency]) agencyData[c.agency] = { name: c.agency, valueA: 0, valueB: 0 };
+          agencyData[c.agency].valueA += c.value;
+      });
+      
+      dataB.forEach(c => {
+          if (!agencyData[c.agency]) agencyData[c.agency] = { name: c.agency, valueA: 0, valueB: 0 };
+          agencyData[c.agency].valueB += c.value;
+      });
+      
+      const chartData = Object.values(agencyData)
+        .filter(d => d.valueA > 0 || d.valueB > 0)
+        .sort((a,b) => (b.valueA + b.valueB) - (a.valueA + a.valueB))
+        .slice(0, 10)
+        .map(d => ({...d, name: utils.truncateText(d.name, 25)}));
+      
+      if (chartData.length === 0) {
+        this.showError(
+          container,
+          'No Agency Overlap',
+          'These vendors don\'t compete at any agencies in the current filter.'
+        );
+        return;
+      }
+      
+      const margin = {top: 40, right: 30, bottom: 40, left: 180};
+      const width = container.clientWidth - margin.left - margin.right;
+      const height = container.clientHeight - margin.top - margin.bottom;
+      
+      if (width <= 0 || height <= 0) {
+        this.showError(container, 'Display Error', 'Chart area too small to display comparison.');
+        return;
+      }
+      
+      container.innerHTML = '';
+      
+      const svg = d3.select(container).append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .attr("class", "overlap-chart-container")
+        .append("g")
+          .attr("transform", `translate(${margin.left},${margin.top})`);
+      
+      const maxVal = d3.max(chartData, d => Math.max(d.valueA, d.valueB));
+      
+      const x = d3.scaleLinear().range([width/2, 0]).domain([0, maxVal]);
+      const x2 = d3.scaleLinear().range([width/2, width]).domain([0, maxVal]);
+      const y = d3.scaleBand()
+        .range([0, height])
+        .domain(chartData.map(d => d.name))
+        .padding(0.2);
+      
+      svg.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
+      svg.append("g").attr("transform", `translate(0, ${height})`).call(d3.axisBottom(x).ticks(4).tickFormat(d => utils.formatMoney(d)));
+      svg.append("g").attr("transform", `translate(0, ${height})`).call(d3.axisBottom(x2).ticks(4).tickFormat(d => utils.formatMoney(d)));
+      
+      const colorA = getComputedStyle(document.documentElement).getPropertyValue('--primary');
+      const colorB = chartConfig.comparisonColorB;
+      
+      svg.selectAll(".barA").data(chartData).enter().append("rect")
+        .attr("class", "barA").attr("x", d => x(d.valueA)).attr("y", d => y(d.name))
+        .attr("width", d => width/2 - x(d.valueA)).attr("height", y.bandwidth()).attr("fill", colorA);
+      
+      svg.selectAll(".barB").data(chartData).enter().append("rect")
+        .attr("class", "barB").attr("x", width/2).attr("y", d => y(d.name))
+        .attr("width", d => x2(d.valueB) - width/2).attr("height", y.bandwidth()).attr("fill", colorB);
+      
+      svg.append("text").attr("x", width/4).attr("y", -10).attr("text-anchor", "middle").style("fill", colorA).text(utils.truncateText(this.vendorA, 20));
+      svg.append("text").attr("x", width*0.75).attr("y", -10).attr("text-anchor", "middle").style("fill", colorB).text(utils.truncateText(this.vendorB, 20));
+      
+    } catch (error) {
+      console.error('Error creating overlap chart:', error);
+      this.showError(
+        container,
+        'Chart Error',
+        'Failed to create competitive overlap visualization.',
+        true
+      );
+    }
+  },
+  
+  async updateComparisonTimeline(dataA, dataB) {
+    const chart = app.charts.timeline;
+    if (!chart) return;
+    
+    try {
+      const monthlyDataA = {}, monthlyDataB = {};
+      
+      dataA.forEach(c => {
+          if (c.parsedDate) {
+              const key = `${c.parsedDate.getUTCFullYear()}-${(c.parsedDate.getUTCMonth() + 1).toString().padStart(2, '0')}`;
+              monthlyDataA[key] = (monthlyDataA[key] || 0) + c.value;
+          }
+      });
+      
+      dataB.forEach(c => {
+          if (c.parsedDate) {
+              const key = `${c.parsedDate.getUTCFullYear()}-${(c.parsedDate.getUTCMonth() + 1).toString().padStart(2, '0')}`;
+              monthlyDataB[key] = (monthlyDataB[key] || 0) + c.value;
+          }
+      });
+      
+      const allMonths = Array.from(new Set([...Object.keys(monthlyDataA), ...Object.keys(monthlyDataB)])).sort();
+      
+      chart.data.labels = allMonths.map(month => {
+        const [year, monthNum] = month.split('-');
+        return new Date(Date.UTC(parseInt(year), parseInt(monthNum) - 1)).toLocaleDateString('en-US', { month: 'short', year: '2-digit', timeZone: 'UTC' });
+      });
+      
+      chart.data.datasets = [
+        { label: utils.truncateText(this.vendorA, 15), data: allMonths.map(m => monthlyDataA[m] || 0), borderColor: getComputedStyle(document.documentElement).getPropertyValue('--primary'), tension: 0.4, fill: false },
+        { label: utils.truncateText(this.vendorB, 15), data: allMonths.map(m => monthlyDataB[m] || 0), borderColor: chartConfig.comparisonColorB, tension: 0.4, fill: false }
+      ];
+      
+      chart.options.plugins.legend.display = true;
+      chart.update('none');
+      
+    } catch (error) {
+      console.error('Timeline comparison error:', error);
+      // Timeline errors are less critical, so just log them
+    }
+  },
+  
+  async updateComparisonIndustry(dataA, dataB) {
+    try {
+      if (app.charts.industry) app.charts.industry.destroy();
+      
+      const naicsData = {};
+      dataA.forEach(c => {
+          if(c.naics) {
+              if (!naicsData[c.naics]) naicsData[c.naics] = { name: `${c.naics} - ${utils.truncateText(c.naicsDescription, 20)}`, valueA: 0, valueB: 0 };
+              naicsData[c.naics].valueA += c.value;
+          }
+      });
+      
+      dataB.forEach(c => {
+          if(c.naics) {
+              if (!naicsData[c.naics]) naicsData[c.naics] = { name: `${c.naics} - ${utils.truncateText(c.naicsDescription, 20)}`, valueA: 0, valueB: 0 };
+              naicsData[c.naics].valueB += c.value;
+          }
+      });
+      
+      const chartData = Object.values(naicsData)
+          .sort((a,b) => (b.valueA + b.valueB) - (a.valueA + a.valueB))
+          .slice(0, 7);
+      
+      app.charts.industry = new Chart(elements.industryChart, {
+          type: 'bar',
+          data: {
+              labels: chartData.map(d => d.name),
+              datasets: [
+                  { label: utils.truncateText(this.vendorA, 15), data: chartData.map(d => d.valueA), backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--primary') },
+                  { label: utils.truncateText(this.vendorB, 15), data: chartData.map(d => d.valueB), backgroundColor: chartConfig.comparisonColorB }
+              ]
+          },
+          options: {
+              responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+              scales: { x: { ticks: { callback: v => utils.formatMoney(v) } } },
+              plugins: { legend: { position: 'bottom' } }
+          }
+      });
+      
+    } catch (error) {
+      console.error('Industry comparison error:', error);
+      // Industry chart errors are less critical
+    }
+  },
+  
+  clearComparison() {
+    this.isActive = false;
+    this.vendorA = null;
+    this.vendorB = null;
+    
+    elements.statCard3.style.display = 'block';
+    elements.statCard4.style.display = 'block';
+    elements.vendorSelectors.classList.add('hidden');
+    elements.closeComparison.classList.add('hidden');
+    elements.sankeyControls.classList.remove('hidden');
+    elements.primaryChartTitle.textContent = "Award Flow & NAICS Distribution";
+    elements.runComparison.textContent = "Compare";
+    
+    elements.toggleComparison.classList.remove('btn-primary');
+    elements.toggleComparison.classList.add('btn-secondary');
+    
+    elements.vendorAInput.value = '';
+    elements.vendorBInput.value = '';
+    
+    this.populateComboBox('A');
+    this.populateComboBox('B');
+    
+    charts.initAll();
+    dashboard.updateAll();
+  }
+};
 const eventListeners = {
   setup() {
     this.setupFileHandlers();
@@ -2673,68 +2506,33 @@ const eventListeners = {
     this.setupResizeHandler();
     this.setupTableScrollIndicators();
     this.setupThemeHandlers();
+    this.setupGlobalListeners();
   },
-
-  setupTableScrollIndicators() { 
-    const tableSections = document.querySelectorAll('.table-section');
-    
-    tableSections.forEach(section => {
-      section.addEventListener('scroll', () => {
-        const isScrollable = section.scrollWidth > section.clientWidth;
-        section.classList.toggle('scrollable', isScrollable);
-      });
-      
-      // Check on resize
-      window.addEventListener('resize', () => {
-        const isScrollable = section.scrollWidth > section.clientWidth;
-        section.classList.toggle('scrollable', isScrollable);
-      });
-    });
-  },
-
-  setupThemeHandlers() {
-    const themeControls = document.getElementById('themeControls');
-    if (themeControls) {
-      themeControls.addEventListener('click', (e) => {
-        if (e.target.matches('.theme-btn')) {
-          const themeName = e.target.dataset.theme;
-          themeManager.applyTheme(themeName);
-        }
-      });
-    }
-  },
-
-// Call this in your init function or after tables are populated
+  
   setupFileHandlers() {
-  // Dataset button handler
-  const dataLoadControls = document.querySelector('.data-load-controls');
-  if (dataLoadControls) {
-    dataLoadControls.addEventListener('click', (e) => {
-      if (e.target.matches('[data-dataset]')) {
-        const dataset = e.target.dataset.dataset;
-        dataProcessor.loadExampleData(dataset);
+      const dataLoadControls = document.querySelector('.data-load-controls');
+      if (dataLoadControls) {
+          dataLoadControls.addEventListener('click', (e) => {
+              if (e.target.matches('[data-dataset]')) {
+                  const dataset = e.target.dataset.dataset;
+                  dataProcessor.loadExampleData(dataset);
+              }
+          });
       }
-    });
-  }
-
-  // Existing file upload handler
-  if (elements.csvFile) {
-    elements.csvFile.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          dataProcessor.processData(event.target.result);
-        };
-        reader.onerror = () => {
-          stateManager.showState('errorState', 'Error reading the file.');
-        };
-        reader.readAsText(file);
+      
+      if (elements.csvFile) {
+          elements.csvFile.addEventListener('change', (e) => {
+              const file = e.target.files[0];
+              if (file) {
+                  const reader = new FileReader();
+                  reader.onload = (event) => dataProcessor.processData(event.target.result);
+                  reader.onerror = () => stateManager.showState('errorState', 'Error reading the file.');
+                  reader.readAsText(file);
+              }
+          });
       }
-    });
-  }
-},
-
+  },
+  
   setupFilterHandlers() {
     let searchTimeout;
     if (elements.searchInput) {
@@ -2746,26 +2544,17 @@ const eventListeners = {
       });
     }
     
-    const entityFilters = ['agency', 'vendor', 'naics', 'office'];
-    entityFilters.forEach(type => {
+    ['agency', 'vendor', 'naics', 'office'].forEach(type => {
       const element = elements[`${type}Filter`];
       if (element) {
-        element.addEventListener('change', (e) => {
-          stateManager.updateFilters({ 
-            [type]: e.target.value || null 
-          });
-        });
+        element.addEventListener('change', (e) => stateManager.updateFilters({ [type]: e.target.value || null }));
       }
     });
     
     ['startDate', 'endDate'].forEach(type => {
       const element = elements[type];
       if (element) {
-        element.addEventListener('change', (e) => {
-          stateManager.updateFilters({ 
-            [type]: e.target.value || null 
-          });
-        });
+        element.addEventListener('change', (e) => stateManager.updateFilters({ [type]: e.target.value || null }));
       }
     });
     
@@ -2777,39 +2566,48 @@ const eventListeners = {
     }
     
     if (elements.resetBtn) {
-      elements.resetBtn.addEventListener('click', () => {
-        stateManager.resetFilters();
-      });
+      elements.resetBtn.addEventListener('click', () => stateManager.resetFilters());
     }
     
     if (elements.moreFiltersBtn) {
-      elements.moreFiltersBtn.addEventListener('click', () => {
-        if (elements.advancedFilters) {
-          elements.advancedFilters.classList.toggle('active');
-        }
-      });
+      elements.moreFiltersBtn.addEventListener('click', () => elements.advancedFilters.classList.toggle('active'));
     }
+    
+    if (elements.toggleComparison) {
+      elements.toggleComparison.addEventListener('click', () => comparisonManager.toggleMode());
+    }
+    
+    if (elements.closeComparison) {
+        elements.closeComparison.addEventListener('click', () => comparisonManager.clearComparison());
+    }
+    
+    if (elements.runComparison) {
+        elements.runComparison.addEventListener('click', () => comparisonManager.runComparison());
+    }
+    
+    ['A', 'B'].forEach(v => {
+        const comboBox = document.getElementById(`vendor${v}ComboBox`);
+        const input = elements[`vendor${v}Input`];
+        if (input) {
+            input.addEventListener('input', () => comparisonManager.filterComboBox(v, input.value.toLowerCase()));
+            input.addEventListener('click', () => comboBox.classList.toggle('open'));
+            input.addEventListener('blur', () => setTimeout(() => comboBox.classList.remove('open'), 150));
+        }
+    });
   },
-
+  
   setupUIHandlers() {
     const tabsContainer = document.querySelector('.tabs');
     if (tabsContainer) {
       tabsContainer.addEventListener('click', (e) => {
         if (e.target.matches('.tab-btn')) {
-          document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.remove('active');
-          });
-          document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-          });
+          document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
           
           e.target.classList.add('active');
-          
           const tabId = e.target.dataset.tab + 'Tab';
           const tabContent = document.getElementById(tabId);
-          if (tabContent) {
-            tabContent.classList.add('active');
-          }
+          if (tabContent) tabContent.classList.add('active');
         }
       });
     }
@@ -2819,78 +2617,96 @@ const eventListeners = {
       tableSection.addEventListener('click', (e) => {
         if (e.target.matches('.view-details-btn')) {
           const contractId = e.target.dataset.contractId;
-          if (contractId) {
-            modal.show(contractId);
-          }
+          if (contractId) modal.show(contractId);
         }
       });
     }
   },
-
+  
   setupChartHandlers() {
     const chartControls = document.querySelector('.chart-controls');
     if (chartControls) {
       chartControls.addEventListener('click', (e) => {
         if (e.target.matches('.btn')) {
-          const limitMap = { 
-            sankeyLimit10: 10, 
-            sankeyLimit25: 25, 
-            sankeyLimitAll: 0 
-          };
-          
+          const limitMap = { sankeyLimit10: 10, sankeyLimit25: 25, sankeyLimitAll: 0 };
           if (limitMap.hasOwnProperty(e.target.id)) {
             app.sankeyDisplayLimit = limitMap[e.target.id];
             sankeyChart.updateButtons(e.target.id);
-            sankeyChart.update();
+            if (!comparisonManager.isActive) sankeyChart.update();
           }
         }
       });
     }
   },
-
+  
   setupModalHandlers() {
-    if (elements.closeModal) {
-      elements.closeModal.addEventListener('click', modal.close);
-    }
-    
-    if (elements.closeModalBtn) {
-      elements.closeModalBtn.addEventListener('click', modal.close);
-    }
+    if (elements.closeModal) elements.closeModal.addEventListener('click', modal.close);
+    if (elements.closeModalBtn) elements.closeModalBtn.addEventListener('click', modal.close);
     
     if (elements.contractModal) {
       elements.contractModal.addEventListener('click', (e) => {
-        if (e.target === elements.contractModal) {
-          modal.close();
-        }
+        if (e.target === elements.contractModal) modal.close();
       });
     }
   },
-
+  
   setupKeyboardHandlers() {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         modal.close();
-        if (elements.advancedFilters) {
-          elements.advancedFilters.classList.remove('active');
-        }
+        if (elements.advancedFilters) elements.advancedFilters.classList.remove('active');
       }
     });
   },
-
+  
   setupResizeHandler() {
     let resizeTimeout;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-        Object.values(app.charts).forEach(chart => {
-          if (chart && typeof chart.resize === 'function') {
-            chart.resize();
-          }
-        });
-        
-        sankeyChart.update();
+        if (comparisonManager.isActive) {
+            comparisonManager.runComparison();
+        } else {
+            Object.values(app.charts).forEach(chart => chart && chart.resize && chart.resize());
+            sankeyChart.update();
+        }
       }, 250);
     });
+  },
+  
+  setupTableScrollIndicators() { 
+    const tableSections = document.querySelectorAll('.table-section');
+    tableSections.forEach(section => {
+      const handler = () => {
+        const isScrollable = section.scrollWidth > section.clientWidth;
+        section.classList.toggle('scrollable', isScrollable);
+      };
+      section.addEventListener('scroll', handler);
+      window.addEventListener('resize', handler);
+      handler(); 
+    });
+  },
+  
+  setupThemeHandlers() {
+    const themeControls = document.getElementById('themeControls');
+    if (themeControls) {
+      themeControls.addEventListener('click', (e) => {
+        if (e.target.matches('.theme-btn')) {
+          themeManager.applyTheme(e.target.dataset.theme);
+        }
+      });
+    }
+  },
+  
+  setupGlobalListeners() {
+      document.addEventListener('click', (e) => {
+          if (!e.target.closest('#vendorAComboBox')) {
+              document.getElementById('vendorAComboBox').classList.remove('open');
+          }
+          if (!e.target.closest('#vendorBComboBox')) {
+              document.getElementById('vendorBComboBox').classList.remove('open');
+          }
+      });
   }
 };
 
@@ -2914,4 +2730,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-        
