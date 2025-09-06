@@ -18,12 +18,12 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-BZM1YXC1RQ');
 </script>
 <style>
+/* CSS Variables and Theme System */
 :root {
-  /* Structural Variables (Unchanged by themes) */
+  /* Structural Variables */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space: 1rem;
@@ -36,7 +36,13 @@
   --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* Dynamically set theme variables will be applied here */
+/* Base Styles */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
 body {
   font-family: var(--font-family);
   background: var(--bg-secondary);
@@ -46,7 +52,30 @@ body {
   transition: background 0.3s, color 0.3s;
 }
 
-/* --- Theme Controls --- */
+/* Layout Components */
+.app-container { 
+  min-height: 100vh; 
+  max-width: 1600px; 
+  margin: 0 auto; 
+  background: var(--bg-primary); 
+}
+
+.app-header { 
+  background: var(--bg-primary); 
+  border-bottom: 1px solid var(--border); 
+  padding: var(--space-lg) var(--space-xl); 
+  position: static; 
+  top: 0; 
+  z-index: 100; 
+}
+
+.header-content { 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space-lg); 
+}
+
+/* Theme Controls */
 .theme-controls {
   display: flex;
   gap: var(--space-sm);
@@ -74,112 +103,801 @@ body {
   box-shadow: var(--shadow);
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* Logo and Branding */
+.logo-main { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start; 
+}
 
-.app-container { min-height: 100vh; max-width: 1600px; margin: 0 auto; background: var(--bg-primary); }
-.app-header { background: var(--bg-primary); border-bottom: 1px solid var(--border); padding: var(--space-lg) var(--space-xl); position: static; top: 0; z-index: 100; }
-.header-content { display: flex; flex-direction: column; gap: var(--space-lg); }
-.logo-main { display: flex; justify-content: space-between; align-items: flex-start; }
-.logo-brand { display: flex; align-items: center; gap: var(--space); }
-.logo-brand span { font-size: 2.8rem; font-weight: 800; color: var(--text-primary); }
-.logo-subtitle { font-size: 0.875rem; color: var(--text-secondary); margin-top: var(--space-xs); }
-.data-load-controls { display: flex; gap: var(--space); margin-bottom: var(--space); }
-.controls-section { display: flex; flex-direction: column; gap: var(--space-lg); }
-.main-filters { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr auto; gap: var(--space); align-items: end; }
-.form-input, .form-select { padding: var(--space) var(--space-lg); border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-primary); color: var(--text-primary); font-size: 0.875rem; transition: var(--transition); }
-.form-input:focus, .form-select:focus { outline: none; border-color: var(--text-primary); box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.1); }
-.search-wrapper { position: relative; }
-.search-input { padding-left: var(--space); }
-.btn { display: inline-flex; align-items: center; gap: var(--space-sm); padding: var(--space) var(--space-lg); font-size: 0.875rem; font-weight: 500; border: 1px solid transparent; border-radius: var(--radius); cursor: pointer; transition: all 0.2s ease-in-out; text-decoration: none; background: transparent; }
-.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-.btn:active { transform: translateY(0); }
-.btn-primary { background: var(--primary); color: var(--bg-primary); font-weight: 600; }
-.btn-primary:hover { background: var(--primary-dark); }
-.btn-secondary { background: var(--bg-tertiary); color: var(--text-secondary); border-color: var(--border); font-weight: 500; }
-.btn-secondary:hover { background: var(--bg-tertiary); color: var(--text-primary); }
-.btn-sm { padding: var(--space-sm) var(--space); font-size: 0.75rem; }
-.file-input { display: none; }
-.advanced-filters { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-lg); margin-top: var(--space-lg); display: none; }
-.advanced-filters.active { display: block; }
-.filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-lg); }
-.form-group { display: flex; flex-direction: column; gap: var(--space-xs); }
-.form-label { font-size: 0.75rem; font-weight: 600; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em; }
-.dashboard { padding: var(--space-xl); display: flex; flex-direction: column; gap: var(--space); }
-.section-title { font-size: 2.25rem; color: var(--text-primary); margin-bottom: var(--space-lg); border-bottom: none; padding-bottom: var(--space-sm); font-weight: 600; line-height: 1.2; letter-spacing: -1.5px; }
-.section-title strong { font-weight: 700; color: var(--text-primary); }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space); margin-bottom: var(--space-sm); }
-.stat-card { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space); }
-.stat-label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-sm); }
-.stat-value { font-family: var(--font-family); font-size: 2.5rem; font-weight: 600; color: var(--text-primary); letter-spacing: -1px; }
-.stat-company { font-size: 1.8rem; font-weight: 600; color: var(--text-primary); }
-.chart-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-xl); margin-bottom: var(--space-sm); color: var(--text-primary); }
-.chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-lg); }
-.chart-controls { display: flex; gap: var(--space-sm); }
-.primary-charts { display: grid; grid-template-columns: 3fr 2fr; gap: var(--space-xl); height: 450px; }
-.chart-container { position: relative; height: 100%; max-height: 450px; overflow: visible; padding-bottom: 40px; display: flex; flex-direction: column; justify-content: center; }
-.sankey-container { width: 100%; height: 100%; overflow: hidden; }
-.industry-chart-container { display: flex; flex-direction: column; justify-content: center; align-items: center; padding-top: var(--space-lg); }
-.table-section { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
-.tabs { display: flex; background: var(--bg-tertiary); border-bottom: 1px solid var(--border); }
-.tab-btn { padding: var(--space) var(--space-lg); background: none; border: none; color: var(--text-secondary); font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: var(--transition); }
-.tab-btn.active, .tab-btn:hover { color: var(--text-primary); background: var(--bg-primary); }
-.tab-content { display: none; padding: var(--space-xl); }
-.tab-content.active { display: block; }
-.data-table { width: 100%; border-collapse: collapse; }
-.data-table th { background: var(--bg-secondary); padding: var(--space); text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
-.data-table td { padding: var(--space); border-bottom: 1px solid var(--border); color: var(--text-primary); font-size: 0.875rem; }
-.data-table tr:hover { background: var(--bg-tertiary); }
-.entity-badge { display: inline-flex; align-items: center; gap: var(--space-sm); }
-.entity-icon { width: 1.5rem; height: 1.5rem; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 0.625rem; font-weight: 700; flex-shrink: 0; }
-.modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: var(--transition); }
-.modal-backdrop.active { opacity: 1; visibility: visible; }
-.modal { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); width: 90%; max-width: 600px; max-height: 80vh; overflow: auto; }
-.modal-header { padding: var(--space-lg); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-.modal-body { padding: var(--space-lg); }
-.modal-footer { padding: var(--space-lg); border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
-.loading-state, .empty-state, .error-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: var(--space-2xl); text-align: center; }
-.loading-spinner { width: 2rem; height: 2rem; border: 2px solid var(--border); border-top: 2px solid var(--text-primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: var(--space); }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-.error-state { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: var(--radius); }
-.hidden { display: none !important; }
-.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.active-filters-display { font-size: 1rem; color: var(--text-secondary); margin-top: var(--space-xs); font-weight: 500; height: 1.5em; }
-.active-filters-display strong { color: var(--text-primary); font-weight: 600; }
-.logo-mark { display: inline-flex; align-items: center; background: var(--primary); color: var(--primary-text); padding: var(--space) var(--space-lg); border-radius: 6px; font-size: 2rem; font-weight: 700; line-height: 1; }
-.data-load-controls { display: flex; flex-direction: column; gap: var(--space); }
-.example-datasets { display: flex; flex-direction: column; gap: var(--space-sm); }
-.dataset-label { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
-.dataset-buttons { display: flex; gap: var(--space-sm); flex-wrap: wrap; }
-.upload-section { padding-top: var(--space); border-top: 1px solid var(--border); }
+.logo-brand { 
+  display: flex; 
+  align-items: center; 
+  gap: var(--space); 
+}
 
-/* Empty State Styles */
-.empty-state-content { max-width: 800px; }
-.empty-state-title { font-size: 2.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: var(--space-lg); }
-.empty-state-intro { font-size: 1.125rem; color: var(--text-secondary); margin-bottom: var(--space-2xl); line-height: 1.6; }
-.how-to-guide { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-2xl); margin-bottom: var(--space-2xl); text-align: left; }
-.how-to-guide h3 { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-lg); text-align: center; }
-.how-to-guide ol { list-style: none; counter-reset: step-counter; }
-.how-to-guide li { counter-increment: step-counter; margin-bottom: var(--space-lg); padding-left: var(--space-2xl); position: relative; }
-.how-to-guide li:before { content: counter(step-counter); position: absolute; left: 0; top: 0; background: var(--primary); color: var(--primary-text); width: 1.5rem; height: 1.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.875rem; }
-.how-to-guide li strong { color: var(--text-primary); font-weight: 600; }
-.how-to-guide li p { margin-top: var(--space-xs); color: var(--text-secondary); }
-.empty-state-prompt { font-size: 1rem; color: var(--text-secondary); }
+.logo-brand span { 
+  font-size: 2.8rem; 
+  font-weight: 800; 
+  color: var(--text-primary); 
+}
 
-.app-footer-enhanced { background: var(--bg-primary); border-top: 1px solid var(--border); padding: var(--space-2xl) var(--space-xl); margin-top: 0; }
-.footer-content { max-width: 1200px; margin: 0 auto; }
-.explainer-section { text-align: center; margin-bottom: var(--space-2xl); padding-bottom: var(--space-xl); border-bottom: 1px solid var(--border); }
-.explainer-section h3 { font-size: 1.5rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space); }
-.explainer-section p { font-size: 1rem; color: var(--text-secondary); margin-bottom: var(--space-xl); max-width: 800px; margin-left: auto; margin-right: auto; }
-.explainer-section a, .step-text a, .footer-links a { color: var(--primary); text-decoration: none; font-weight: 500; transition: var(--transition); }
-.explainer-section a:hover, .step-text a:hover, .footer-links a:hover { color: var(--primary-dark); text-decoration: underline; }
-.quick-steps { display: flex; justify-content: center; gap: var(--space-xl); max-width: 900px; margin: 0 auto; }
-.step-row { display: flex; align-items: flex-start; gap: var(--space); flex: 1; text-align: left; }
-.step-number { display: flex; align-items: center; justify-content: center; width: 1.75rem; height: 1.75rem; background: var(--primary); color: var(--primary-text); border-radius: 50%; font-weight: 600; font-size: 0.875rem; flex-shrink: 0; }
-.step-text strong { color: var(--text-primary); font-weight: 600; }
-.step-text { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.5; }
-.footer-grid-expanded { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--space-xl); }
-.footer-section h3 { font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-lg); }
-.connect-card-compact { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-lg); display: flex; gap: var(--space); align-items: flex-start; }
+.logo-subtitle { 
+  font-size: 0.875rem; 
+  color: var(--text-secondary); 
+  margin-top: var(--space-xs); 
+}
+
+.logo-mark { 
+  display: inline-flex; 
+  align-items: center; 
+  background: var(--primary); 
+  color: var(--primary-text); 
+  padding: var(--space) var(--space-lg); 
+  border-radius: 6px; 
+  font-size: 2rem; 
+  font-weight: 700; 
+  line-height: 1; 
+}
+
+/* Controls and Filters */
+.data-load-controls { 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space); 
+}
+
+.controls-section { 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space-lg); 
+}
+
+.main-filters { 
+  display: grid; 
+  grid-template-columns: 2fr 1fr 1fr 1fr auto; 
+  gap: var(--space); 
+  align-items: end; 
+}
+
+.advanced-filters { 
+  background: var(--bg-tertiary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding: var(--space-lg); 
+  margin-top: var(--space-lg); 
+  display: none; 
+}
+
+.advanced-filters.active { 
+  display: block; 
+}
+
+.filters-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: var(--space-lg); 
+}
+
+/* Form Elements */
+.form-input, .form-select { 
+  padding: var(--space) var(--space-lg); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  background: var(--bg-primary); 
+  color: var(--text-primary); 
+  font-size: 0.875rem; 
+  transition: var(--transition); 
+}
+
+.form-input:focus, .form-select:focus { 
+  outline: none; 
+  border-color: var(--text-primary); 
+  box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.1); 
+}
+
+.form-group { 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space-xs); 
+}
+
+.form-label { 
+  font-size: 0.75rem; 
+  font-weight: 600; 
+  color: var(--text-primary); 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em; 
+}
+
+.search-wrapper { 
+  position: relative; 
+}
+
+.search-input { 
+  padding-left: var(--space); 
+}
+
+.file-input { 
+  display: none; 
+}
+
+/* Buttons */
+.btn { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: var(--space-sm); 
+  padding: var(--space) var(--space-lg); 
+  font-size: 0.875rem; 
+  font-weight: 500; 
+  border: 1px solid transparent; 
+  border-radius: var(--radius); 
+  cursor: pointer; 
+  transition: all 0.2s ease-in-out; 
+  text-decoration: none; 
+  background: transparent; 
+}
+
+.btn:hover { 
+  transform: translateY(-1px); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+}
+
+.btn:active { 
+  transform: translateY(0); 
+}
+
+.btn-primary { 
+  background: var(--primary); 
+  color: var(--bg-primary); 
+  font-weight: 600; 
+}
+
+.btn-primary:hover { 
+  background: var(--primary-dark); 
+}
+
+.btn-secondary { 
+  background: var(--bg-tertiary); 
+  color: var(--text-secondary); 
+  border-color: var(--border); 
+  font-weight: 500; 
+}
+
+.btn-secondary:hover { 
+  background: var(--bg-tertiary); 
+  color: var(--text-primary); 
+}
+
+.btn-sm { 
+  padding: var(--space-sm) var(--space); 
+  font-size: 0.75rem; 
+}
+
+/* Dataset Controls */
+.example-datasets { 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space-sm); 
+}
+
+.dataset-label { 
+  font-size: 0.75rem; 
+  font-weight: 600; 
+  color: var(--text-secondary); 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em; 
+}
+
+.dataset-buttons { 
+  display: flex; 
+  gap: var(--space-sm); 
+  flex-wrap: wrap; 
+}
+
+.upload-section { 
+  padding-top: var(--space); 
+  border-top: 1px solid var(--border); 
+}
+
+/* Dashboard and Content */
+.dashboard { 
+  padding: var(--space-xl); 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space); 
+}
+
+.section-title { 
+  font-size: 2.25rem; 
+  color: var(--text-primary); 
+  margin-bottom: var(--space-lg); 
+  border-bottom: none; 
+  padding-bottom: var(--space-sm); 
+  font-weight: 600; 
+  line-height: 1.2; 
+  letter-spacing: -1.5px; 
+}
+
+.section-title strong { 
+  font-weight: 700; 
+  color: var(--text-primary); 
+}
+
+/* Statistics Grid */
+.stats-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: var(--space); 
+  margin-bottom: var(--space-sm); 
+}
+
+.stat-card { 
+  background: var(--bg-primary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding: var(--space); 
+}
+
+.stat-label { 
+  font-size: 0.75rem; 
+  font-weight: 600; 
+  color: var(--text-secondary); 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em; 
+  margin-bottom: var(--space-sm); 
+}
+
+.stat-value { 
+  font-family: var(--font-family); 
+  font-size: 2.5rem; 
+  font-weight: 600; 
+  color: var(--text-primary); 
+  letter-spacing: -1px; 
+}
+
+.stat-company { 
+  font-size: 1.8rem; 
+  font-weight: 600; 
+  color: var(--text-primary); 
+}
+
+/* Charts */
+.chart-section { 
+  background: var(--bg-primary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding: var(--space-xl); 
+  margin-bottom: var(--space-sm); 
+  color: var(--text-primary); 
+}
+
+.chart-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: var(--space-lg); 
+}
+
+.chart-controls { 
+  display: flex; 
+  gap: var(--space-sm); 
+}
+
+.primary-charts { 
+  display: grid; 
+  grid-template-columns: 3fr 2fr; 
+  gap: var(--space-xl); 
+  height: 450px; 
+}
+
+.chart-container { 
+  position: relative; 
+  height: 100%; 
+  max-height: 450px; 
+  overflow: visible; 
+  padding-bottom: 40px; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+}
+
+.sankey-container { 
+  width: 100%; 
+  height: 100%; 
+  overflow: hidden; 
+}
+
+.industry-chart-container { 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  padding-top: var(--space-lg); 
+}
+
+/* Comparison Controls */
+.comparison-controls { 
+  background: var(--bg-secondary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding: var(--space); 
+  margin-top: var(--space); 
+}
+
+.comparison-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: var(--space); 
+}
+
+.vendor-selectors { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr auto; 
+  gap: var(--space); 
+  align-items: end; 
+  padding: var(--space); 
+  background: var(--bg-secondary); 
+  border-radius: var(--radius); 
+  border: 1px solid var(--border); 
+}
+
+.comparison-stat-grid { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: var(--space-sm); 
+  text-align: center; 
+}
+
+.comparison-stat-grid .stat-label { 
+  font-size: 0.7rem; 
+  margin-bottom: var(--space-xs); 
+}
+
+.comparison-stat-grid .stat-value { 
+  font-size: 1.5rem; 
+  line-height: 1; 
+}
+
+.comparison-close { 
+  background: var(--bg-tertiary); 
+  border: 1px solid var(--border); 
+  color: var(--text-secondary); 
+}
+
+.comparison-close:hover { 
+  background: var(--bg-secondary); 
+  color: var(--text-primary); 
+}
+
+/* Combo Box Styles */
+.combo-box { 
+  position: relative; 
+}
+
+.combo-box-input { 
+  width: 100%; 
+  cursor: pointer; 
+  transition: border-color 0.2s; 
+}
+
+.combo-box-input::placeholder { 
+  color: var(--text-secondary); 
+  transition: color 0.2s; 
+}
+
+.combo-box-input.error { 
+  border-color: #dc3545; 
+}
+
+.combo-box-input.error::placeholder { 
+  color: #dc3545; 
+}
+
+.combo-box-arrow { 
+  position: absolute; 
+  right: var(--space); 
+  top: 50%; 
+  transform: translateY(-50%); 
+  pointer-events: none; 
+  color: var(--text-secondary); 
+}
+
+.combo-box-options { 
+  display: none; 
+  position: absolute; 
+  top: 100%; 
+  left: 0; 
+  right: 0; 
+  background: var(--bg-primary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  z-index: 100; 
+  max-height: 250px; 
+  overflow-y: auto; 
+  box-shadow: var(--shadow); 
+}
+
+.combo-box.open .combo-box-options { 
+  display: block; 
+}
+
+.combo-box-option { 
+  padding: var(--space-sm) var(--space); 
+  cursor: pointer; 
+  font-size: 0.875rem; 
+}
+
+.combo-box-option:hover, .combo-box-option.highlighted { 
+  background: var(--bg-tertiary); 
+}
+
+.combo-box-option.hidden { 
+  display: none; 
+}
+
+/* Tables */
+.table-section { 
+  background: var(--bg-primary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  overflow: hidden; 
+}
+
+.tabs { 
+  display: flex; 
+  background: var(--bg-tertiary); 
+  border-bottom: 1px solid var(--border); 
+}
+
+.tab-btn { 
+  padding: var(--space) var(--space-lg); 
+  background: none; 
+  border: none; 
+  color: var(--text-secondary); 
+  font-size: 0.875rem; 
+  font-weight: 500; 
+  cursor: pointer; 
+  transition: var(--transition); 
+}
+
+.tab-btn.active, .tab-btn:hover { 
+  color: var(--text-primary); 
+  background: var(--bg-primary); 
+}
+
+.tab-content { 
+  display: none; 
+  padding: var(--space-xl); 
+}
+
+.tab-content.active { 
+  display: block; 
+}
+
+.data-table { 
+  width: 100%; 
+  border-collapse: collapse; 
+}
+
+.data-table th { 
+  background: var(--bg-secondary); 
+  padding: var(--space); 
+  text-align: left; 
+  font-weight: 600; 
+  color: var(--text-primary); 
+  border-bottom: 2px solid var(--border); 
+  font-size: 0.75rem; 
+  text-transform: uppercase; 
+  letter-spacing: 0.05em; 
+}
+
+.data-table td { 
+  padding: var(--space); 
+  border-bottom: 1px solid var(--border); 
+  color: var(--text-primary); 
+  font-size: 0.875rem; 
+}
+
+.data-table tr:hover { 
+  background: var(--bg-tertiary); 
+}
+
+/* Entity Badges */
+.entity-badge { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: var(--space-sm); 
+}
+
+.entity-icon { 
+  width: 1.5rem; 
+  height: 1.5rem; 
+  border-radius: 2px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 0.625rem; 
+  font-weight: 700; 
+  flex-shrink: 0; 
+}
+
+/* Modal */
+.modal-backdrop { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  height: 100%; 
+  background: rgba(0, 0, 0, 0.5); 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  z-index: 1000; 
+  opacity: 0; 
+  visibility: hidden; 
+  transition: var(--transition); 
+}
+
+.modal-backdrop.active { 
+  opacity: 1; 
+  visibility: visible; 
+}
+
+.modal { 
+  background: var(--bg-primary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  width: 90%; 
+  max-width: 600px; 
+  max-height: 80vh; 
+  overflow: auto; 
+}
+
+.modal-header { 
+  padding: var(--space-lg); 
+  border-bottom: 1px solid var(--border); 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+.modal-body { 
+  padding: var(--space-lg); 
+}
+
+.modal-footer { 
+  padding: var(--space-lg); 
+  border-top: 1px solid var(--border); 
+  display: flex; 
+  justify-content: flex-end; 
+}
+
+/* State Displays */
+.loading-state, .empty-state, .error-state { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  padding: var(--space-2xl); 
+  text-align: center; 
+}
+
+.loading-spinner { 
+  width: 2rem; 
+  height: 2rem; 
+  border: 2px solid var(--border); 
+  border-top: 2px solid var(--text-primary); 
+  border-radius: 50%; 
+  animation: spin 1s linear infinite; 
+  margin-bottom: var(--space); 
+}
+
+@keyframes spin { 
+  0% { transform: rotate(0deg); } 
+  100% { transform: rotate(360deg); } 
+}
+
+.error-state { 
+  background: #f8d7da; 
+  color: #721c24; 
+  border: 1px solid #f5c6cb; 
+  border-radius: var(--radius); 
+}
+
+/* Empty State */
+.empty-state-content { 
+  max-width: 800px; 
+}
+
+.empty-state-title { 
+  font-size: 2.5rem; 
+  font-weight: 700; 
+  color: var(--text-primary); 
+  margin-bottom: var(--space-lg); 
+}
+
+.empty-state-intro { 
+  font-size: 1.125rem; 
+  color: var(--text-secondary); 
+  margin-bottom: var(--space-2xl); 
+  line-height: 1.6; 
+}
+
+.how-to-guide { 
+  background: var(--bg-secondary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding: var(--space-2xl); 
+  margin-bottom: var(--space-2xl); 
+  text-align: left; 
+}
+
+.how-to-guide h3 { 
+  font-size: 1.5rem; 
+  font-weight: 600; 
+  color: var(--text-primary); 
+  margin-bottom: var(--space-lg); 
+  text-align: center; 
+}
+
+.how-to-guide ol { 
+  list-style: none; 
+  counter-reset: step-counter; 
+}
+
+.how-to-guide li { 
+  counter-increment: step-counter; 
+  margin-bottom: var(--space-lg); 
+  padding-left: var(--space-2xl); 
+  position: relative; 
+}
+
+.how-to-guide li:before { 
+  content: counter(step-counter); 
+  position: absolute; 
+  left: 0; 
+  top: 0; 
+  background: var(--primary); 
+  color: var(--primary-text); 
+  width: 1.5rem; 
+  height: 1.5rem; 
+  border-radius: 50%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-weight: 600; 
+  font-size: 0.875rem; 
+}
+
+.how-to-guide li strong { 
+  color: var(--text-primary); 
+  font-weight: 600; 
+}
+
+.how-to-guide li p { 
+  margin-top: var(--space-xs); 
+  color: var(--text-secondary); 
+}
+
+.empty-state-prompt { 
+  font-size: 1rem; 
+  color: var(--text-secondary); 
+}
+
+/* Footer */
+.app-footer-enhanced { 
+  background: var(--bg-primary); 
+  border-top: 1px solid var(--border); 
+  padding: var(--space-2xl) var(--space-xl); 
+  margin-top: 0; 
+}
+
+.footer-content { 
+  max-width: 1200px; 
+  margin: 0 auto; 
+}
+
+.explainer-section { 
+  text-align: center; 
+  margin-bottom: var(--space-2xl); 
+  padding-bottom: var(--space-xl); 
+  border-bottom: 1px solid var(--border); 
+}
+
+.explainer-section h3 { 
+  font-size: 1.5rem; 
+  font-weight: 600; 
+  color: var(--text-primary); 
+  margin-bottom: var(--space); 
+}
+
+.explainer-section p { 
+  font-size: 1rem; 
+  color: var(--text-secondary); 
+  margin-bottom: var(--space-xl); 
+  max-width: 800px; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+.explainer-section a, .step-text a, .footer-links a { 
+  color: var(--primary); 
+  text-decoration: none; 
+  font-weight: 500; 
+  transition: var(--transition); 
+}
+
+.explainer-section a:hover, .step-text a:hover, .footer-links a:hover { 
+  color: var(--primary-dark); 
+  text-decoration: underline; 
+}
+
+.quick-steps { 
+  display: flex; 
+  justify-content: center; 
+  gap: var(--space-xl); 
+  max-width: 900px; 
+  margin: 0 auto; 
+}
+
+.step-row { 
+  display: flex; 
+  align-items: flex-start; 
+  gap: var(--space); 
+  flex: 1; 
+  text-align: left; 
+}
+
+.step-number { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  width: 1.75rem; 
+  height: 1.75rem; 
+  background: var(--primary); 
+  color: var(--primary-text); 
+  border-radius: 50%; 
+  font-weight: 600; 
+  font-size: 0.875rem; 
+  flex-shrink: 0; 
+}
+
+.step-text strong { 
+  color: var(--text-primary); 
+  font-weight: 600; 
+}
+
+.step-text { 
+  font-size: 0.875rem; 
+  color: var(--text-secondary); 
+  line-height: 1.5; 
+}
+
+.footer-grid-expanded { 
+  display: grid; 
+  grid-template-columns: 1.2fr 1fr 1fr; 
+  gap: var(--space-xl); 
+}
+
+.footer-section h3 { 
+  font-size: 1.25rem; 
+  font-weight: 600; 
+  color: var(--text-primary); 
+  margin-bottom: var(--space-lg); 
+}
+
+.connect-card-compact { 
+  background: var(--bg-secondary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding: var(--space-lg); 
+  display: flex; 
+  gap: var(--space); 
+  align-items: flex-start; 
+}
+
 .connect-avatar {
   flex-shrink: 0;
 }
@@ -192,458 +910,119 @@ body {
   border: 2px solid var(--border); 
   display: block;
 }
-.connect-info h4 { font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-xs); }
-.connect-info p { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: var(--space); line-height: 1.5; }
-.connect-buttons { display: flex; gap: var(--space-sm); }
-.user-types { display: flex; flex-direction: column; gap: var(--space); margin-bottom: var(--space); }
-.user-type { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-sm); font-size: 0.875rem; line-height: 1.4; }
-.user-type strong { color: var(--text-primary); font-weight: 600; display: block; margin-bottom: var(--space-xs); }
-.search-examples-compact { display: flex; flex-direction: column; gap: var(--space); margin-bottom: var(--space-lg); }
-.search-example-compact { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space-sm); }
-.search-example-compact strong { display: block; color: var(--text-primary); font-size: 0.8rem; margin-bottom: var(--space-xs); font-weight: 600; }
-.search-example-compact code { background: var(--bg-tertiary); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius); font-size: 0.7rem; font-family: 'Courier New', monospace; color: var(--text-primary); display: block; word-break: break-all; border: 1px solid var(--border); }
-.footer-links { display: flex; flex-direction: column; gap: var(--space-sm); }
-.footer-links a { color: var(--primary); text-decoration: none; font-weight: 500; font-size: 0.875rem; display: inline-flex; align-items: center; gap: var(--space-sm); transition: var(--transition); }
-.footer-links a:hover { color: var(--primary-dark); text-decoration: underline; }
-.footer-links a i { color: var(--primary); width: 1rem; }
-.copyright { border-top: 1px solid var(--border); margin-top: var(--space-xl); padding-top: var(--space-xl); text-align: center; font-size: 0.875rem; color: var(--text-tertiary); }
 
-/* --- NEW COMBO BOX & UPDATED COMPARISON STYLES --- */
-.comparison-controls { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: var(--space); margin-top: var(--space); }
-.comparison-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space); }
-.vendor-selectors { display: grid; grid-template-columns: 1fr 1fr auto; gap: var(--space); align-items: end; padding: var(--space); background: var(--bg-secondary); border-radius: var(--radius); border: 1px solid var(--border); }
-.comparison-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm); text-align: center; }
-.comparison-stat-grid .stat-label { font-size: 0.7rem; margin-bottom: var(--space-xs); }
-.comparison-stat-grid .stat-value { font-size: 1.5rem; line-height: 1; }
-.comparison-close { background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--text-secondary); }
-.comparison-close:hover { background: var(--bg-secondary); color: var(--text-primary); }
-.overlap-chart-container .axis .domain, .overlap-chart-container .axis .tick line { stroke: var(--text-secondary); }
-.overlap-chart-container .axis .tick text { fill: var(--text-secondary); font-size: 10px; }
-.overlap-chart-container .y-axis text { fill: var(--text-primary); font-size: 11px; }
-
-/* Searchable Dropdown (Combo Box) */
-.combo-box { position: relative; }
-.combo-box-input { width: 100%; cursor: pointer; transition: border-color 0.2s; }
-.combo-box-input::placeholder { color: var(--text-secondary); transition: color 0.2s; }
-.combo-box-input.error { border-color: #dc3545; }
-.combo-box-input.error::placeholder { color: #dc3545; }
-.combo-box-arrow { position: absolute; right: var(--space); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary); }
-.combo-box-options { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius); z-index: 100; max-height: 250px; overflow-y: auto; box-shadow: var(--shadow); }
-.combo-box.open .combo-box-options { display: block; }
-.combo-box-option { padding: var(--space-sm) var(--space); cursor: pointer; font-size: 0.875rem; }
-.combo-box-option:hover, .combo-box-option.highlighted { background: var(--bg-tertiary); }
-.combo-box-option.hidden { display: none; }
-
-.text-right { text-align: right; }
-.overlap-chart-container .y-axis text {
-  font-size: 10px;
-  max-width: 200px;
+.connect-info h4 { 
+  font-size: 1rem; 
+  font-weight: 600; 
+  color: var(--text-primary); 
+  margin-bottom: var(--space-xs); 
 }
 
-/* Loading States */
-.comparison-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: var(--text-secondary);
-  font-size: 0.875rem;
+.connect-info p { 
+  font-size: 0.875rem; 
+  color: var(--text-secondary); 
+  margin-bottom: var(--space); 
+  line-height: 1.5; 
 }
 
-.comparison-loading .loading-spinner {
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-right: var(--space);
+.connect-buttons { 
+  display: flex; 
+  gap: var(--space-sm); 
 }
 
-.chart-loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--bg-primary);
-  padding: var(--space);
+.user-types { 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space); 
+  margin-bottom: var(--space); 
+}
+
+.user-type { 
+  background: var(--bg-secondary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding: var(--space-sm); 
+  font-size: 0.875rem; 
+  line-height: 1.4; 
+}
+
+.user-type strong { 
+  color: var(--text-primary); 
+  font-weight: 600; 
+  display: block; 
+  margin-bottom: var(--space-xs); 
+}
+
+.search-examples-compact { 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space); 
+  margin-bottom: var(--space-lg); 
+}
+
+.search-example-compact { 
+  background: var(--bg-secondary); 
+  border: 1px solid var(--border); 
+  border-radius: var(--radius); 
+  padding: var(--space-sm); 
+}
+
+.search-example-compact strong { 
+  display: block; 
+  color: var(--text-primary); 
+  font-size: 0.8rem; 
+  margin-bottom: var(--space-xs); 
+  font-weight: 600; 
+}
+
+.search-example-compact code { 
+  background: var(--bg-tertiary); 
+  padding: var(--space-xs) var(--space-sm); 
   border-radius: var(--radius);
-  z-index: 10;
+  font-size: 0.7rem; 
+  font-family: 'Courier New', monospace; 
+  color: var(--text-primary); 
+  display: block; 
+  word-break: break-all; 
+  border: 1px solid var(--border); 
 }
 
-.comparison-error {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: var(--text-secondary);
-  text-align: center;
-  padding: var(--space);
+.footer-links { 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space-sm); 
 }
 
-.comparison-error h4 {
-  color: var(--text-primary);
-  margin-bottom: var(--space-sm);
+.footer-links a { 
+  color: var(--primary); 
+  text-decoration: none; 
+  font-weight: 500; 
+  font-size: 0.875rem; 
+  display: inline-flex; 
+  align-items: center; 
+  gap: var(--space-sm); 
+  transition: var(--transition); 
 }
 
-/* Mobile fixes - comprehensive layout improvements */
-@media (max-width: 768px) {
-  /* Ensure main container doesn't overflow */
-  body, html {
-    overflow-x: hidden;
-    max-width: 100vw;
-  }
-
-  .app-container {
-    overflow-x: hidden;
-    max-width: 100vw;
-  }
-
-  .app-header { 
-    padding: var(--space) var(--space-lg); 
-  }
-  
-  .dashboard { 
-    padding: var(--space-lg); 
-  }
-
-  /* Fix chart section and header layout */
-  .chart-section {
-    padding: var(--space) var(--space-sm);
-    overflow-x: hidden;
-  }
-
-  .chart-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space);
-  }
-
-  /* Fix chart controls - make them wrap and fit container */
-  .chart-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-xs);
-    justify-content: center;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .chart-controls .btn {
-    flex: 1;
-    min-width: 0;
-    padding: var(--space-xs) var(--space-sm);
-    font-size: 0.7rem;
-    white-space: nowrap;
-    max-width: calc(33.333% - var(--space-xs));
-  }
-
-  /* Fix sankeyControls container specifically */
-  #sankeyControls {
-    width: 100%;
-    max-width: 100%;
-    overflow: hidden;
-  }
-
-  #sankeyControls .btn {
-    min-width: 0;
-    flex: 1;
-    max-width: calc(33.333% - var(--space-xs));
-  }
-
-  /* Fix section title to prevent overflow */
-  .section-title {
-    font-size: 1.5rem;
-    line-height: 1.3;
-    word-wrap: break-word;
-    hyphens: auto;
-  }
-
-  /* Fix main filters layout */
-  .main-filters { 
-    grid-template-columns: 1fr; 
-    gap: var(--space-sm);
-  }
-
-  /* Fix comparison controls layout */
-  .vendor-selectors {
-    grid-template-columns: 1fr;
-    gap: var(--space-sm);
-    padding: var(--space-sm);
-  }
-
-  .comparison-controls {
-    margin-top: var(--space-sm);
-    padding: var(--space-sm);
-  }
-
-  .comparison-header {
-    flex-direction: column;
-    gap: var(--space-sm);
-    align-items: stretch;
-  }
-
-  .comparison-stat-grid .stat-value { 
-    font-size: 1.2rem; 
-  }
-
-  /* Fix combo box dropdowns for mobile */
-  .combo-box {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .combo-box-input {
-    width: 100%;
-    min-height: 44px;
-    font-size: 16px; /* Prevents zoom on iOS */
-    padding: var(--space) var(--space-sm);
-  }
-
-  .combo-box-options {
-    max-height: 200px;
-    left: 0;
-    right: 0;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .combo-box-option {
-    padding: var(--space) var(--space-lg);
-    font-size: 0.9rem;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    word-wrap: break-word;
-    hyphens: auto;
-  }
-
-  /* Fix advanced filters */
-  .filters-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space);
-  }
-
-  /* Fix select elements */
-  .form-select, .form-input {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    font-size: 16px; /* Prevents zoom on iOS */
-  }
-
-  /* Fix button groups */
-  .dataset-buttons {
-    flex-direction: column;
-    gap: var(--space-xs);
-  }
-
-  .dataset-buttons .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* Fix stats grid */
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-sm);
-  }
-
-  /* Fix primary charts container */
-  .primary-charts { 
-    grid-template-columns: 1fr; 
-    height: auto; 
-    gap: var(--space-lg); 
-  }
-  
-  .chart-container { 
-    height: 300px;
-    max-height: 300px;
-  }
-
-  .sankey-container { 
-    height: 300px; 
-    overflow: hidden;
-  }
-
-  /* Fix table sections */
-  .table-section { 
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .data-table {
-    min-width: 600px; /* Ensure table doesn't compress too much */
-    font-size: 0.75rem;
-  }
-  
-  .data-table th,
-  .data-table td {
-    padding: var(--space-xs) var(--space-sm);
-    white-space: nowrap;
-  }
-
-  .data-table td:first-child {
-    white-space: nowrap;
-    min-width: 60px;
-    font-size: 0.75rem;
-    font-family: 'Courier New', monospace;
-    letter-spacing: -0.5px;
-  }
-
-  /* Fix tabs */
-  .tabs {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .tab-btn {
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  /* Fix modal for mobile */
-  .modal {
-    width: 95%;
-    max-width: 95%;
-    margin: var(--space);
-    max-height: 90vh;
-  }
-
-  /* Fix footer layout */
-  .footer-grid-expanded {
-    grid-template-columns: 1fr;
-    gap: var(--space);
-  }
-
-  .quick-steps {
-    flex-direction: column;
-    gap: var(--space);
-  }
-
-  /* Ensure no horizontal scrolling */
-  * {
-    max-width: 100%;
-    box-sizing: border-box;
-  }
+.footer-links a:hover { 
+  color: var(--primary-dark); 
+  text-decoration: underline; 
 }
 
-/* Additional fixes for very small screens */
-@media (max-width: 480px) {
-  .chart-controls .btn {
-    font-size: 0.65rem;
-    padding: var(--space-xs);
-  }
-
-  .section-title {
-    font-size: 1.25rem;
-  }
-
-  .stat-value {
-    font-size: 1.8rem;
-  }
-
-  .combo-box-option {
-    font-size: 0.8rem;
-    padding: var(--space-sm);
-  }
+.footer-links a i { 
+  color: var(--primary); 
+  width: 1rem; 
 }
 
-/* Landscape mobile fixes */
-@media (max-width: 768px) and (orientation: landscape) {
-  .chart-container {
-    height: 250px;
-  }
-  
-  .sankey-container {
-    height: 250px;
-  }
+.copyright { 
+  border-top: 1px solid var(--border); 
+  margin-top: var(--space-xl); 
+  padding-top: var(--space-xl); 
+  text-align: center; 
+  font-size: 0.875rem; 
+  color: var(--text-tertiary); 
 }
-@media (max-width: 768px) {
-  .data-table th,
-  .data-table td {
-    padding: var(--space-xs) var(--space-sm);
-  }
-  
-  /* Make specific columns narrower */
-  .data-table td:nth-child(1), /* Date */
-  .data-table th:nth-child(1) {
-    width: 70px;
-    padding: var(--space-xs) var(--space-xs);
-  }
-  
-  .data-table td:nth-child(2), /* Contract ID */
-  .data-table th:nth-child(2) {
-    width: 80px;
-    padding: var(--space-xs) var(--space-xs);
-  }
-  
-  .data-table td:nth-child(8), /* Actions */
-  .data-table th:nth-child(8) {
-    width: 60px;
-    padding: var(--space-xs) var(--space-xs);
-    position: sticky;
-    right: 0;
-    background: var(--bg-primary);
-    border-left: 1px solid var(--border);
-  }
-}
-@media (max-width: 768px) {
-  .connect-card-compact {
-    flex-direction: column;
-    gap: var(--space);
-    padding: var(--space);
-    text-align: center;
-  }
-  
-  .connect-avatar {
-    align-self: center;
-  }
-  
-  .connect-avatar img {
-    width: 60px;
-    height: 60px;
-  }
-  
-  .connect-info {
-    text-align: left;
-  }
-  
-  .connect-info h4 {
-    font-size: 1.125rem;
-    margin-bottom: var(--space-sm);
-  }
-  
-  .connect-info p {
-    font-size: 0.8rem;
-    line-height: 1.4;
-    margin-bottom: var(--space-sm);
-  }
-  
-  .connect-buttons {
-    flex-wrap: wrap;
-    gap: var(--space-xs);
-    justify-content: center;
-  }
-  
-  .connect-buttons .btn {
-    flex: 1;
-    min-width: 80px;
-    font-size: 0.75rem;
-    padding: var(--space-sm);
-  }
-  
-  /* Ensure the entire footer section has proper mobile constraints */
-  .footer-section {
-    padding: 0 var(--space);
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    hyphens: auto;
-  }
-  
-  .footer-content {
-    padding: 0 var(--space);
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-}
+
 /* FPDS Search Builder */
 .fpds-search-builder {
   background: var(--bg-primary);
@@ -698,7 +1077,7 @@ body {
 
 .search-form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--space);
   margin-bottom: var(--space-lg);
 }
@@ -780,25 +1159,6 @@ body {
   margin-bottom: var(--space-sm);
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .search-form-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .quick-templates {
-    grid-template-columns: 1fr;
-  }
-  
-  .search-actions {
-    flex-direction: column;
-  }
-  
-  .search-actions .btn {
-    width: 100%;
-    justify-content: center;
-  }
-}
 .data-source-banner {
   background: var(--bg-tertiary);
   border: 1px solid var(--border);
@@ -830,17 +1190,425 @@ body {
   font-weight: 600;
   color: var(--text-primary);
 }
-.search-form-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space);
-  margin-bottom: var(--space-lg);
+
+/* Utility Classes */
+.hidden { 
+  display: none !important; 
 }
 
-/* Mobile override */
+.truncate { 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+}
+
+.text-right { 
+  text-align: right; 
+}
+
+.active-filters-display { 
+  font-size: 1rem; 
+  color: var(--text-secondary); 
+  margin-top: var(--space-xs); 
+  font-weight: 500; 
+  height: 1.5em; 
+}
+
+.active-filters-display strong { 
+  color: var(--text-primary); 
+  font-weight: 600; 
+}
+
+/* Loading States */
+.comparison-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.comparison-loading .loading-spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: var(--space);
+}
+
+.chart-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg-primary);
+  padding: var(--space);
+  border-radius: var(--radius);
+  z-index: 10;
+}
+
+.comparison-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--text-secondary);
+  text-align: center;
+  padding: var(--space);
+}
+
+.comparison-error h4 {
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
+  body, html {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .app-container {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  .app-header { 
+    padding: var(--space) var(--space-lg); 
+  }
+  
+  .dashboard { 
+    padding: var(--space-lg); 
+  }
+
+  .chart-section {
+    padding: var(--space) var(--space-sm);
+    overflow-x: hidden;
+  }
+
+  .chart-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space);
+  }
+
+  .chart-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .chart-controls .btn {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.7rem;
+    white-space: nowrap;
+    max-width: calc(33.333% - var(--space-xs));
+  }
+
+  #sankeyControls {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  #sankeyControls .btn {
+    min-width: 0;
+    flex: 1;
+    max-width: calc(33.333% - var(--space-xs));
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    line-height: 1.3;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .main-filters { 
+    grid-template-columns: 1fr; 
+    gap: var(--space-sm);
+  }
+
+  .vendor-selectors {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+    padding: var(--space-sm);
+  }
+
+  .comparison-controls {
+    margin-top: var(--space-sm);
+    padding: var(--space-sm);
+  }
+
+  .comparison-header {
+    flex-direction: column;
+    gap: var(--space-sm);
+    align-items: stretch;
+  }
+
+  .comparison-stat-grid .stat-value { 
+    font-size: 1.2rem; 
+  }
+
+  .combo-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .combo-box-input {
+    width: 100%;
+    min-height: 44px;
+    font-size: 16px;
+    padding: var(--space) var(--space-sm);
+  }
+
+  .combo-box-options {
+    max-height: 200px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .combo-box-option {
+    padding: var(--space) var(--space-lg);
+    font-size: 0.9rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space);
+  }
+
+  .form-select, .form-input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  .dataset-buttons {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .dataset-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .primary-charts { 
+    grid-template-columns: 1fr; 
+    height: auto; 
+    gap: var(--space-lg); 
+  }
+  
+  .chart-container { 
+    height: 300px;
+    max-height: 300px;
+  }
+
+  .sankey-container { 
+    height: 300px; 
+    overflow: hidden;
+  }
+
+  .table-section { 
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .data-table {
+    min-width: 600px;
+    font-size: 0.75rem;
+  }
+  
+  .data-table th,
+  .data-table td {
+    padding: var(--space-xs) var(--space-sm);
+    white-space: nowrap;
+  }
+
+  .data-table td:first-child {
+    white-space: nowrap;
+    min-width: 60px;
+    font-size: 0.75rem;
+    font-family: 'Courier New', monospace;
+    letter-spacing: -0.5px;
+  }
+
+  .data-table td:nth-child(1), 
+  .data-table th:nth-child(1) {
+    width: 70px;
+    padding: var(--space-xs) var(--space-xs);
+  }
+  
+  .data-table td:nth-child(2), 
+  .data-table th:nth-child(2) {
+    width: 80px;
+    padding: var(--space-xs) var(--space-xs);
+  }
+  
+  .data-table td:nth-child(8), 
+  .data-table th:nth-child(8) {
+    width: 60px;
+    padding: var(--space-xs) var(--space-xs);
+    position: sticky;
+    right: 0;
+    background: var(--bg-primary);
+    border-left: 1px solid var(--border);
+  }
+
+  .tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .modal {
+    width: 95%;
+    max-width: 95%;
+    margin: var(--space);
+    max-height: 90vh;
+  }
+
+  .footer-grid-expanded {
+    grid-template-columns: 1fr;
+    gap: var(--space);
+  }
+
+  .quick-steps {
+    flex-direction: column;
+    gap: var(--space);
+  }
+
+  .connect-card-compact {
+    flex-direction: column;
+    gap: var(--space);
+    padding: var(--space);
+    text-align: center;
+  }
+  
+  .connect-avatar {
+    align-self: center;
+  }
+  
+  .connect-avatar img {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .connect-info {
+    text-align: left;
+  }
+  
+  .connect-info h4 {
+    font-size: 1.125rem;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .connect-info p {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin-bottom: var(--space-sm);
+  }
+  
+  .connect-buttons {
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    justify-content: center;
+  }
+  
+  .connect-buttons .btn {
+    flex: 1;
+    min-width: 80px;
+    font-size: 0.75rem;
+    padding: var(--space-sm);
+  }
+  
+  .footer-section {
+    padding: 0 var(--space);
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  .footer-content {
+    padding: 0 var(--space);
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   .search-form-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .quick-templates {
+    grid-template-columns: 1fr;
+  }
+  
+  .search-actions {
+    flex-direction: column;
+  }
+  
+  .search-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  * {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-controls .btn {
+    font-size: 0.65rem;
+    padding: var(--space-xs);
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.8rem;
+  }
+
+  .combo-box-option {
+    font-size: 0.8rem;
+    padding: var(--space-sm);
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .chart-container {
+    height: 250px;
+  }
+  
+  .sankey-container {
+    height: 250px;
   }
 }
 </style>
@@ -1219,6 +1987,7 @@ body {
   </div>
 
 <script>
+// Optimized theme manager with caching
 const themeManager = {
   themes: {
     light: {
@@ -1264,38 +2033,44 @@ const themeManager = {
       console.warn(`Theme "${themeName}" not found.`);
       return;
     }
-    for (const [key, value] of Object.entries(theme.cssVars)) {
-      document.documentElement.style.setProperty(key, value);
-    }
-    PALETTE = theme.chartPalette;
-    document.querySelectorAll('.theme-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.theme === themeName);
-    });
-    // Note: localStorage removed for Claude.ai compatibility
-    if (app.data.length > 0) {
-      if (comparisonManager.isActive) {
-          charts.initAll(true); 
-          comparisonManager.runComparison();
-      } else {
-          charts.initAll();
-          dashboard.updateCharts();
+    
+    // Batch DOM updates
+    const root = document.documentElement;
+    requestAnimationFrame(() => {
+      for (const [key, value] of Object.entries(theme.cssVars)) {
+        root.style.setProperty(key, value);
       }
-    }
+      PALETTE = theme.chartPalette;
+      
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.theme === themeName);
+      });
+      
+      if (app.data.length > 0) {
+        if (comparisonManager.isActive) {
+            charts.initAll(true); 
+            comparisonManager.runComparison();
+        } else {
+            charts.initAll();
+            dashboard.updateCharts();
+        }
+      }
+    });
   },
   init() {
-    // Default to dark theme since localStorage is not available
     this.applyTheme('dark');
   }
 };
 
+// Optimized app state with Maps for better performance
 const app = {
   data: [],
   filteredData: [],
-  agencies: {},
-  offices: {},
-  vendors: {},
-  naicsCodes: {},
-  pscCodes: {},
+  agencies: new Map(),
+  offices: new Map(),
+  vendors: new Map(),
+  naicsCodes: new Map(),
+  pscCodes: new Map(),
   charts: {},
   filters: {
     search: null,
@@ -1319,6 +2094,16 @@ const app = {
 
 let PALETTE = [];
 const chartConfig = { fillOpacity: 0.65, lineOpacity: 0.25, comparisonColorB: '#4A90E2' };
+
+// Optimized element caching
+const elementCache = new Map();
+function getElement(id) {
+  if (!elementCache.has(id)) {
+    elementCache.set(id, document.getElementById(id));
+  }
+  return elementCache.get(id);
+}
+
 const elements = {};
 
 function cacheElements() {
@@ -1335,34 +2120,61 @@ function cacheElements() {
     'statCard1', 'statCard2', 'statCard3', 'statCard4'
   ];
   elementIds.forEach(id => {
-    elements[id] = document.getElementById(id);
+    elements[id] = getElement(id);
   });
-  elements.timelineChart = document.getElementById('timelineChart')?.getContext('2d');
-  elements.industryChart = document.getElementById('industryChart')?.getContext('2d');
+  elements.timelineChart = getElement('timelineChart')?.getContext('2d');
+  elements.industryChart = getElement('industryChart')?.getContext('2d');
   elements.recentTable = document.querySelector('#recentTable tbody');
   elements.largestTable = document.querySelector('#largestTable tbody');
   elements.officesTable = document.querySelector('#officesTable tbody');
 }
 
+// Optimized utility functions with memoization
 const utils = {
+  // Cache for expensive formatting operations
+  _formatCache: new Map(),
+  _dateCache: new Map(),
+  _colorCache: new Map(),
+  
   formatMoney: function(value) {
     if (!value && value !== 0) return '$0';
+    
+    const cacheKey = value.toString();
+    if (this._formatCache.has(cacheKey)) {
+      return this._formatCache.get(cacheKey);
+    }
+    
     const number = parseFloat(value);
     if (isNaN(number)) return '$0';
-    const formatNumber = (num) => {
-      return num % 1 === 0 ? num.toFixed(0) : num.toFixed(1);
-    };
-    if (Math.abs(number) >= 1e9) return '$' + formatNumber(number / 1e9) + 'B';
-    if (Math.abs(number) >= 1e6) return '$' + formatNumber(number / 1e6) + 'M';
-    if (Math.abs(number) >= 1e3) return '$' + formatNumber(number / 1e3) + 'K';
-    return '$' + number.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    
+    let result;
+    const abs = Math.abs(number);
+    
+    if (abs >= 1e9) {
+      result = '$' + (number / 1e9).toFixed(abs >= 10e9 ? 0 : 1) + 'B';
+    } else if (abs >= 1e6) {
+      result = '$' + (number / 1e6).toFixed(abs >= 10e6 ? 0 : 1) + 'M';
+    } else if (abs >= 1e3) {
+      result = '$' + (number / 1e3).toFixed(abs >= 10e3 ? 0 : 1) + 'K';
+    } else {
+      result = '$' + number.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    }
+    
+    // Limit cache size
+    if (this._formatCache.size > 1000) {
+      this._formatCache.clear();
+    }
+    this._formatCache.set(cacheKey, result);
+    return result;
   },
+  
   getOpacityHex: function(opacity) {
     if (opacity < 0) opacity = 0;
     if (opacity > 1) opacity = 1;
     const alpha = Math.round(opacity * 255);
     return (alpha < 16 ? '0' : '') + alpha.toString(16).toUpperCase();
   },
+  
   formatDate: function(dateInput) { 
     if (!dateInput) return 'N/A';
     const date = this.parseDate(dateInput);
@@ -1373,16 +2185,19 @@ const utils = {
       timeZone: 'UTC' 
     }) : 'N/A';
   },
+  
   parseMoney: function(value) {
     if (value === null || value === undefined || value === '') return 0;
     const cleanValue = String(value).replace(/[$,\s]/g, '');
     return this.safeParseFloat(cleanValue);
   },
+  
   safeParseFloat: function(value) {
     if (value === null || value === undefined || value === '') return 0;
     const parsed = parseFloat(value);
     return isNaN(parsed) ? 0 : parsed;
   },
+  
   detectDataType: function(value, columnName) {
     if (!value || value === '') return { type: 'string', value: value };
     const str = String(value).trim();
@@ -1405,6 +2220,7 @@ const utils = {
     }
     return { type: 'string', value: str };
   },
+  
   parseCSV: function(text) {
     if (!text || typeof text !== 'string') {
       return { headers: [], data: [], errors: ['Invalid input: expected string'], warnings: [] };
@@ -1522,10 +2338,18 @@ const utils = {
 
     return { headers: cleanHeaders, data, errors, warnings };
   },
+  
   parseDate: function(dateString) {
     if (!dateString) return null;
     if (dateString instanceof Date && !isNaN(dateString)) return dateString;
+    
+    const cacheKey = dateString.toString();
+    if (this._dateCache.has(cacheKey)) {
+      return this._dateCache.get(cacheKey);
+    }
+    
     const s = String(dateString).trim();
+    let result = null;
     
     let parts = s.match(/^(\d{1,2})-(\w{3})-(\d{2,4})$/);
     if (parts) {
@@ -1538,36 +2362,57 @@ const utils = {
       let year = parseInt(parts[3]);
       if (year < 100) year = year < 50 ? 2000 + year : 1900 + year;
       if (!isNaN(day) && month !== undefined && !isNaN(year)) {
-        return new Date(Date.UTC(year, month, day));
+        result = new Date(Date.UTC(year, month, day));
+      }
+    } else {
+      const date = new Date(s);
+      if (!isNaN(date.getTime())) {
+        result = new Date(Date.UTC(
+          date.getFullYear(), 
+          date.getMonth(), 
+          date.getDate()
+        ));
       }
     }
     
-    const date = new Date(s);
-    if (!isNaN(date.getTime())) {
-      const utcDate = new Date(Date.UTC(
-        date.getFullYear(), 
-        date.getMonth(), 
-        date.getDate()
-      ));
-      return utcDate;
+    // Limit cache size
+    if (this._dateCache.size > 1000) {
+      this._dateCache.clear();
     }
-    return null;
+    this._dateCache.set(cacheKey, result);
+    return result;
   },
+  
   truncateText: function(text, maxLength) {
     if (!text) return '';
     if (typeof text !== 'string') text = String(text);
     if (text.length <= maxLength) return text;
     return text.substring(0, maxLength) + '...';
   },
+  
   getEntityColor: function(entityName) {
     if (!entityName) return PALETTE[0];
+    
+    if (this._colorCache.has(entityName)) {
+      return this._colorCache.get(entityName);
+    }
+    
     let hash = 0;
     const name = String(entityName);
     for (let i = 0; i < name.length; i++) {
       hash = name.charCodeAt(i) + ((hash << 5) - hash);
     }
-    return PALETTE[Math.abs(hash) % PALETTE.length];
+    
+    const color = PALETTE[Math.abs(hash) % PALETTE.length];
+    
+    // Limit cache size
+    if (this._colorCache.size > 1000) {
+      this._colorCache.clear();
+    }
+    this._colorCache.set(entityName, color);
+    return color;
   },
+  
   getInitials: function(name) {
     if (!name) return '?'; 
     const nameStr = String(name);
@@ -1576,6 +2421,7 @@ const utils = {
       ? (words[0].charAt(0) + words[1].charAt(0)).toUpperCase() 
       : nameStr.charAt(0).toUpperCase();
   },
+  
   parseValueRange: function(rangeStr) {
     if (!rangeStr || typeof rangeStr !== 'string') return null;
     const parts = rangeStr.split('-');
@@ -1584,6 +2430,7 @@ const utils = {
     const max = this.safeParseFloat(parts[1]);
     return { min, max };
   },
+  
   validateContract: function(contract) {
     return contract && 
            typeof contract === 'object' &&
@@ -1604,8 +2451,8 @@ const stateManager = {
     });
     
     if (state === 'errorState') {
-      if (message && document.getElementById('errorMessage')) {
-        document.getElementById('errorMessage').textContent = message;
+      if (message && getElement('errorMessage')) {
+        getElement('errorMessage').textContent = message;
       }
       if (app.parseWarnings.length > 0 && elements.parseWarnings) {
         elements.parseWarnings.innerHTML = `
@@ -1620,6 +2467,7 @@ const stateManager = {
       elements.controlsSection.style.display = state === 'dashboard' ? 'block' : 'none';
     }
   },
+  
   updateFilters: function(filterUpdates, skipSync = false) {
     if (app.isUpdating) return;
     Object.assign(app.filters, filterUpdates);
@@ -1628,6 +2476,7 @@ const stateManager = {
     }
     this.applyFilters();
   },
+  
   syncFiltersToUI: function() {
     if (elements.searchInput) {
       elements.searchInput.value = app.filters.search || '';
@@ -1662,6 +2511,7 @@ const stateManager = {
       }
     }
   },
+  
   applyFilters: function() {
     if (!app.data || app.data.length === 0) return;
     app.isUpdating = true;
@@ -1726,13 +2576,14 @@ const stateManager = {
     }
     app.isUpdating = false;
   },
+  
   analyzeFilteredData: function() {
     const data = app.filteredData;
-    app.agencies = {};
-    app.offices = {};
-    app.vendors = {};
-    app.naicsCodes = {};
-    app.pscCodes = {};
+    app.agencies.clear();
+    app.offices.clear();
+    app.vendors.clear();
+    app.naicsCodes.clear();
+    app.pscCodes.clear();
     
     data.forEach(contract => {
       if (!utils.validateContract(contract)) return;
@@ -1740,78 +2591,84 @@ const stateManager = {
       const value = utils.safeParseFloat(contract.value);
       
       if (contract.agency) {
-        if (!app.agencies[contract.agency]) {
-          app.agencies[contract.agency] = {
+        if (!app.agencies.has(contract.agency)) {
+          app.agencies.set(contract.agency, {
             name: contract.agency, 
             count: 0, 
             value: 0
-          };
+          });
         }
-        app.agencies[contract.agency].count++;
-        app.agencies[contract.agency].value += value;
+        const agency = app.agencies.get(contract.agency);
+        agency.count++;
+        agency.value += value;
       }
       
       if (contract.office) {
-        if (!app.offices[contract.office]) {
-          app.offices[contract.office] = {
+        if (!app.offices.has(contract.office)) {
+          app.offices.set(contract.office, {
             name: contract.office, 
             agency: contract.agency, 
             count: 0, 
             value: 0, 
             naicsCodes: {}
-          };
+          });
         }
-        app.offices[contract.office].count++;
-        app.offices[contract.office].value += value;
+        const office = app.offices.get(contract.office);
+        office.count++;
+        office.value += value;
         
         if (contract.naics) {
-          if (!app.offices[contract.office].naicsCodes[contract.naics]) {
-            app.offices[contract.office].naicsCodes[contract.naics] = { count: 0, value: 0 };
+          if (!office.naicsCodes[contract.naics]) {
+            office.naicsCodes[contract.naics] = { count: 0, value: 0 };
           }
-          app.offices[contract.office].naicsCodes[contract.naics].count++;
-          app.offices[contract.office].naicsCodes[contract.naics].value += value;
+          office.naicsCodes[contract.naics].count++;
+          office.naicsCodes[contract.naics].value += value;
         }
       }
       
       if (contract.vendor) {
-        if (!app.vendors[contract.vendor]) {
-          app.vendors[contract.vendor] = {
+        if (!app.vendors.has(contract.vendor)) {
+          app.vendors.set(contract.vendor, {
             name: contract.vendor, 
             count: 0, 
             value: 0
-          };
+          });
         }
-        app.vendors[contract.vendor].count++;
-        app.vendors[contract.vendor].value += value;
+        const vendor = app.vendors.get(contract.vendor);
+        vendor.count++;
+        vendor.value += value;
       }
       
       if (contract.naics) {
-        if (!app.naicsCodes[contract.naics]) {
-          app.naicsCodes[contract.naics] = {
+        if (!app.naicsCodes.has(contract.naics)) {
+          app.naicsCodes.set(contract.naics, {
             code: contract.naics, 
             description: contract.naicsDescription, 
             count: 0, 
             value: 0
-          };
+          });
         }
-        app.naicsCodes[contract.naics].count++;
-        app.naicsCodes[contract.naics].value += value;
+        const naics = app.naicsCodes.get(contract.naics);
+        naics.count++;
+        naics.value += value;
       }
       
       if (contract.psc) {
-        if (!app.pscCodes[contract.psc]) {
-          app.pscCodes[contract.psc] = {
+        if (!app.pscCodes.has(contract.psc)) {
+          app.pscCodes.set(contract.psc, {
             code: contract.psc, 
             description: contract.pscDescription, 
             count: 0, 
             value: 0
-          };
+          });
         }
-        app.pscCodes[contract.psc].count++;
-        app.pscCodes[contract.psc].value += value;
+        const psc = app.pscCodes.get(contract.psc);
+        psc.count++;
+        psc.value += value;
       }
     });
   },
+  
   resetFilters: function() {
     if (comparisonManager.isActive) {
         comparisonManager.clearComparison();
@@ -1841,6 +2698,7 @@ const stateManager = {
     this.updateFilterDisplay();
     this.syncFiltersToUI();
   },
+  
   applySelectionFilter: function(type, value) {
     if (app.filters[type] === value) {
       const updates = { [type]: null };
@@ -1853,13 +2711,13 @@ const stateManager = {
     
     const updates = { [type]: value };
     if (type === 'office') {
-      const parentAgency = app.offices[value]?.agency;
+      const parentAgency = app.offices.get(value)?.agency;
       if (parentAgency && parentAgency !== app.filters.agency) {
         updates.agency = parentAgency;
       }
     } else if (type === 'agency') {
       if (app.filters.office) {
-        const currentOfficeAgency = app.offices[app.filters.office]?.agency;
+        const currentOfficeAgency = app.offices.get(app.filters.office)?.agency;
         if (currentOfficeAgency !== value) {
           updates.office = null;
         }
@@ -1867,8 +2725,9 @@ const stateManager = {
     }
     this.updateFilters(updates);
   },
+  
   updateFilterDisplay() {
-    const displayElement = document.getElementById('filterDisplay');
+    const displayElement = getElement('filterDisplay');
     if (!displayElement) return;
     
     const parts = [];
@@ -2036,7 +2895,7 @@ const dataProcessor = {
     this.populateSelect('officeFilter', app.offices);
   },
   
-  populateSelect(selectId, data) {
+  populateSelect(selectId, dataMap) {
     const select = elements[selectId];
     if (!select) return;
     
@@ -2045,7 +2904,7 @@ const dataProcessor = {
       select.remove(1);
     }
     
-    const sortedData = Object.values(data)
+    const sortedData = Array.from(dataMap.values())
       .filter(item => item && (item.name || item.code))
       .sort((a, b) => (b.count || 0) - (a.count || 0))
       .slice(0, 200);
@@ -2244,7 +3103,7 @@ const charts = {
     const chart = app.charts.industry;
     if (!chart || !app.naicsCodes || comparisonManager.isActive || chart.config.type !== 'doughnut') return;
     
-    const naicsArray = Object.values(app.naicsCodes)
+    const naicsArray = Array.from(app.naicsCodes.values())
       .filter(naics => naics && naics.value > 0)
       .sort((a, b) => (b.value || 0) - (a.value || 0))
       .slice(0, 6);
@@ -2373,9 +3232,9 @@ const sankeyChart = {
       .style('cursor', 'pointer')
       .on('click', (event, d) => {
         let filterType = null;
-        if (app.agencies[d.name]) filterType = 'agency';
-        else if (app.offices[d.name]) filterType = 'office';
-        else if (app.vendors[d.name]) filterType = 'vendor';
+        if (app.agencies.has(d.name)) filterType = 'agency';
+        else if (app.offices.has(d.name)) filterType = 'office';
+        else if (app.vendors.has(d.name)) filterType = 'vendor';
         
         if (filterType) {
           stateManager.applySelectionFilter(filterType, d.name);
@@ -2585,7 +3444,7 @@ const dashboard = {
         .map(item => item.vendor)
     ).size;
     
-    const topCompany = Object.values(app.vendors)
+    const topCompany = Array.from(app.vendors.values())
       .filter(vendor => vendor && vendor.value > 0)
       .sort((a, b) => (b.value || 0) - (a.value || 0))[0];
     
@@ -2672,7 +3531,7 @@ const dashboard = {
     const tbody = elements.officesTable;
     if (!tbody) return;
     
-    const top15 = Object.values(app.offices)
+    const top15 = Array.from(app.offices.values())
       .filter(office => office && office.value > 0)
       .sort((a, b) => (b.value || 0) - (a.value || 0))
       .slice(0, 15);
@@ -2783,6 +3642,8 @@ const modal = {
   }
 };
 
+// Continue with comparisonManager and the rest of the code...
+
 const comparisonManager = {
   isActive: false,
   vendorA: null,
@@ -2798,7 +3659,7 @@ const comparisonManager = {
       </div>
     `;
     if (typeof container === 'string') {
-      document.getElementById(container).innerHTML = loadingHtml;
+      getElement(container).innerHTML = loadingHtml;
     } else {
       container.innerHTML = loadingHtml;
     }
@@ -2817,7 +3678,7 @@ const comparisonManager = {
     `;
     
     if (typeof container === 'string') {
-      document.getElementById(container).innerHTML = errorHtml;
+      getElement(container).innerHTML = errorHtml;
     } else {
       container.innerHTML = errorHtml;
     }
@@ -2826,7 +3687,7 @@ const comparisonManager = {
   validateVendorData(vendorA, vendorB) {
     const errors = [];
     
-    if (!vendorA || vendorA.length === 0) {
+   if (!vendorA || vendorA.length === 0) {
       errors.push(`${this.vendorA} has no contracts in the current filter`);
     }
     
@@ -2862,7 +3723,7 @@ const comparisonManager = {
   },
   
   cacheAllVendors() {
-    this.allVendors = Object.values(app.vendors)
+    this.allVendors = Array.from(app.vendors.values())
         .sort((a, b) => (b.value || 0) - (a.value || 0))
         .map(v => ({ name: v.name, value: v.value }));
     this.populateComboBox('A');
@@ -2896,7 +3757,7 @@ const comparisonManager = {
     input.style.borderColor = '';
     input.placeholder = `Vendor ${vendorType} selected`;
     
-    document.getElementById(`vendor${vendorType}ComboBox`).classList.remove('open');
+    getElement(`vendor${vendorType}ComboBox`).classList.remove('open');
     
     this.populateComboBox(vendorType === 'A' ? 'B' : 'A');
     this.filterComboBox(vendorType, '');
@@ -2908,7 +3769,7 @@ const comparisonManager = {
         elements.sankeyChart.innerHTML = '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary);">Ready to compare vendors</div>';
       }
     }
-},
+  },
   
   filterComboBox(vendorType, searchTerm) {
       const optionsContainer = elements[`vendor${vendorType}Options`];
@@ -2921,86 +3782,86 @@ const comparisonManager = {
   },
   
   async runComparison() {
-  // Clear any previous error states
-  elements.vendorAInput.style.borderColor = '';
-  elements.vendorBInput.style.borderColor = '';
-  
-  let hasErrors = false;
-  let errorMessage = '';
-  
-  if (!this.vendorA) {
-      elements.vendorAInput.style.borderColor = '#dc3545';
-      elements.vendorAInput.placeholder = 'Please select Vendor A';
-      hasErrors = true;
-      errorMessage = 'Please select both vendors to compare';
-  }
-  
-  if (!this.vendorB) {
-      elements.vendorBInput.style.borderColor = '#dc3545';
-      elements.vendorBInput.placeholder = 'Please select Vendor B';
-      hasErrors = true;
-      errorMessage = 'Please select both vendors to compare';
-  }
-  
-  if (this.vendorA === this.vendorB) {
-      elements.vendorAInput.style.borderColor = '#dc3545';
-      elements.vendorBInput.style.borderColor = '#dc3545';
-      hasErrors = true;
-      errorMessage = 'Please select two different vendors';
-  }
-  
-  if (hasErrors) {
-      this.showError(
-        elements.sankeyChart,
-        'Selection Required',
-        errorMessage
-      );
-      return;
-  }
-  
-  this.isLoading = true;
-  elements.runComparison.textContent = "Loading...";
-  elements.runComparison.disabled = true;
-  
-  try {
-    // Show loading state for main comparison area
-    this.showLoading(elements.sankeyChart, 'Analyzing vendor competition...');
+    // Clear any previous error states
+    elements.vendorAInput.style.borderColor = '';
+    elements.vendorBInput.style.borderColor = '';
     
-    // Small delay to show loading state
-    await new Promise(resolve => setTimeout(resolve, 100));
+    let hasErrors = false;
+    let errorMessage = '';
     
-    const vendorAData = app.filteredData.filter(c => c.vendor === this.vendorA);
-    const vendorBData = app.filteredData.filter(c => c.vendor === this.vendorB);
-    
-    // Validate data
-    const errors = this.validateVendorData(vendorAData, vendorBData);
-    
-    if (errors.length > 0) {
-      this.showError(
-        elements.sankeyChart,
-        'Comparison Not Possible',
-        errors.join('. '),
-        true
-      );
-      return;
+    if (!this.vendorA) {
+        elements.vendorAInput.style.borderColor = '#dc3545';
+        elements.vendorAInput.placeholder = 'Please select Vendor A';
+        hasErrors = true;
+        errorMessage = 'Please select both vendors to compare';
     }
     
-    await this.createComparisonView(vendorAData, vendorBData);
+    if (!this.vendorB) {
+        elements.vendorBInput.style.borderColor = '#dc3545';
+        elements.vendorBInput.placeholder = 'Please select Vendor B';
+        hasErrors = true;
+        errorMessage = 'Please select both vendors to compare';
+    }
     
-  } catch (error) {
-    console.error('Comparison error:', error);
-    this.showError(
-      elements.sankeyChart,
-      'Comparison Failed',
-      'An error occurred while creating the comparison. Please try again.',
-      true
-    );
-  } finally {
-    this.isLoading = false;
-    elements.runComparison.textContent = "Update Comparison";
-    elements.runComparison.disabled = false;
-  }
-},
+    if (this.vendorA === this.vendorB) {
+        elements.vendorAInput.style.borderColor = '#dc3545';
+        elements.vendorBInput.style.borderColor = '#dc3545';
+        hasErrors = true;
+        errorMessage = 'Please select two different vendors';
+    }
+    
+    if (hasErrors) {
+        this.showError(
+          elements.sankeyChart,
+          'Selection Required',
+          errorMessage
+        );
+        return;
+    }
+    
+    this.isLoading = true;
+    elements.runComparison.textContent = "Loading...";
+    elements.runComparison.disabled = true;
+    
+    try {
+      // Show loading state for main comparison area
+      this.showLoading(elements.sankeyChart, 'Analyzing vendor competition...');
+      
+      // Small delay to show loading state
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      const vendorAData = app.filteredData.filter(c => c.vendor === this.vendorA);
+      const vendorBData = app.filteredData.filter(c => c.vendor === this.vendorB);
+      
+      // Validate data
+      const errors = this.validateVendorData(vendorAData, vendorBData);
+      
+      if (errors.length > 0) {
+        this.showError(
+          elements.sankeyChart,
+          'Comparison Not Possible',
+          errors.join('. '),
+          true
+        );
+        return;
+      }
+      
+      await this.createComparisonView(vendorAData, vendorBData);
+      
+    } catch (error) {
+      console.error('Comparison error:', error);
+      this.showError(
+        elements.sankeyChart,
+        'Comparison Failed',
+        'An error occurred while creating the comparison. Please try again.',
+        true
+      );
+    } finally {
+      this.isLoading = false;
+      elements.runComparison.textContent = "Update Comparison";
+      elements.runComparison.disabled = false;
+    }
+  },
   
   async createComparisonView(dataA, dataB) {
     try {
@@ -3260,6 +4121,9 @@ const comparisonManager = {
     dashboard.updateAll();
   }
 };
+
+// Continue with event listeners, FPDS search functions, and initialization...
+
 const eventListeners = {
   setup() {
     this.setupFileHandlers();
@@ -3276,28 +4140,28 @@ const eventListeners = {
   
   setupFileHandlers() {
       const dataLoadControls = document.querySelector('.data-load-controls');
-if (dataLoadControls) {
-    dataLoadControls.addEventListener('click', (e) => {
-        if (e.target.matches('[data-dataset]')) {
-            const dataset = e.target.dataset.dataset;
-            dataProcessor.loadExampleData(dataset);
-            updateDataSourceBanner(`${dataset}.csv`);
-        }
-    });
-}
+      if (dataLoadControls) {
+          dataLoadControls.addEventListener('click', (e) => {
+              if (e.target.matches('[data-dataset]')) {
+                  const dataset = e.target.dataset.dataset;
+                  dataProcessor.loadExampleData(dataset);
+                  updateDataSourceBanner(`${dataset}.csv`);
+              }
+          });
+      }
       
       if (elements.csvFile) {
-    elements.csvFile.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            updateDataSourceBanner(file.name);
-            const reader = new FileReader();
-            reader.onload = (event) => dataProcessor.processData(event.target.result);
-            reader.onerror = () => stateManager.showState('errorState', 'Error reading the file.');
-            reader.readAsText(file);
-        }
-    });
-}
+          elements.csvFile.addEventListener('change', (e) => {
+              const file = e.target.files[0];
+              if (file) {
+                  updateDataSourceBanner(file.name);
+                  const reader = new FileReader();
+                  reader.onload = (event) => dataProcessor.processData(event.target.result);
+                  reader.onerror = () => stateManager.showState('errorState', 'Error reading the file.');
+                  reader.readAsText(file);
+              }
+          });
+      }
   },
   
   setupFilterHandlers() {
@@ -3353,7 +4217,7 @@ if (dataLoadControls) {
     }
     
     ['A', 'B'].forEach(v => {
-        const comboBox = document.getElementById(`vendor${v}ComboBox`);
+        const comboBox = getElement(`vendor${v}ComboBox`);
         const input = elements[`vendor${v}Input`];
         if (input) {
             input.addEventListener('input', () => comparisonManager.filterComboBox(v, input.value.toLowerCase()));
@@ -3373,7 +4237,7 @@ if (dataLoadControls) {
           
           e.target.classList.add('active');
           const tabId = e.target.dataset.tab + 'Tab';
-          const tabContent = document.getElementById(tabId);
+          const tabContent = getElement(tabId);
           if (tabContent) tabContent.classList.add('active');
         }
       });
@@ -3455,7 +4319,7 @@ if (dataLoadControls) {
   },
   
   setupThemeHandlers() {
-    const themeControls = document.getElementById('themeControls');
+    const themeControls = getElement('themeControls');
     if (themeControls) {
       themeControls.addEventListener('click', (e) => {
         if (e.target.matches('.theme-btn')) {
@@ -3468,14 +4332,16 @@ if (dataLoadControls) {
   setupGlobalListeners() {
       document.addEventListener('click', (e) => {
           if (!e.target.closest('#vendorAComboBox')) {
-              document.getElementById('vendorAComboBox').classList.remove('open');
+              getElement('vendorAComboBox').classList.remove('open');
           }
           if (!e.target.closest('#vendorBComboBox')) {
-              document.getElementById('vendorBComboBox').classList.remove('open');
+              getElement('vendorBComboBox').classList.remove('open');
           }
       });
   }
 };
+
+// FPDS Search functionality
 const fpdsSearchTemplates = {
   'it-services': {
     searchType: 'psc',
@@ -3518,10 +4384,11 @@ const fpdsSearchTemplates = {
     companyKeyword: 'Microsoft'
   }
 };
+
 function toggleCodeOptions() {
-  const searchType = document.getElementById('fpdsSearchType').value;
-  const naicsGroup = document.getElementById('naicsGroup');
-  const pscGroup = document.getElementById('pscGroup');
+  const searchType = getElement('fpdsSearchType').value;
+  const naicsGroup = getElement('naicsGroup');
+  const pscGroup = getElement('pscGroup');
   
   if (searchType === 'psc') {
     naicsGroup.classList.add('hidden');
@@ -3531,45 +4398,44 @@ function toggleCodeOptions() {
     pscGroup.classList.add('hidden');
   }
 }
+
 function loadSearchTemplate(templateName) {
   const template = fpdsSearchTemplates[templateName];
   if (!template) return;
   
-  document.getElementById('fpdsSearchType').value = template.searchType;
-  document.getElementById('fpdsNaicsCode').value = template.naicsCode;
-  document.getElementById('fpdsPscCode').value = template.pscCode;
-  document.getElementById('fpdsAgencyName').value = template.agencyName;
-  document.getElementById('fpdsStartDate').value = template.startDate;
-  document.getElementById('fpdsEndDate').value = template.endDate;
-  document.getElementById('fpdsMinAmount').value = template.minAmount;
-  document.getElementById('fpdsCompanyKeyword').value = template.companyKeyword;
+  getElement('fpdsSearchType').value = template.searchType;
+  getElement('fpdsNaicsCode').value = template.naicsCode;
+  getElement('fpdsPscCode').value = template.pscCode;
+  getElement('fpdsAgencyName').value = template.agencyName;
+  getElement('fpdsStartDate').value = template.startDate;
+  getElement('fpdsEndDate').value = template.endDate;
+  getElement('fpdsMinAmount').value = template.minAmount;
+  getElement('fpdsCompanyKeyword').value = template.companyKeyword;
   
-  toggleCodeOptions(); // Show the right code dropdown
+  toggleCodeOptions();
   generateFPDSSearch();
 }
 
 function generateFPDSSearch() {
   const formData = {
-    searchType: document.getElementById('fpdsSearchType').value,
-    naicsCode: document.getElementById('fpdsNaicsCode').value,
-    pscCode: document.getElementById('fpdsPscCode').value,
-    agencyName: document.getElementById('fpdsAgencyName').value,
-    startDate: document.getElementById('fpdsStartDate').value,
-    endDate: document.getElementById('fpdsEndDate').value,
-    minAmount: document.getElementById('fpdsMinAmount').value,
-    companyKeyword: document.getElementById('fpdsCompanyKeyword').value
+    searchType: getElement('fpdsSearchType').value,
+    naicsCode: getElement('fpdsNaicsCode').value,
+    pscCode: getElement('fpdsPscCode').value,
+    agencyName: getElement('fpdsAgencyName').value,
+    startDate: getElement('fpdsStartDate').value,
+    endDate: getElement('fpdsEndDate').value,
+    minAmount: getElement('fpdsMinAmount').value,
+    companyKeyword: getElement('fpdsCompanyKeyword').value
   };
   
   let searchParts = [];
   
-  // NAICS or PSC Code
   if (formData.searchType === 'psc' && formData.pscCode) {
     searchParts.push(`PRODUCT_OR_SERVICE_CODE:"${formData.pscCode}"`);
   } else if (formData.searchType === 'naics' && formData.naicsCode) {
     searchParts.push(`PRINCIPAL_NAICS_CODE:"${formData.naicsCode}"`);
   }
   
-  // Rest of the function stays the same...
   if (formData.agencyName) {
     searchParts.push(`CONTRACTING_AGENCY_NAME:"${formData.agencyName}"`);
   }
@@ -3590,8 +4456,8 @@ function generateFPDSSearch() {
   
   const searchString = searchParts.join(' ');
   
-  document.getElementById('fpdsSearchString').value = searchString;
-  document.getElementById('fpdsSearchOutput').style.display = 'block';
+  getElement('fpdsSearchString').value = searchString;
+  getElement('fpdsSearchOutput').style.display = 'block';
   
   generateFPDSPreview(formData);
   generateFPDSDirectURL(searchString);
@@ -3602,7 +4468,7 @@ function generateFPDSPreview(formData) {
   let conditions = [];
   
   if (formData.naicsCode) {
-    const naicsSelect = document.getElementById('fpdsNaicsCode');
+    const naicsSelect = getElement('fpdsNaicsCode');
     const naicsText = naicsSelect.options[naicsSelect.selectedIndex].text;
     conditions.push(naicsText);
   }
@@ -3625,26 +4491,24 @@ function generateFPDSPreview(formData) {
   
   if (conditions.length > 0) {
     previewText += conditions.join(', ') + ".";
-    document.getElementById('fpdsSearchPreview').textContent = previewText;
-    document.getElementById('fpdsSearchPreview').style.display = 'block';
+    getElement('fpdsSearchPreview').textContent = previewText;
+    getElement('fpdsSearchPreview').style.display = 'block';
   }
 }
 
 function generateFPDSDirectURL(searchString) {
-  // URL encode the search string for FPDS
   const encodedSearch = encodeURIComponent(searchString);
   const fpdsURL = `https://www.fpds.gov/ezsearch/fpdsportal?indexName=awardfull&templateName=1.5.3&s=FPDS.GOV&q=${encodedSearch}`;
   
-  document.getElementById('directFPDSLink').href = fpdsURL;
+  getElement('directFPDSLink').href = fpdsURL;
 }
 
 function copyFPDSSearch() {
-  const searchString = document.getElementById('fpdsSearchString');
+  const searchString = getElement('fpdsSearchString');
   searchString.select();
-  searchString.setSelectionRange(0, 99999); // For mobile devices
+  searchString.setSelectionRange(0, 99999);
   document.execCommand('copy');
   
-  // Show feedback
   const button = event.target.closest('button');
   const originalHTML = button.innerHTML;
   button.innerHTML = '<i class="fas fa-check"></i> Copied!';
@@ -3657,33 +4521,26 @@ function copyFPDSSearch() {
 }
 
 function showFPDSInstructions() {
-  document.getElementById('fpdsInstructionsModal').style.display = 'flex';
+  getElement('fpdsInstructionsModal').style.display = 'flex';
 }
 
 function closeFPDSInstructions() {
-  document.getElementById('fpdsInstructionsModal').style.display = 'none';
+  getElement('fpdsInstructionsModal').style.display = 'none';
 }
 
 // Close modal when clicking outside
 document.addEventListener('click', (e) => {
-  const modal = document.getElementById('fpdsInstructionsModal');
+  const modal = getElement('fpdsInstructionsModal');
   if (e.target === modal) {
     closeFPDSInstructions();
   }
 });
 
-// Initialize with IT Services template when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('fpdsNaicsCode')) {
-    loadSearchTemplate('it-services');
-  }
-});
+// Optimized initialization
 function init() {
   cacheElements();
   themeManager.init();
   eventListeners.setup();
-  
-  // Load example data automatically instead of showing empty state
   loadExampleDataOnInit();
 }
 
@@ -3713,8 +4570,8 @@ async function loadExampleDataOnInit() {
 
 function updateDataSourceBanner(filename) {
   app.currentDataSource = filename;
-  const banner = document.getElementById('dataSourceBanner');
-  const filenameElement = document.getElementById('dataSourceFilename');
+  const banner = getElement('dataSourceBanner');
+  const filenameElement = getElement('dataSourceFilename');
   
   if (banner && filenameElement) {
     filenameElement.textContent = filename;
@@ -3723,16 +4580,21 @@ function updateDataSourceBanner(filename) {
 }
 
 function hideDataSourceBanner() {
-  const banner = document.getElementById('dataSourceBanner');
+  const banner = getElement('dataSourceBanner');
   if (banner) {
     banner.classList.add('hidden');
   }
 }
 
+// Initialize FPDS search on page load
 document.addEventListener('DOMContentLoaded', () => {
   const checkLibraries = () => {
     if (typeof Chart !== 'undefined' && typeof d3 !== 'undefined' && d3.sankey) {
       init();
+      // Initialize FPDS search with default template
+      if (getElement('fpdsNaicsCode')) {
+        loadSearchTemplate('it-services');
+      }
     } else {
       setTimeout(checkLibraries, 100);
     }
