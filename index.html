@@ -644,6 +644,205 @@ body {
     overflow-x: hidden;
   }
 }
+/* FPDS Search Builder */
+.fpds-search-builder {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.search-builder-title {
+  font-size: 2.25rem;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -1.5px;
+}
+
+.quick-templates {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.template-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.template-card:hover {
+  background: var(--bg-tertiary);
+  transform: translateY(-1px);
+}
+
+.template-title {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+  font-size: 0.875rem;
+}
+
+.template-desc {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.search-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space);
+  margin-bottom: var(--space-lg);
+}
+
+.search-output-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space);
+  margin-top: var(--space);
+  display: none;
+}
+
+.search-string-display {
+  width: 100%;
+  min-height: 80px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  padding: var(--space);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-primary);
+  resize: vertical;
+  color: var(--text-primary);
+}
+
+.search-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space);
+  flex-wrap: wrap;
+}
+
+.search-preview {
+  margin-top: var(--space);
+  padding: var(--space);
+  background: var(--bg-tertiary);
+  border-radius: var(--radius);
+  display: none;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.search-instructions-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-instructions-content {
+  background: var(--bg-primary);
+  padding: var(--space-xl);
+  border-radius: var(--radius);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.search-instructions-content h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--space);
+}
+
+.search-instructions-content ol {
+  line-height: 1.6;
+  margin: var(--space) 0;
+  color: var(--text-primary);
+}
+
+.search-instructions-content li {
+  margin-bottom: var(--space-sm);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .search-form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-templates {
+    grid-template-columns: 1fr;
+  }
+  
+  .search-actions {
+    flex-direction: column;
+  }
+  
+  .search-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+.data-source-banner {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-sm) var(--space);
+  margin-bottom: var(--space);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.data-source-banner.hidden {
+  display: none;
+}
+
+.data-source-text {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.data-source-icon {
+  color: var(--primary);
+}
+
+.data-source-filename {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.search-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space);
+  margin-bottom: var(--space-lg);
+}
+
+/* Mobile override */
+@media (max-width: 768px) {
+  .search-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 <body>
@@ -740,6 +939,15 @@ body {
 
     <main class="dashboard hidden" id="dashboard">
       <section>
+<div class="data-source-banner hidden" id="dataSourceBanner">
+  <div class="data-source-text">
+    <i class="fas fa-file-csv data-source-icon"></i>
+    <span>Currently viewing: <span class="data-source-filename" id="dataSourceFilename">example.csv</span></span>
+  </div>
+  <button class="btn btn-sm btn-secondary" onclick="hideDataSourceBanner()">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
         <div class="stats-grid">
           <div class="stat-card" id="statCard1"><div class="stat-label">Total Value</div><div class="stat-value" id="totalValue">$0</div></div>
           <div class="stat-card" id="statCard2"><div class="stat-label">Contracts</div><div class="stat-value" id="totalContracts">0</div></div>
@@ -769,6 +977,154 @@ body {
         <h2 class="section-title" style="margin-bottom: var(--space);">Seasonal Buying Pattern</h2>
         <div class="chart-container" style="height: 200px; max-height: 200px; padding-bottom: 5px;"><canvas id="timelineChart"></canvas></div>
       </section>
+	  <section class="chart-section fpds-search-builder">
+  <h2 class="search-builder-title">FPDS Search Builder</h2>
+  
+  <!-- Quick Templates -->
+  <div class="quick-templates">
+    <div class="template-card" onclick="loadSearchTemplate('it-services')">
+      <div class="template-title">IT Services & Software</div>
+      <div class="template-desc">NAICS 541519, recent awards over $100K</div>
+    </div>
+    <div class="template-card" onclick="loadSearchTemplate('cloud-saas')">
+      <div class="template-title">Cloud/SaaS Services</div>
+      <div class="template-desc">NAICS 518210/511210, subscription services</div>
+    </div>
+    <div class="template-card" onclick="loadSearchTemplate('large-awards')">
+      <div class="template-title">Large Recent Awards</div>
+      <div class="template-desc">Awards over $5M in the last 12 months</div>
+    </div>
+    <div class="template-card" onclick="loadSearchTemplate('competitor-intel')">
+      <div class="template-title">Competitor Intelligence</div>
+      <div class="template-desc">Search by company name in descriptions</div>
+    </div>
+  </div>
+  
+  <div class="search-form-grid">
+  <!-- First Row: Search Type and Code Selection -->
+  <div class="form-group">
+    <label class="form-label">Search Type</label>
+    <select id="fpdsSearchType" class="form-select" onchange="toggleCodeOptions()">
+      <option value="naics">NAICS Code (Industry)</option>
+      <option value="psc">PSC Code (Procurement Intent)</option>
+    </select>
+  </div>
+  
+  <div class="form-group" id="naicsGroup">
+    <label class="form-label">NAICS Code</label>
+    <select id="fpdsNaicsCode" class="form-select">
+      <option value="">Any Industry</option>
+      <option value="541519">541519 - IT Services</option>
+      <option value="511210">511210 - Software Publishers</option>
+      <option value="518210">518210 - Data Processing/Cloud</option>
+      <option value="541511">541511 - Custom Programming</option>
+      <option value="541512">541512 - Systems Design</option>
+      <option value="334111">334111 - Computer Manufacturing</option>
+    </select>
+  </div>
+  
+  <div class="form-group hidden" id="pscGroup">
+    <label class="form-label">PSC Code</label>
+    <select id="fpdsPscCode" class="form-select">
+      <option value="">Any PSC</option>
+      <option value="DA10">DA10 - IT & Telecom - SaaS/Cloud Services</option>
+      <option value="DA01">DA01 - IT & Telecom - IT Labor Services</option>
+      <option value="D302">D302 - IT Software</option>
+      <option value="D307">D307 - IT Hardware</option>
+      <option value="D316">D316 - IT Support Services</option>
+      <option value="D399">D399 - Other IT Services</option>
+    </select>
+  </div>
+  
+  <!-- Second Row: Agency and Dates -->
+  <div class="form-group">
+    <label class="form-label">Agency</label>
+    <select id="fpdsAgencyName" class="form-select">
+      <option value="">Any Agency</option>
+      <option value="DEPT OF THE NAVY">Navy</option>
+      <option value="DEPT OF THE ARMY">Army</option>
+      <option value="DEPT OF THE AIR FORCE">Air Force</option>
+      <option value="DEFENSE LOGISTICS AGENCY">Defense Logistics Agency</option>
+      <option value="VETERANS AFFAIRS, DEPARTMENT OF">Veterans Affairs</option>
+      <option value="FEDERAL ACQUISITION SERVICE">Federal Acquisition Service (GSA)</option>
+      <option value="NATIONAL AERONAUTICS AND SPACE ADMINISTRATION">NASA</option>
+      <option value="ENERGY, DEPARTMENT OF">Energy Department</option>
+      <option value="CENTERS FOR MEDICARE AND MEDICAID SERVICES">CMS</option>
+      <option value="STATE, DEPARTMENT OF">State Department</option>
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label class="form-label">Start Date</label>
+    <input type="date" id="fpdsStartDate" class="form-input" value="2023-01-01">
+  </div>
+  
+  <div class="form-group">
+    <label class="form-label">End Date</label>
+    <input type="date" id="fpdsEndDate" class="form-input" value="2025-12-31">
+  </div>
+  
+  <!-- Third Row: Amount and Keywords -->
+  <div class="form-group">
+    <label class="form-label">Minimum Amount ($)</label>
+    <select id="fpdsMinAmount" class="form-select">
+      <option value="">Any Amount</option>
+      <option value="100000">$100K+</option>
+      <option value="500000">$500K+</option>
+      <option value="1000000">$1M+</option>
+      <option value="5000000">$5M+</option>
+      <option value="10000000">$10M+</option>
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label class="form-label">Company/Product Keyword</label>
+    <input type="text" id="fpdsCompanyKeyword" class="form-input" placeholder="e.g., Microsoft, Salesforce">
+  </div>
+</div>
+  
+  <button type="button" class="btn btn-primary" onclick="generateFPDSSearch()">
+    <i class="fas fa-search"></i> Generate Search String
+  </button>
+  
+  <!-- Search Output -->
+  <div class="search-output-section" id="fpdsSearchOutput">
+    <h4 style="color: var(--text-primary); margin-bottom: var(--space);">Your FPDS Search String</h4>
+    <textarea class="search-string-display" id="fpdsSearchString" readonly placeholder="Your generated search will appear here..."></textarea>
+    
+    <div class="search-actions">
+      <button class="btn btn-secondary" onclick="copyFPDSSearch()">
+        <i class="fas fa-copy"></i> Copy Search
+      </button>
+      <a href="#" id="directFPDSLink" target="_blank" class="btn btn-primary">
+        <i class="fas fa-external-link-alt"></i> Search FPDS Directly
+      </a>
+      <button class="btn btn-secondary" onclick="showFPDSInstructions()">
+        <i class="fas fa-question-circle"></i> How to Use
+      </button>
+    </div>
+    
+    <div class="search-preview" id="fpdsSearchPreview"></div>
+  </div>
+  
+  <!-- Instructions Modal -->
+  <div class="search-instructions-modal" id="fpdsInstructionsModal">
+    <div class="search-instructions-content">
+      <h3>How to Use Your Search String</h3>
+      <ol>
+        <li><strong>Click "Search FPDS Directly"</strong> - This opens FPDS.gov with your search already loaded</li>
+        <li><strong>Review the results</strong> - Check that you're getting relevant contracts</li>
+        <li><strong>Export to CSV</strong> - Look for the download/export button on FPDS</li>
+        <li><strong>Upload to Hoowon</strong> - Come back here and upload your CSV for analysis</li>
+        <li><strong>Refine if needed</strong> - Adjust filters and try again</li>
+      </ol>
+      <p style="margin-top: var(--space); color: var(--text-secondary); font-size: 0.875rem;">
+        <strong>Pro tip:</strong> Start with broader searches and narrow down. FPDS has a 30,000 row export limit.
+      </p>
+      <button class="btn btn-primary" onclick="closeFPDSInstructions()">Got it!</button>
+    </div>
+  </div>
+</section>
       <section class="table-section">
         <div class="tabs"><button class="tab-btn active" data-tab="recent">Recent Awards</button><button class="tab-btn" data-tab="largest">Largest Awards</button><button class="tab-btn" data-tab="offices">Top Offices</button></div>
         <div class="tab-content active" id="recentTab"><table class="data-table" id="recentTable"><thead><tr><th>Date</th><th>Contract ID</th><th>Agency</th><th>Office</th><th>Vendor</th><th>Description</th><th>Value</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
@@ -960,7 +1316,8 @@ const app = {
   totalFilteredValue: 0,
   sankeyTotal: 0,
   isUpdating: false,
-  parseWarnings: []
+  parseWarnings: [],
+  currentDataSource: null
 };
 
 let PALETTE = [];
@@ -2922,26 +3279,28 @@ const eventListeners = {
   
   setupFileHandlers() {
       const dataLoadControls = document.querySelector('.data-load-controls');
-      if (dataLoadControls) {
-          dataLoadControls.addEventListener('click', (e) => {
-              if (e.target.matches('[data-dataset]')) {
-                  const dataset = e.target.dataset.dataset;
-                  dataProcessor.loadExampleData(dataset);
-              }
-          });
-      }
+if (dataLoadControls) {
+    dataLoadControls.addEventListener('click', (e) => {
+        if (e.target.matches('[data-dataset]')) {
+            const dataset = e.target.dataset.dataset;
+            dataProcessor.loadExampleData(dataset);
+            updateDataSourceBanner(`${dataset}.csv`);
+        }
+    });
+}
       
       if (elements.csvFile) {
-          elements.csvFile.addEventListener('change', (e) => {
-              const file = e.target.files[0];
-              if (file) {
-                  const reader = new FileReader();
-                  reader.onload = (event) => dataProcessor.processData(event.target.result);
-                  reader.onerror = () => stateManager.showState('errorState', 'Error reading the file.');
-                  reader.readAsText(file);
-              }
-          });
-      }
+    elements.csvFile.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            updateDataSourceBanner(file.name);
+            const reader = new FileReader();
+            reader.onload = (event) => dataProcessor.processData(event.target.result);
+            reader.onerror = () => stateManager.showState('errorState', 'Error reading the file.');
+            reader.readAsText(file);
+        }
+    });
+}
   },
   
   setupFilterHandlers() {
@@ -3120,12 +3479,257 @@ const eventListeners = {
       });
   }
 };
+const fpdsSearchTemplates = {
+  'it-services': {
+    searchType: 'psc',
+    naicsCode: '',
+    pscCode: 'DA01',
+    agencyName: '',
+    startDate: '2023-01-01',
+    endDate: '2025-12-31',
+    minAmount: '100000',
+    companyKeyword: ''
+  },
+  'cloud-saas': {
+    searchType: 'psc',
+    naicsCode: '',
+    pscCode: 'DA10',
+    agencyName: 'FEDERAL ACQUISITION SERVICE',
+    startDate: '2024-01-01',
+    endDate: '2025-12-31',
+    minAmount: '500000',
+    companyKeyword: ''
+  },
+  'large-awards': {
+    searchType: 'naics',
+    naicsCode: '',
+    pscCode: '',
+    agencyName: 'DEPT OF THE NAVY',
+    startDate: '2024-01-01',
+    endDate: '2025-12-31',
+    minAmount: '5000000',
+    companyKeyword: ''
+  },
+  'competitor-intel': {
+    searchType: 'psc',
+    naicsCode: '',
+    pscCode: 'DA10',
+    agencyName: '',
+    startDate: '2023-01-01',
+    endDate: '2025-12-31',
+    minAmount: '1',
+    companyKeyword: 'Microsoft'
+  }
+};
+function toggleCodeOptions() {
+  const searchType = document.getElementById('fpdsSearchType').value;
+  const naicsGroup = document.getElementById('naicsGroup');
+  const pscGroup = document.getElementById('pscGroup');
+  
+  if (searchType === 'psc') {
+    naicsGroup.classList.add('hidden');
+    pscGroup.classList.remove('hidden');
+  } else {
+    naicsGroup.classList.remove('hidden');
+    pscGroup.classList.add('hidden');
+  }
+}
+function loadSearchTemplate(templateName) {
+  const template = fpdsSearchTemplates[templateName];
+  if (!template) return;
+  
+  document.getElementById('fpdsSearchType').value = template.searchType;
+  document.getElementById('fpdsNaicsCode').value = template.naicsCode;
+  document.getElementById('fpdsPscCode').value = template.pscCode;
+  document.getElementById('fpdsAgencyName').value = template.agencyName;
+  document.getElementById('fpdsStartDate').value = template.startDate;
+  document.getElementById('fpdsEndDate').value = template.endDate;
+  document.getElementById('fpdsMinAmount').value = template.minAmount;
+  document.getElementById('fpdsCompanyKeyword').value = template.companyKeyword;
+  
+  toggleCodeOptions(); // Show the right code dropdown
+  generateFPDSSearch();
+}
 
+function generateFPDSSearch() {
+  const formData = {
+    searchType: document.getElementById('fpdsSearchType').value,
+    naicsCode: document.getElementById('fpdsNaicsCode').value,
+    pscCode: document.getElementById('fpdsPscCode').value,
+    agencyName: document.getElementById('fpdsAgencyName').value,
+    startDate: document.getElementById('fpdsStartDate').value,
+    endDate: document.getElementById('fpdsEndDate').value,
+    minAmount: document.getElementById('fpdsMinAmount').value,
+    companyKeyword: document.getElementById('fpdsCompanyKeyword').value
+  };
+  
+  let searchParts = [];
+  
+  // NAICS or PSC Code
+  if (formData.searchType === 'psc' && formData.pscCode) {
+    searchParts.push(`PRODUCT_OR_SERVICE_CODE:"${formData.pscCode}"`);
+  } else if (formData.searchType === 'naics' && formData.naicsCode) {
+    searchParts.push(`PRINCIPAL_NAICS_CODE:"${formData.naicsCode}"`);
+  }
+  
+  // Rest of the function stays the same...
+  if (formData.agencyName) {
+    searchParts.push(`CONTRACTING_AGENCY_NAME:"${formData.agencyName}"`);
+  }
+  
+  if (formData.startDate) {
+    const startFormatted = formData.startDate.replace(/-/g, '/');
+    const endFormatted = formData.endDate ? formData.endDate.replace(/-/g, '/') : '';
+    searchParts.push(`SIGNED_DATE:[${startFormatted},${endFormatted}]`);
+  }
+  
+  if (formData.minAmount) {
+    searchParts.push(`OBLIGATED_AMOUNT:[${formData.minAmount},)`);
+  }
+  
+  if (formData.companyKeyword) {
+    searchParts.push(`DESCRIPTION_OF_REQUIREMENT:"${formData.companyKeyword}"`);
+  }
+  
+  const searchString = searchParts.join(' ');
+  
+  document.getElementById('fpdsSearchString').value = searchString;
+  document.getElementById('fpdsSearchOutput').style.display = 'block';
+  
+  generateFPDSPreview(formData);
+  generateFPDSDirectURL(searchString);
+}
+
+function generateFPDSPreview(formData) {
+  let previewText = "This search will find: ";
+  let conditions = [];
+  
+  if (formData.naicsCode) {
+    const naicsSelect = document.getElementById('fpdsNaicsCode');
+    const naicsText = naicsSelect.options[naicsSelect.selectedIndex].text;
+    conditions.push(naicsText);
+  }
+  
+  if (formData.agencyName) {
+    conditions.push(`contracts from ${formData.agencyName}`);
+  }
+  
+  if (formData.minAmount) {
+    conditions.push(`worth $${parseInt(formData.minAmount).toLocaleString()}+`);
+  }
+  
+  if (formData.startDate && formData.endDate) {
+    conditions.push(`signed between ${formData.startDate} and ${formData.endDate}`);
+  }
+  
+  if (formData.companyKeyword) {
+    conditions.push(`mentioning "${formData.companyKeyword}"`);
+  }
+  
+  if (conditions.length > 0) {
+    previewText += conditions.join(', ') + ".";
+    document.getElementById('fpdsSearchPreview').textContent = previewText;
+    document.getElementById('fpdsSearchPreview').style.display = 'block';
+  }
+}
+
+function generateFPDSDirectURL(searchString) {
+  // URL encode the search string for FPDS
+  const encodedSearch = encodeURIComponent(searchString);
+  const fpdsURL = `https://www.fpds.gov/ezsearch/fpdsportal?indexName=awardfull&templateName=1.5.3&s=FPDS.GOV&q=${encodedSearch}`;
+  
+  document.getElementById('directFPDSLink').href = fpdsURL;
+}
+
+function copyFPDSSearch() {
+  const searchString = document.getElementById('fpdsSearchString');
+  searchString.select();
+  searchString.setSelectionRange(0, 99999); // For mobile devices
+  document.execCommand('copy');
+  
+  // Show feedback
+  const button = event.target.closest('button');
+  const originalHTML = button.innerHTML;
+  button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+  button.style.background = 'var(--primary)';
+  
+  setTimeout(() => {
+    button.innerHTML = originalHTML;
+    button.style.background = '';
+  }, 2000);
+}
+
+function showFPDSInstructions() {
+  document.getElementById('fpdsInstructionsModal').style.display = 'flex';
+}
+
+function closeFPDSInstructions() {
+  document.getElementById('fpdsInstructionsModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', (e) => {
+  const modal = document.getElementById('fpdsInstructionsModal');
+  if (e.target === modal) {
+    closeFPDSInstructions();
+  }
+});
+
+// Initialize with IT Services template when page loads
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('fpdsNaicsCode')) {
+    loadSearchTemplate('it-services');
+  }
+});
 function init() {
   cacheElements();
   themeManager.init();
   eventListeners.setup();
-  stateManager.showState('emptyState');
+  
+  // Load example data automatically instead of showing empty state
+  loadExampleDataOnInit();
+}
+
+async function loadExampleDataOnInit() {
+  try {
+    stateManager.showState('loadingState');
+    
+    const response = await fetch(`${app.s3BaseUrl}navy_cloud.csv`);
+    
+    if (!response.ok) {
+      console.warn('navy_cloud.csv not found, loading default dataset');
+      dataProcessor.loadExampleData('dhs_CY24_25');
+      updateDataSourceBanner('dhs_CY24_25.csv');
+      return;
+    }
+    
+    const csvText = await response.text();
+    dataProcessor.processData(csvText);
+    updateDataSourceBanner('navy_cloud.csv');
+    
+  } catch (error) {
+    console.error('Error loading example data:', error);
+    dataProcessor.loadExampleData('dhs_CY24_25');
+    updateDataSourceBanner('dhs_CY24_25.csv');
+  }
+}
+
+function updateDataSourceBanner(filename) {
+  app.currentDataSource = filename;
+  const banner = document.getElementById('dataSourceBanner');
+  const filenameElement = document.getElementById('dataSourceFilename');
+  
+  if (banner && filenameElement) {
+    filenameElement.textContent = filename;
+    banner.classList.remove('hidden');
+  }
+}
+
+function hideDataSourceBanner() {
+  const banner = document.getElementById('dataSourceBanner');
+  if (banner) {
+    banner.classList.add('hidden');
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
