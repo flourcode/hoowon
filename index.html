@@ -1611,6 +1611,28 @@ body {
     height: 250px;
   }
 }
+/* Add these new rules for animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  /* We set the animation to 'forwards' so it holds its final state */
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* This creates a beautiful staggered effect for the stat cards */
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; }
 </style>
 </head>
 <body>
@@ -2442,7 +2464,32 @@ const utils = {
            contract.value !== null;
   }
 };
+function animateCountUp(elementId, endValue) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
 
+  const startValue = 0;
+  const duration = 1500; // Animation duration in milliseconds
+  let startTime = null;
+
+  function animationStep(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const currentValue = Math.floor(progress * (endValue - startValue) + startValue);
+    
+    // Use the existing formatMoney util for consistent formatting
+    if (elementId === 'totalValue') {
+      element.textContent = utils.formatMoney(currentValue);
+    } else {
+      element.textContent = currentValue.toLocaleString();
+    }
+
+    if (progress < 1) {
+      requestAnimationFrame(animationStep);
+    }
+  }
+  requestAnimationFrame(animationStep);
+}
 const stateManager = {
   showState: function(state, message = '') {
     const states = ['loadingState', 'errorState', 'emptyState', 'dashboard'];
@@ -2878,7 +2925,8 @@ const dataProcessor = {
       sankeyChart.updateButtons('sankeyLimit10');
       charts.initAll();
       dashboard.updateAll();
-      stateManager.updateFilterDisplay();
+document.querySelectorAll('.stat-card').forEach(card => card.classList.add('fade-in')); // Add this line
+stateManager.updateFilterDisplay();
       stateManager.syncFiltersToUI();
       
       if (elements.comparisonControls) {
@@ -3002,6 +3050,10 @@ const charts = {
         }] 
       },
       options: {
+    animation: { // Add this block
+      duration: 1000,
+      easing: 'easeOutQuart'
+    },
         responsive: true,
         maintainAspectRatio: false,
         plugins: { 
@@ -3044,7 +3096,11 @@ const charts = {
         }] 
       },
       options: {
-        responsive: true,
+    animation: { // Add this block
+      duration: 1000,
+      easing: 'easeOutQuart'
+    },
+    responsive: true,
         maintainAspectRatio: false,
         plugins: {
           legend: { position: 'bottom' },
@@ -3451,10 +3507,16 @@ const dashboard = {
       .filter(vendor => vendor && vendor.value > 0)
       .sort((a, b) => (b.value || 0) - (a.value || 0))[0];
     
-    elements.statCard1.innerHTML = `<div class="stat-label">Total Value</div><div class="stat-value" id="totalValue">${utils.formatMoney(app.totalFilteredValue)}</div>`;
-    elements.statCard2.innerHTML = `<div class="stat-label">Contracts</div><div class="stat-value" id="totalContracts">${totalContracts.toLocaleString()}</div>`;
-    elements.statCard3.innerHTML = `<div class="stat-label">Companies</div><div class="stat-value" id="totalCompanies">${uniqueCompanies.toLocaleString()}</div>`;
-    elements.statCard4.innerHTML = `<div class="stat-label">Market Leader</div><div class="stat-company" id="topCompany">${utils.truncateText(topCompany?.name || 'N/A', 20)}</div>`;
+    // ...inside dashboard.updateStats
+elements.statCard1.innerHTML = `<div class="stat-label">Total Value</div><div class="stat-value" id="totalValue">$0</div>`;
+elements.statCard2.innerHTML = `<div class="stat-label">Contracts</div><div class="stat-value" id="totalContracts">0</div>`;
+elements.statCard3.innerHTML = `<div class="stat-label">Companies</div><div class="stat-value" id="totalCompanies">0</div>`;
+elements.statCard4.innerHTML = `<div class="stat-label">Market Leader</div><div class="stat-company" id="topCompany">${utils.truncateText(topCompany?.name || 'N/A', 20)}</div>`;
+
+// Animate the numbers
+animateCountUp('totalValue', app.totalFilteredValue);
+animateCountUp('totalContracts', totalContracts);
+animateCountUp('totalCompanies', uniqueCompanies);
   },
   
   updateCharts() {
