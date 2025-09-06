@@ -1619,7 +1619,11 @@ body {
       <div class="header-content">
         <div class="logo-main">
           <div>
-            <div class="logo-brand"><div class="logo-mark">Hoowon?</div></div>
+            <div class="logo-brand">
+  <a href="" style="text-decoration: none; color: inherit;">
+    <div class="logo-mark">Hoowon?</div>
+  </a>
+</div>
             <div class="logo-subtitle">Look Back to See the Future.</div>
           </div>
           <div class="theme-controls" id="themeControls">
@@ -1987,43 +1991,42 @@ body {
   </div>
 
 <script>
-// Optimized theme manager with caching
 const themeManager = {
   themes: {
     light: {
       cssVars: {
-        '--primary': '#1A593A',
-        '--primary-dark': '#004225',
+        '--primary': '#276749',        // Richer, more vibrant green
+        '--primary-dark': '#22543D',     // Corresponding darker shade
         '--primary-text': '#FFFFFF',
-        '--text-primary': '#004225',
-        '--text-secondary': '#5B7568',
-        '--text-tertiary': '#8DA396',
-        '--bg-primary': '#F9FAF8',
-        '--bg-secondary': '#F0F2EF',
-        '--bg-tertiary': '#E8EBE6',
-        '--border': '#E8EBE6',
+        '--text-primary': '#1A202C',     // Dark slate for better readability
+        '--text-secondary': '#4A5568',    // Standard slate gray
+        '--text-tertiary': '#718096',
+        '--bg-primary': '#FFFFFF',        // Crisper white for content cards
+        '--bg-secondary': '#F7FAFC',      // Softer, cool gray for the body
+        '--bg-tertiary': '#EDF2F7',
+        '--border': '#E2E8F0',
       },
       chartPalette: [
-        '#004225', '#1A593A', '#3B7051', '#5B8A6F', 
-        '#8DA396', '#B9C9C0', '#DDE6E2', '#F5F8F2'
+        '#22543D', '#276749', '#38A169', '#68D391',
+        '#9AE6B4', '#C6F6D5', '#EDF2F7', '#F7FAFC'
       ]
     },
     dark: {
       cssVars: {
-        '--primary': '#73C69D',
-        '--primary-dark': '#5FAA83',
-        '--primary-text': '#1B2B23',
-        '--text-primary': '#F5F8F2',
-        '--text-secondary': '#B9C9C0',
-        '--text-tertiary': '#8DA396',
-        '--bg-primary': '#1B2B23',
-        '--bg-secondary': '#2A3F33',
-        '--bg-tertiary': '#3A5143',
-        '--border': '#3A5143',
+        '--primary': '#48BB78',        // Brighter green for better accessibility
+        '--primary-dark': '#38A169',     // Corresponding darker shade
+        '--primary-text': '#1A202C',     // High-contrast dark text for buttons
+        '--text-primary': '#F7FAFC',      // Soft off-white, easy on the eyes
+        '--text-secondary': '#A0AEC0',    // Lighter gray for secondary info
+        '--text-tertiary': '#718096',
+        '--bg-primary': '#1A202C',     // Dark slate background (less eye strain)
+        '--bg-secondary': '#171923',      // Near-black for the outer background
+        '--bg-tertiary': '#2D3748',
+        '--border': '#2D3748',
       },
       chartPalette: [
-        '#F5F8F2', '#DDE6E2', '#B9C9C0', '#8DA396', 
-        '#6DD499', '#5ABF83', '#47AA6F', '#3A8C5A'
+        '#F7FAFC', '#E2E8F0', '#A0AEC0', '#718096',
+        '#48BB78', '#38A169', '#2F855A', '#276749'
       ]
     }
   },
@@ -2093,7 +2096,7 @@ const app = {
 };
 
 let PALETTE = [];
-const chartConfig = { fillOpacity: 0.65, lineOpacity: 0.25, comparisonColorB: '#4A90E2' };
+const chartConfig = { fillOpacity: 0.65, lineOpacity: 0.25, comparisonColorB: '#A0AEC0' };
 
 // Optimized element caching
 const elementCache = new Map();
@@ -3983,8 +3986,8 @@ const comparisonManager = {
       svg.append("g").attr("transform", `translate(0, ${height})`).call(d3.axisBottom(x).ticks(4).tickFormat(d => utils.formatMoney(d)));
       svg.append("g").attr("transform", `translate(0, ${height})`).call(d3.axisBottom(x2).ticks(4).tickFormat(d => utils.formatMoney(d)));
       
-      const colorA = getComputedStyle(document.documentElement).getPropertyValue('--primary');
-      const colorB = chartConfig.comparisonColorB;
+      const colorA = '#48BB78';
+	  const colorB = chartConfig.comparisonColorB;
       
       svg.selectAll(".barA").data(chartData).enter().append("rect")
         .attr("class", "barA").attr("x", d => x(d.valueA)).attr("y", d => y(d.name))
@@ -4037,9 +4040,9 @@ const comparisonManager = {
       });
       
       chart.data.datasets = [
-        { label: utils.truncateText(this.vendorA, 15), data: allMonths.map(m => monthlyDataA[m] || 0), borderColor: getComputedStyle(document.documentElement).getPropertyValue('--primary'), tension: 0.4, fill: false },
-        { label: utils.truncateText(this.vendorB, 15), data: allMonths.map(m => monthlyDataB[m] || 0), borderColor: chartConfig.comparisonColorB, tension: 0.4, fill: false }
-      ];
+  { label: utils.truncateText(this.vendorA, 15), data: allMonths.map(m => monthlyDataA[m] || 0), borderColor: '#48BB78', tension: 0.4, fill: false },
+  { label: utils.truncateText(this.vendorB, 15), data: allMonths.map(m => monthlyDataB[m] || 0), borderColor: chartConfig.comparisonColorB, tension: 0.4, fill: false }
+];
       
       chart.options.plugins.legend.display = true;
       chart.update('none');
@@ -4078,9 +4081,9 @@ const comparisonManager = {
           data: {
               labels: chartData.map(d => d.name),
               datasets: [
-                  { label: utils.truncateText(this.vendorA, 15), data: chartData.map(d => d.valueA), backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--primary') },
-                  { label: utils.truncateText(this.vendorB, 15), data: chartData.map(d => d.valueB), backgroundColor: chartConfig.comparisonColorB }
-              ]
+    { label: utils.truncateText(this.vendorA, 15), data: chartData.map(d => d.valueA), backgroundColor: '#48BB78' },
+    { label: utils.truncateText(this.vendorB, 15), data: chartData.map(d => d.valueB), backgroundColor: chartConfig.comparisonColorB }
+]
           },
           options: {
               responsive: true, maintainAspectRatio: false, indexAxis: 'y',
