@@ -1633,6 +1633,45 @@ body {
 .stat-card:nth-child(2) { animation-delay: 0.2s; }
 .stat-card:nth-child(3) { animation-delay: 0.3s; }
 .stat-card:nth-child(4) { animation-delay: 0.4s; }
+.cta-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  background: var(--bg-secondary); /* Makes it stand out slightly */
+}
+.cta-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+}
+.cta-text {
+  flex-grow: 1;
+}
+.cta-text h3 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+.cta-text p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 600px;
+}
+.cta-action .btn {
+  white-space: nowrap; /* Prevents button text from wrapping */
+}
+
+/* Make it responsive for mobile */
+@media (max-width: 768px) {
+  .cta-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  .cta-text {
+    margin-bottom: var(--space);
+  }
+}
 </style>
 </head>
 <body>
@@ -1768,6 +1807,20 @@ body {
         <h2 class="section-title" style="margin-bottom: var(--space);">Seasonal Buying Pattern</h2>
         <div class="chart-container" style="height: 200px; max-height: 200px; padding-bottom: 5px;"><canvas id="timelineChart"></canvas></div>
       </section>
+	  <section class="chart-section cta-section">
+        <div class="cta-icon">
+         <i class="fa-regular fa-comments"></i>
+        </div>
+        <div class="cta-text">
+          <h3>Need Help?</h3>
+          <p>Book a free 15-minute call and I'll help you analyze these results to find actionable insights.</p>
+        </div>
+        <div class="cta-action">
+          <a href="https://calendly.com/markflournoy/intro" class="btn btn-primary" target="_blank" rel="noopener">Book Your Free Session</a>
+        </div>
+      </section>
+
+      <section class="chart-section fpds-search-builder">
 	  <section class="chart-section fpds-search-builder">
   <h2 class="search-builder-title">FPDS Search Builder</h2>
   
@@ -4227,8 +4280,7 @@ const eventListeners = {
               }
           });
       }
-  },
-  
+  }, 
   setupFilterHandlers() {
     let searchTimeout;
     if (elements.searchInput) {
