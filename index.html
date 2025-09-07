@@ -4193,10 +4193,22 @@ const comparisonManager = {
 ]
           },
           options: {
-              responsive: true, maintainAspectRatio: false, indexAxis: 'y',
-              scales: { x: { ticks: { callback: v => utils.formatMoney(v) } } },
-              plugins: { legend: { position: 'bottom' } }
-          }
+    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+    scales: { 
+      x: { 
+        ticks: { callback: v => utils.formatMoney(v) },
+        grid: {
+          display: false // Hides vertical gridlines
+        } 
+      },
+      y: {
+        grid: {
+          display: false // Hides horizontal gridlines
+        }
+      }
+    },
+    plugins: { legend: { position: 'bottom' } }
+}
       });
       
     } catch (error) {
