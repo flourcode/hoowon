@@ -2082,8 +2082,9 @@ const themeManager = {
         '--border': '#E1E1DE',
       },
       chartPalette: [ // A serious palette of deep greens and neutral grays
-        '#14452F', '#2A5C45', '#40735B', '#5A8A72',
-        '#212121', '#616161', '#8D8D8D', '#BDBDBD'
+        '#14452F', '#2c5641', '#436754', '#597967',
+        '#6f8b7b', '#869d90', '#9db0a5', '#b5c3bb'
+		
       ]
     },
     dark: {
@@ -2099,10 +2100,10 @@ const themeManager = {
         '--bg-tertiary': '#333333',
         '--border': '#333333',
       },
-      chartPalette: [ // The same palette, ordered for dark mode
-        '#F4F4F2', '#E1E1DE', '#BDBDBD', '#8BAA9B',
-        '#749284', '#5A8A72', '#8D8D8D', '#616161'
-      ]
+      chartPalette: [
+  '#b5c3bb', '#9db0a5', '#869d90', '#6f8b7b',
+  '#597967', '#436754', '#2c5641', '#14452F'
+]
 }
   },
   applyTheme(themeName) {
@@ -2137,7 +2138,7 @@ const themeManager = {
     });
   },
   init() {
-    this.applyTheme('dark');
+    this.applyTheme('light');
   }
 };
 
