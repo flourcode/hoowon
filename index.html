@@ -2070,38 +2070,38 @@ const themeManager = {
   themes: {
     light: {
       cssVars: {
-        '--primary': '#363B45',        // Boulder-30 for primary actions
-        '--primary-dark': '#272B35',    // Boulder-20 for hover
+        '--primary': '#14452F',        // A deep, authoritative "broadsheet" green
+        '--primary-dark': '#0F3423',    // A darker version for hover
         '--primary-text': '#FFFFFF',
-        '--text-primary': '#101319',   // Boulder-5 for maximum text contrast
-        '--text-secondary': '#737882', // Boulder-50 for secondary text
-        '--text-tertiary': '#9CA1AB',   // Boulder-60
-        '--bg-primary': '#FFFFFF',     // Using pure white for a crisp content area
-        '--bg-secondary': '#F9FAFB',   // Boulder-95 for the body background
-        '--bg-tertiary': '#F3F4F6',    // Boulder-90
-        '--border': '#E5E7EB',         // Boulder-80
+        '--text-primary': '#212121',   // A soft, "ink" black for maximum readability
+        '--text-secondary': '#616161', // Classic grays for secondary text
+        '--text-tertiary': '#8D8D8D',
+        '--bg-primary': '#FBFBF9',     // A clean, bright off-white for content
+        '--bg-secondary': '#F4F4F2',   // A soft, off-white to mimic classic newsprint
+        '--bg-tertiary': '#E9E9E7',
+        '--border': '#E1E1DE',
       },
-      chartPalette: [ // A monochromatic scale using the Boulder palette
-        '#101319', '#181D25', '#272B35', '#363B45',
-        '#545963', '#737882', '#9CA1AB', '#D2D5DA'
+      chartPalette: [ // A serious palette of deep greens and neutral grays
+        '#14452F', '#2A5C45', '#40735B', '#5A8A72',
+        '#212121', '#616161', '#8D8D8D', '#BDBDBD'
       ]
     },
     dark: {
       cssVars: {
-        '--primary': '#D2D5DA',        // Boulder-70 for high-contrast actions
-        '--primary-dark': '#9CA1AB',    // Boulder-60 for hover
-        '--primary-text': '#101319',    // Boulder-5 for text on buttons
-        '--text-primary': '#F9FAFB',    // Boulder-95 for main text
-        '--text-secondary': '#9CA1AB',  // Boulder-60 for secondary text
-        '--text-tertiary': '#737882',    // Boulder-50
-        '--bg-primary': '#181D25',     // Boulder-10 for content areas
-        '--bg-secondary': '#101319',    // Boulder-5 for the main background
-        '--bg-tertiary': '#363B45',    // Boulder-30
-        '--border': '#363B45',
+        '--primary': '#8BAA9B',        // A muted, legible "sage" green for accents
+        '--primary-dark': '#749284',    // A deeper version for hover
+        '--primary-text': '#112119',    // Dark green-black text for high contrast
+        '--text-primary': '#F4F4F2',    // The "newsprint" off-white for main text
+        '--text-secondary': '#BDBDBD',  // Light, readable grays
+        '--text-tertiary': '#8D8D8D',
+        '--bg-primary': '#212121',     // The "ink" black for the main background
+        '--bg-secondary': '#181818',    // A near-black for the outer background
+        '--bg-tertiary': '#333333',
+        '--border': '#333333',
       },
-      chartPalette: [ // The same scale, reversed for dark mode
-        '#F9FAFB', '#F3F4F6', '#E5E7EB', '#D2D5DA',
-        '#9CA1AB', '#737882', '#545963', '#363B45'
+      chartPalette: [ // The same palette, ordered for dark mode
+        '#F4F4F2', '#E1E1DE', '#BDBDBD', '#8BAA9B',
+        '#749284', '#5A8A72', '#8D8D8D', '#616161'
       ]
 }
   },
