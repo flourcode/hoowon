@@ -2061,40 +2061,39 @@ const themeManager = {
   themes: {
     light: {
       cssVars: {
-        '--primary': '#14452F',        // A deep, authoritative "broadsheet" green
-        '--primary-dark': '#0F3423',    // A darker version for hover
+        '--primary': '#468878',        // A strong, mid-tone sea glass green
+        '--primary-dark': '#2c7c6d',    // The darkest shade for hover
         '--primary-text': '#FFFFFF',
-        '--text-primary': '#212121',   // A soft, "ink" black for maximum readability
-        '--text-secondary': '#616161', // Classic grays for secondary text
-        '--text-tertiary': '#8D8D8D',
-        '--bg-primary': '#FBFBF9',     // A clean, bright off-white for content
-        '--bg-secondary': '#F4F4F2',   // A soft, off-white to mimic classic newsprint
-        '--bg-tertiary': '#E9E9E7',
-        '--border': '#E1E1DE',
+        '--text-primary': '#121A18',   // The darkest shade for main text
+        '--text-secondary': '#71a190', // A lighter, muted green for secondary text
+        '--text-tertiary': '#99b8aa',
+        '--bg-primary': '#FFFFFF',     // Crisp white for the main content area
+        '--bg-secondary': '#e7eae1',   // The lightest shade for the body background
+        '--bg-tertiary': '#d4ded3',
+        '--border': '#d4ded3',
       },
-      chartPalette: [ // A serious palette of deep greens and neutral grays
-        '#14452F', '#2c5641', '#436754', '#597967',
-        '#6f8b7b', '#869d90', '#9db0a5', '#b5c3bb'
-		
+      chartPalette: [ // The provided scale, using the darker 8 shades for contrast
+        '#2c7c6d', '#468878', '#5c9584', '#71a190',
+        '#85ac9d', '#99b8aa', '#adc5b7', '#c0d0c5'
       ]
     },
     dark: {
-      cssVars: {
-        '--primary': '#8BAA9B',        // A muted, legible "sage" green for accents
-        '--primary-dark': '#749284',    // A deeper version for hover
-        '--primary-text': '#112119',    // Dark green-black text for high contrast
-        '--text-primary': '#F4F4F2',    // The "newsprint" off-white for main text
-        '--text-secondary': '#BDBDBD',  // Light, readable grays
-        '--text-tertiary': '#8D8D8D',
-        '--bg-primary': '#212121',     // The "ink" black for the main background
-        '--bg-secondary': '#181818',    // A near-black for the outer background
-        '--bg-tertiary': '#333333',
-        '--border': '#333333',
-      },
-      chartPalette: [
-  '#b5c3bb', '#9db0a5', '#869d90', '#6f8b7b',
-  '#597967', '#436754', '#2c5641', '#14452F'
-]
+  cssVars: {
+    '--primary': '#adc5b7',
+    '--primary-dark': '#99b8aa',
+    '--primary-text': '#121A18',
+    '--text-primary': '#e7eae1',
+    '--text-secondary': '#c0d0c5',
+    '--text-tertiary': '#adc5b7',
+    '--bg-primary': '#121A18',     // Changed: Now matches the darker page background
+    '--bg-secondary': '#0A0F0D',    // This is the dark background color you like
+    '--bg-tertiary': '#1A2B27',     // Changed: A subtle, slightly lighter green for panels
+    '--border': '#1A2B27',         // Changed: Border now matches the panels
+  },
+  chartPalette: [ // This palette remains the same
+    '#e7eae1', '#d4ded3', '#c0d0c5', '#adc5b7',
+    '#99b8aa', '#85ac9d', '#71a190', '#5c9584'
+  ]
 }
   },
   applyTheme(themeName) {
