@@ -2128,7 +2128,7 @@ const themeManager = {
     });
   },
   init() {
-    this.applyTheme('light');
+    this.applyTheme('dark');
   }
 };
 
@@ -2163,7 +2163,7 @@ const app = {
 };
 
 let PALETTE = [];
-const chartConfig = { fillOpacity: .65, lineOpacity: .45, comparisonColorB: '#A0AEC0' };
+const chartConfig = { fillOpacity: .65, lineOpacity: .45, comparisonColorB: '#d4ded3' };
 
 // Optimized element caching
 const elementCache = new Map();
@@ -4093,7 +4093,7 @@ const comparisonManager = {
       svg.append("g").attr("transform", `translate(0, ${height})`).call(d3.axisBottom(x).ticks(4).tickFormat(d => utils.formatMoney(d)));
       svg.append("g").attr("transform", `translate(0, ${height})`).call(d3.axisBottom(x2).ticks(4).tickFormat(d => utils.formatMoney(d)));
       
-      const colorA = '#2A9D74';
+      const colorA = '#468878';
 	  const colorB = chartConfig.comparisonColorB;
       
       svg.selectAll(".barA").data(chartData).enter().append("rect")
@@ -4147,7 +4147,7 @@ const comparisonManager = {
       });
       
       chart.data.datasets = [
-  { label: utils.truncateText(this.vendorA, 15), data: allMonths.map(m => monthlyDataA[m] || 0), borderColor: '#2A9D74', tension: 0.4, fill: false },
+  { label: utils.truncateText(this.vendorA, 15), data: allMonths.map(m => monthlyDataA[m] || 0), borderColor: '#468878', tension: 0.4, fill: false },
   { label: utils.truncateText(this.vendorB, 15), data: allMonths.map(m => monthlyDataB[m] || 0), borderColor: chartConfig.comparisonColorB, tension: 0.4, fill: false }
 ];
       
@@ -4188,7 +4188,7 @@ const comparisonManager = {
           data: {
               labels: chartData.map(d => d.name),
               datasets: [
-    { label: utils.truncateText(this.vendorA, 15), data: chartData.map(d => d.valueA), backgroundColor: '#2A9D74' },
+    { label: utils.truncateText(this.vendorA, 15), data: chartData.map(d => d.valueA), backgroundColor: '#468878' },
     { label: utils.truncateText(this.vendorB, 15), data: chartData.map(d => d.valueB), backgroundColor: chartConfig.comparisonColorB }
 ]
           },
