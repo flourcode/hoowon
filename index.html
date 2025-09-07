@@ -2070,38 +2070,38 @@ const themeManager = {
   themes: {
     light: {
       cssVars: {
-        '--primary': '#334155',
-        '--primary-dark': '#1e293b',
-        '--primary-text': '#ffffff',
-        '--text-primary': '#1e293b',
-        '--text-secondary': '#64748b',
-        '--text-tertiary': '#94a3b8',
-        '--bg-primary': '#ffffff',
-        '--bg-secondary': '#f1f5f9',
-        '--bg-tertiary': '#e2e8f0',
-        '--border': '#cbd5e1',
+        '--primary': '#14452F',        // A deep, authoritative "broadsheet" green
+        '--primary-dark': '#0F3423',    // A darker version for hover
+        '--primary-text': '#FFFFFF',
+        '--text-primary': '#212121',   // A soft, "ink" black for maximum readability
+        '--text-secondary': '#616161', // Classic grays for secondary text
+        '--text-tertiary': '#8D8D8D',
+        '--bg-primary': '#FBFBF9',     // A clean, bright off-white for content
+        '--bg-secondary': '#F4F4F2',   // A soft, off-white to mimic classic newsprint
+        '--bg-tertiary': '#E9E9E7',
+        '--border': '#E1E1DE',
       },
-      chartPalette: [ // Desaturated Slate Blue Scale (Dark to Light)
-        '#232E3A', '#344459', '#4B5F78', '#627A94',
-        '#7994B0', '#94AEC6', '#C2D1E0', '#d1deeb'
+      chartPalette: [ // A serious palette of deep greens and neutral grays
+        '#14452F', '#2A5C45', '#40735B', '#5A8A72',
+        '#212121', '#616161', '#8D8D8D', '#BDBDBD'
       ]
     },
     dark: {
       cssVars: {
-        '--primary': '#94a3b8',
-        '--primary-dark': '#64748b',
-        '--primary-text': '#1e293b',
-        '--text-primary': '#f1f5f9',
-        '--text-secondary': '#94a3b8',
-        '--text-tertiary': '#64748b',
-        '--bg-primary': '#1e293b',
-        '--bg-secondary': '#0f172a',
-        '--bg-tertiary': '#334155',
-        '--border': '#334155',
+        '--primary': '#8BAA9B',        // A muted, legible "sage" green for accents
+        '--primary-dark': '#749284',    // A deeper version for hover
+        '--primary-text': '#112119',    // Dark green-black text for high contrast
+        '--text-primary': '#F4F4F2',    // The "newsprint" off-white for main text
+        '--text-secondary': '#BDBDBD',  // Light, readable grays
+        '--text-tertiary': '#8D8D8D',
+        '--bg-primary': '#212121',     // The "ink" black for the main background
+        '--bg-secondary': '#181818',    // A near-black for the outer background
+        '--bg-tertiary': '#333333',
+        '--border': '#333333',
       },
-      chartPalette: [ // Desaturated Slate Blue Scale (Light to Dark)
-        '#EBF0F5', '#C2D1E0', '#94AEC6', '#7994B0',
-        '#627A94', '#4B5F78', '#344459', '#3b4e63'
+      chartPalette: [ // The same palette, ordered for dark mode
+        '#F4F4F2', '#E1E1DE', '#BDBDBD', '#8BAA9B',
+        '#749284', '#5A8A72', '#8D8D8D', '#616161'
       ]
 }
   },
