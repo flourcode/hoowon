@@ -2068,43 +2068,41 @@ body {
 <script>
 const themeManager = {
   themes: {
-    light: { // Your "paper" theme remains the same
+    light: {
       cssVars: {
-        '--primary': '#344E41',
-        '--primary-dark': '#2A3F34',
-        '--primary-text': '#FFFFFF',
-        '--text-primary': '#1f2328',
-        '--text-secondary': '#57606a',
-        '--text-tertiary': '#6e7781',
-        '--bg-primary': '#FAFAF7',
-        '--bg-secondary': '#F2F4F0',
-        '--bg-tertiary': '#E5E7EB',
-        '--border': '#D1D5DB',
+        '--primary': '#334155',
+        '--primary-dark': '#1e293b',
+        '--primary-text': '#ffffff',
+        '--text-primary': '#1e293b',
+        '--text-secondary': '#64748b',
+        '--text-tertiary': '#94a3b8',
+        '--bg-primary': '#ffffff',
+        '--bg-secondary': '#f1f5f9',
+        '--bg-tertiary': '#e2e8f0',
+        '--border': '#cbd5e1',
       },
-      chartPalette: [
-        '#2A3F34', '#344E41', '#3E594E', '#588157', 
-        '#6B946A', '#8FBC8F', '#B4D2B4', '#DAE7DA'
+      chartPalette: [ // Desaturated Slate Blue Scale (Dark to Light)
+        '#232E3A', '#344459', '#4B5F78', '#627A94',
+        '#7994B0', '#94AEC6', '#C2D1E0', '#EBF0F5'
       ]
     },
-dark: {
-  cssVars: {
-    '--primary': '#2A9D74',
-    '--primary-dark': '#1F7E5D',
-    '--primary-text': '#ffffff',
-    '--text-primary': '#F7FAFC',
-    '--text-secondary': '#A0AEC0',
-    '--text-tertiary': '#718096',
-    '--bg-primary': '#1A202C',
-    '--bg-secondary': '#171923',
-    '--bg-tertiary': '#2D3748',
-    '--border': '#2D3748',
-  },
-  chartPalette: [
-    // These new greens are all derived from your primary color
-    '#A8E6CF', '#67C7A5', '#2A9D74', '#207A5A',
-    // These cool grays provide excellent neutral contrast
-    '#94A3B8', '#64748B', '#334155', '#1F2937'
-  ]
+    dark: {
+      cssVars: {
+        '--primary': '#94a3b8',
+        '--primary-dark': '#64748b',
+        '--primary-text': '#1e293b',
+        '--text-primary': '#f1f5f9',
+        '--text-secondary': '#94a3b8',
+        '--text-tertiary': '#64748b',
+        '--bg-primary': '#1e293b',
+        '--bg-secondary': '#0f172a',
+        '--bg-tertiary': '#334155',
+        '--border': '#334155',
+      },
+      chartPalette: [ // Desaturated Slate Blue Scale (Light to Dark)
+        '#EBF0F5', '#C2D1E0', '#94AEC6', '#7994B0',
+        '#627A94', '#4B5F78', '#344459', '#232E3A'
+      ]
 }
   },
   applyTheme(themeName) {
@@ -2174,7 +2172,7 @@ const app = {
 };
 
 let PALETTE = [];
-const chartConfig = { fillOpacity: 0.8, lineOpacity: 0.4, comparisonColorB: '#A0AEC0' };
+const chartConfig = { fillOpacity: .85, lineOpacity: .4, comparisonColorB: '#A0AEC0' };
 
 // Optimized element caching
 const elementCache = new Map();
@@ -3309,7 +3307,7 @@ const sankeyChart = {
         .attr('x2', link.target.x0);
       
       gradient.append('stop')
-        .attr('offset', '0%')
+        .attr('offset', '100%')
         .attr('stop-color', utils.getEntityColor(link.source.name));
       
       gradient.append('stop')
