@@ -895,13 +895,13 @@ body {
   border: 1px solid var(--border); 
   border-radius: var(--radius); 
   padding: var(--space-lg); 
-  display: flex; 
-  gap: var(--space); 
-  align-items: flex-start; 
+  overflow: auto; /* This is important to contain the floating image */
 }
 
 .connect-avatar {
-  flex-shrink: 0;
+  float: left; /* Makes the image float to the left */
+  margin-right: var(--space-lg); /* Adds space between the image and text */
+  margin-bottom: var(--space-xs); /* Adds a little space below the image */
 }
 
 .connect-avatar img { 
