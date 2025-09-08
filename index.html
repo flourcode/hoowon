@@ -64,8 +64,7 @@ body {
 
 .app-header { 
   background: var(--bg-primary); 
-  border-bottom: 1px solid var(--border); 
-  padding: var(--space-lg) var(--space-xl); 
+  padding: var(--space-sm) var(--space-xl); 
   position: static; 
   top: 0; 
   z-index: 100; 
@@ -1688,7 +1687,6 @@ body {
         </div>
         <div class="data-load-controls">
           <div class="example-datasets">
-            <div class="dataset-label">Load Example Data:</div>
             <div class="dataset-buttons">
               <button class="btn-secondary btn-sm" data-dataset="dhs_CY24_25">DHS Awards CY24-25</button>
 			  <button class="btn-secondary btn-sm" data-dataset="USAF_SEP24">Air Force Sep 24</button>
@@ -1696,11 +1694,78 @@ body {
 			  <button class="btn-secondary btn-sm" data-dataset="PSC_DA10_SaaS">PSC DA10 SaaS</button>
             </div>
           </div>
+		  
+		  
+		  
           <div class="upload-section">
             <input type="file" id="csvFile" class="file-input" accept=".csv, .xls"><label for="csvFile" class="btn btn-secondary">Upload any fpds.gov CSV</label>
           </div>
         </div>
-        <div class="controls-section" id="controlsSection" style="display: none;">
+        
+      </div>
+    </header>
+
+    <div id="loadingState" class="loading-state hidden"><div class="loading-spinner"></div><p>Processing contract data...</p></div>
+    <div id="errorState" class="error-state hidden"><h2>Error Loading Data</h2><p id="errorMessage"></p><div id="parseWarnings" class="hidden" style="margin-top: var(--space); padding: var(--space); background: #fff3cd; color: #856404; border-radius: var(--radius);"></div></div>
+    
+    <div id="emptyState" class="empty-state">
+      <div class="empty-state-content">
+        <h2 class="empty-state-title">Historical Data is Your Secret Sales Weapon</h2>
+        <p class="empty-state-intro">Looking at old contract awards isn't just about what you missed—it's about seeing the future. By analyzing the government's past buying habits, you can stop guessing and start making strategic decisions. It's like having the competition's playbook before the game starts.</p>
+        <div class="how-to-guide">
+          <h3>How To Use This Tool</h3>
+          <ol>
+            <li><strong>Find Contract Data</strong><p>Go to FPDS.gov, perform a search, and export the results as a CSV file.</p></li>
+            <li><strong>Upload & Analyze</strong><p>Upload the CSV to visualize spending, identify vendors, and find opportunities.</p></li>
+            <li><strong>Filter & Explore</strong><p>Use the interactive filters and click on charts to narrow results and gain insights.</p></li>
+          </ol>
+        </div>
+        <p class="empty-state-prompt">Use the buttons in the header to load example data or upload your own CSV to begin.</p>
+      </div>
+    </div>
+
+    <main class="dashboard hidden" id="dashboard">
+      <section>
+
+        <div class="stats-grid">
+          <div class="stat-card" id="statCard1"><div class="stat-label">Total Value</div><div class="stat-value" id="totalValue">$0</div></div>
+          <div class="stat-card" id="statCard2"><div class="stat-label">Contracts</div><div class="stat-value" id="totalContracts">0</div></div>
+          <div class="stat-card" id="statCard3"><div class="stat-label">Companies</div><div class="stat-value" id="totalCompanies">0</div></div>
+          <div class="stat-card" id="statCard4"><div class="stat-label">Market Leader</div><div class="stat-company" id="topCompany">-</div></div>
+        </div>
+      </section>
+      <section class="chart-section">
+        <div class="chart-header">
+         <div>
+          <h2 class="section-title" id="primaryChartTitle">Award Flow & NAICS Distribution</h2>
+          <div id="filterDisplay" class="active-filters-display"></div>
+        </div>
+          <div class="chart-controls" id="sankeyControls">
+            <button id="sankeyLimit10" class="btn btn-sm btn-primary">Top 10</button>
+            <button id="sankeyLimit25" class="btn btn-sm btn-secondary">Top 25</button>
+            <button id="sankeyLimitAll" class="btn btn-sm btn-secondary">All</button>
+          </div>
+        </div>
+        <div class="primary-charts">
+          <div id="sankeyChart" class="sankey-container"></div>
+          <div class="chart-container industry-chart-container"><canvas id="industryChart"></canvas></div>
+        </div>
+      </section>
+	 
+      <section class="chart-section">
+        <h2 class="section-title" style="margin-bottom: var(--space);">Seasonal Buying Pattern</h2>
+        <div class="chart-container" style="height: 200px; max-height: 200px; padding-bottom: 5px;"><canvas id="timelineChart"></canvas></div>
+      </section>
+	  <div class="data-source-banner hidden" id="dataSourceBanner">
+  <div class="data-source-text">
+    <i class="fas fa-file-csv data-source-icon"></i>
+    <span>Currently viewing: <span class="data-source-filename" id="dataSourceFilename">example.csv</span></span>
+  </div>
+  <button class="btn btn-sm btn-secondary" onclick="hideDataSourceBanner()">
+    <i class="fas fa-times"></i>
+  </button>
+</div>
+	  <div class="controls-section" id="controlsSection" style="display: none;">
           <div class="main-filters">
             <div class="search-wrapper"><input type="text" id="searchInput" class="form-input search-input" placeholder="Search contracts, agencies, vendors..."></div>
             <select id="agencyFilter" class="form-select"><option value="">All Agencies</option></select>
@@ -1739,68 +1804,6 @@ body {
             </div>
           </div>
         </div>
-      </div>
-    </header>
-
-    <div id="loadingState" class="loading-state hidden"><div class="loading-spinner"></div><p>Processing contract data...</p></div>
-    <div id="errorState" class="error-state hidden"><h2>Error Loading Data</h2><p id="errorMessage"></p><div id="parseWarnings" class="hidden" style="margin-top: var(--space); padding: var(--space); background: #fff3cd; color: #856404; border-radius: var(--radius);"></div></div>
-    
-    <div id="emptyState" class="empty-state">
-      <div class="empty-state-content">
-        <h2 class="empty-state-title">Historical Data is Your Secret Sales Weapon</h2>
-        <p class="empty-state-intro">Looking at old contract awards isn't just about what you missed—it's about seeing the future. By analyzing the government's past buying habits, you can stop guessing and start making strategic decisions. It's like having the competition's playbook before the game starts.</p>
-        <div class="how-to-guide">
-          <h3>How To Use This Tool</h3>
-          <ol>
-            <li><strong>Find Contract Data</strong><p>Go to FPDS.gov, perform a search, and export the results as a CSV file.</p></li>
-            <li><strong>Upload & Analyze</strong><p>Upload the CSV to visualize spending, identify vendors, and find opportunities.</p></li>
-            <li><strong>Filter & Explore</strong><p>Use the interactive filters and click on charts to narrow results and gain insights.</p></li>
-          </ol>
-        </div>
-        <p class="empty-state-prompt">Use the buttons in the header to load example data or upload your own CSV to begin.</p>
-      </div>
-    </div>
-
-    <main class="dashboard hidden" id="dashboard">
-      <section>
-<div class="data-source-banner hidden" id="dataSourceBanner">
-  <div class="data-source-text">
-    <i class="fas fa-file-csv data-source-icon"></i>
-    <span>Currently viewing: <span class="data-source-filename" id="dataSourceFilename">example.csv</span></span>
-  </div>
-  <button class="btn btn-sm btn-secondary" onclick="hideDataSourceBanner()">
-    <i class="fas fa-times"></i>
-  </button>
-</div>
-        <div class="stats-grid">
-          <div class="stat-card" id="statCard1"><div class="stat-label">Total Value</div><div class="stat-value" id="totalValue">$0</div></div>
-          <div class="stat-card" id="statCard2"><div class="stat-label">Contracts</div><div class="stat-value" id="totalContracts">0</div></div>
-          <div class="stat-card" id="statCard3"><div class="stat-label">Companies</div><div class="stat-value" id="totalCompanies">0</div></div>
-          <div class="stat-card" id="statCard4"><div class="stat-label">Market Leader</div><div class="stat-company" id="topCompany">-</div></div>
-        </div>
-      </section>
-      <section class="chart-section">
-        <div class="chart-header">
-         <div>
-          <h2 class="section-title" id="primaryChartTitle">Award Flow & NAICS Distribution</h2>
-          <div id="filterDisplay" class="active-filters-display"></div>
-        </div>
-          <div class="chart-controls" id="sankeyControls">
-            <button id="sankeyLimit10" class="btn btn-sm btn-primary">Top 10</button>
-            <button id="sankeyLimit25" class="btn btn-sm btn-secondary">Top 25</button>
-            <button id="sankeyLimitAll" class="btn btn-sm btn-secondary">All</button>
-          </div>
-        </div>
-        <div class="primary-charts">
-          <div id="sankeyChart" class="sankey-container"></div>
-          <div class="chart-container industry-chart-container"><canvas id="industryChart"></canvas></div>
-        </div>
-      </section>
-	 
-      <section class="chart-section">
-        <h2 class="section-title" style="margin-bottom: var(--space);">Seasonal Buying Pattern</h2>
-        <div class="chart-container" style="height: 200px; max-height: 200px; padding-bottom: 5px;"><canvas id="timelineChart"></canvas></div>
-      </section>
 	  <section class="chart-section cta-section">
         <div class="cta-icon">
          <i class="fa-regular fa-comments"></i>
@@ -1814,7 +1817,6 @@ body {
         </div>
       </section>
 
-      <section class="chart-section fpds-search-builder">
 	  <section class="chart-section fpds-search-builder">
   <h2 class="search-builder-title">FPDS Search Builder</h2>
   
@@ -2064,8 +2066,8 @@ const themeManager = {
   themes: {
     light: {
       cssVars: {
-        '--primary': '#181817',        // The near-black for primary actions
-        '--primary-dark': '#000000',    // A true black for hover
+        '--primary': '#5A9485',        // The off-white for primary actions
+        '--primary-dark': '#468878',    // A slightly darker version for hover
         '--primary-text': '#FFFFFF',
         '--text-primary': '#181817',   // The near-black for main text
         '--text-secondary': '#757575', // A neutral, readable gray
@@ -2082,8 +2084,8 @@ const themeManager = {
     },
     dark: {
       cssVars: {
-        '--primary': '#F6F5F1',        // The off-white for primary actions
-        '--primary-dark': '#E9E8E4',    // A slightly darker version for hover
+        '--primary': '#5A9485',        // The off-white for primary actions
+        '--primary-dark': '#468878',    // A slightly darker version for hover
         '--primary-text': '#181817',    // The near-black for high contrast
         '--text-primary': '#F6F5F1',    // The off-white for main text
         '--text-secondary': '#BDBDBD',  // Muted, light grays
