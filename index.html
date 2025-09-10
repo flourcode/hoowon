@@ -23,19 +23,23 @@
 <style>
 /* CSS Variables and Theme System */
 :root {
-  /* Structural Variables */
+  /* Spacing */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space: 1rem;
   --space-lg: 1.5rem;
   --space-xl: 2rem;
   --space-2xl: 3rem;
+  
+  /* Typography */
   --font-family: "Atkinson Hyperlegible Next", sans-serif;
-  --radius: 6px; /* A slightly larger radius for a softer, more modern feel */
-  --transition-fast: all 0.15s ease-in-out; /* For quick feedback like button clicks */
-  --transition-slow: all 0.3s ease-in-out; /* For slower effects like card hovers */
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.04); /* A much subtler base shadow */
-  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08); /* A slightly stronger shadow for hover states */
+  
+  /* Layout */
+  --radius: 6px;
+  --transition-fast: all 0.15s ease-in-out;
+  --transition-slow: all 0.3s ease-in-out;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Base Styles */
@@ -76,6 +80,13 @@ body {
   gap: var(--space-lg); 
 }
 
+.dashboard { 
+  padding: var(--space-xl); 
+  display: flex; 
+  flex-direction: column; 
+  gap: var(--space); 
+}
+
 /* Theme Controls */
 .theme-controls {
   display: flex;
@@ -95,7 +106,7 @@ body {
   background: transparent;
   color: var(--text-secondary);
   border: none;
-  transition: var(--transition);
+  transition: var(--transition-fast);
 }
 
 .theme-btn.active {
@@ -134,7 +145,7 @@ body {
   align-items: center; 
   background: var(--primary); 
   color: var(--primary-text); 
-  padding: var(--space) var(--space); 
+  padding: var(--space); 
   border-radius: 6px; 
   font-size: 2rem; 
   font-weight: 900; 
@@ -142,12 +153,7 @@ body {
 }
 
 /* Controls and Filters */
-.data-load-controls { 
-  display: flex; 
-  flex-direction: column; 
-  gap: var(--space); 
-}
-
+.data-load-controls, 
 .controls-section { 
   display: flex; 
   flex-direction: column; 
@@ -188,13 +194,13 @@ body {
   background: var(--bg-primary); 
   color: var(--text-primary); 
   font-size: 0.875rem; 
-  transition: var(--transition); 
+  transition: var(--transition-fast); 
 }
 
 .form-input:focus, .form-select:focus { 
   outline: none; 
-  border-color: var(--primary); /* Use the primary color for a subtle highlight */
-  box-shadow: none; /* Remove the glow */
+  border-color: var(--primary);
+  box-shadow: none;
 }
 
 .form-group { 
@@ -240,13 +246,13 @@ body {
 }
 
 .btn:hover {
-  transform: translateY(-2px); /* A slightly more noticeable lift */
+  transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
 }
 
 .btn:active {
-  transform: translateY(0) scale(0.98); /* A satisfying "push" effect when clicked */
-  box-shadow: var(--shadow); /* Revert to the base shadow on click */
+  transform: translateY(0) scale(0.98);
+  box-shadow: var(--shadow);
 }
 
 .btn-primary { 
@@ -302,20 +308,11 @@ body {
   border-top: 1px solid var(--border); 
 }
 
-/* Dashboard and Content */
-.dashboard { 
-  padding: var(--space-xl); 
-  display: flex; 
-  flex-direction: column; 
-  gap: var(--space); 
-}
-
+/* Typography */
 .section-title { 
   font-size: 2.25rem; 
   color: var(--text-primary); 
   margin-bottom: var(--space-lg); 
-  border-bottom: none; 
-  padding-bottom: var(--space-sm); 
   font-weight: 600; 
   line-height: 1.2; 
   letter-spacing: -1.5px; 
@@ -561,7 +558,7 @@ body {
   font-size: 0.875rem; 
   font-weight: 500; 
   cursor: pointer; 
-  transition: var(--transition); 
+  transition: var(--transition-fast); 
 }
 
 .tab-btn.active, .tab-btn:hover { 
@@ -639,7 +636,7 @@ body {
   z-index: 1000; 
   opacity: 0; 
   visibility: hidden; 
-  transition: var(--transition); 
+  transition: var(--transition-fast); 
 }
 
 .modal-backdrop.active { 
@@ -824,14 +821,18 @@ body {
   margin-right: auto; 
 }
 
-.explainer-section a, .step-text a, .footer-links a { 
+.explainer-section a, 
+.step-text a, 
+.footer-links a { 
   color: var(--primary); 
   text-decoration: none; 
   font-weight: 500; 
-  transition: var(--transition); 
+  transition: var(--transition-fast); 
 }
 
-.explainer-section a:hover, .step-text a:hover, .footer-links a:hover { 
+.explainer-section a:hover, 
+.step-text a:hover, 
+.footer-links a:hover { 
   color: var(--primary-dark); 
   text-decoration: underline; 
 }
@@ -866,15 +867,15 @@ body {
   flex-shrink: 0; 
 }
 
-.step-text strong { 
-  color: var(--text-primary); 
-  font-weight: 600; 
-}
-
 .step-text { 
   font-size: 0.875rem; 
   color: var(--text-secondary); 
   line-height: 1.5; 
+}
+
+.step-text strong { 
+  color: var(--text-primary); 
+  font-weight: 600; 
 }
 
 .footer-grid-expanded { 
@@ -895,13 +896,13 @@ body {
   border: 1px solid var(--border); 
   border-radius: var(--radius); 
   padding: var(--space-lg); 
-  overflow: auto; /* This is important to contain the floating image */
+  overflow: auto;
 }
 
 .connect-avatar {
-  float: left; /* Makes the image float to the left */
-  margin-right: var(--space-lg); /* Adds space between the image and text */
-  margin-bottom: var(--space-xs); /* Adds a little space below the image */
+  float: left;
+  margin-right: var(--space-lg);
+  margin-bottom: var(--space-xs);
 }
 
 .connect-avatar img { 
@@ -1003,7 +1004,7 @@ body {
   display: inline-flex; 
   align-items: center; 
   gap: var(--space-sm); 
-  transition: var(--transition); 
+  transition: var(--transition-fast); 
 }
 
 .footer-links a:hover { 
@@ -1056,7 +1057,7 @@ body {
   border-radius: var(--radius);
   padding: var(--space);
   cursor: pointer;
-  transition: var(--transition);
+  transition: var(--transition-fast);
 }
 
 .template-card:hover {
@@ -1264,6 +1265,62 @@ body {
   margin-bottom: var(--space-sm);
 }
 
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+.stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+/* CTA Section */
+.cta-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  background: var(--bg-secondary);
+}
+
+.cta-icon {
+  font-size: 2.5rem;
+  color: var(--primary);
+}
+
+.cta-text {
+  flex-grow: 1;
+}
+
+.cta-text h3 {
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.cta-text p {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 600px;
+}
+
+.cta-action .btn {
+  white-space: nowrap;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   body, html {
@@ -1304,7 +1361,8 @@ body {
     max-width: 100%;
   }
 
-  .chart-controls .btn {
+  .chart-controls .btn,
+  #sankeyControls .btn {
     flex: 1;
     min-width: 0;
     padding: var(--space-xs) var(--space-sm);
@@ -1317,12 +1375,6 @@ body {
     width: 100%;
     max-width: 100%;
     overflow: hidden;
-  }
-
-  #sankeyControls .btn {
-    min-width: 0;
-    flex: 1;
-    max-width: calc(33.333% - var(--space-xs));
   }
 
   .section-title {
@@ -1400,7 +1452,6 @@ body {
     font-size: 16px;
   }
 
-
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-sm);
@@ -1466,6 +1517,27 @@ body {
     right: 0;
     background: var(--bg-primary);
     border-left: 1px solid var(--border);
+  }
+
+  /* Renewal table mobile styles */
+  #renewalTable {
+    min-width: 900px;
+    font-size: 0.75rem;
+  }
+  
+  #renewalTable th,
+  #renewalTable td {
+    padding: var(--space-xs) var(--space-sm);
+    white-space: nowrap;
+  }
+  
+  #renewalTable th:last-child,
+  #renewalTable td:last-child {
+    position: sticky;
+    right: 0;
+    background: var(--bg-primary);
+    border-left: 1px solid var(--border);
+    z-index: 10;
   }
 
   .tabs {
@@ -1569,6 +1641,15 @@ body {
     justify-content: center;
   }
 
+  .cta-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .cta-text {
+    margin-bottom: var(--space);
+  }
+
   * {
     max-width: 100%;
     box-sizing: border-box;
@@ -1596,101 +1677,10 @@ body {
 }
 
 @media (max-width: 768px) and (orientation: landscape) {
-  .chart-container {
-    height: 250px;
-  }
-  
+  .chart-container,
   .sankey-container {
     height: 250px;
   }
-}
-/* Add these new rules for animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-in {
-  /* We set the animation to 'forwards' so it holds its final state */
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-/* This creates a beautiful staggered effect for the stat cards */
-.stat-card:nth-child(1) { animation-delay: 0.1s; }
-.stat-card:nth-child(2) { animation-delay: 0.2s; }
-.stat-card:nth-child(3) { animation-delay: 0.3s; }
-.stat-card:nth-child(4) { animation-delay: 0.4s; }
-.cta-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-lg);
-  background: var(--bg-secondary); /* Makes it stand out slightly */
-}
-.cta-icon {
-  font-size: 2.5rem;
-  color: var(--primary);
-}
-.cta-text {
-  flex-grow: 1;
-}
-.cta-text h3 {
-  font-size: 1.25rem;
-  color: var(--text-primary);
-  margin-bottom: var(--space-xs);
-}
-.cta-text p {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin: 0;
-  max-width: 600px;
-}
-.cta-action .btn {
-  white-space: nowrap; /* Prevents button text from wrapping */
-}
-
-/* Make it responsive for mobile */
-@media (max-width: 768px) {
-  .cta-section {
-    flex-direction: column;
-    text-align: center;
-  }
-  .cta-text {
-    margin-bottom: var(--space);
-  }
-}
-.table-section { 
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.renewal-table {
-  min-width: 800px !important;
-  display: table !important;
-}
-
-.renewal-table thead,
-.renewal-table tbody {
-  display: table-header-group !important;
-}
-
-.renewal-table tbody {
-  display: table-row-group !important;
-}
-
-.renewal-table tr {
-  display: table-row !important;
-}
-
-.renewal-table th,
-.renewal-table td {
-  display: table-cell !important;
 }
 </style>
 </head>
@@ -1717,9 +1707,8 @@ body {
 		  <div class="logo-subtitle">Try these Sample Datasets</div>
             <div class="dataset-buttons">
               <button class="btn-secondary btn-sm" data-dataset="dhs_CY24_25">DHS Awards CY24-25</button>
-			  <button class="btn-secondary btn-sm" data-dataset="USAF_SEP24">Air Force Sep 24</button>
-			  <button class="btn-secondary btn-sm" data-dataset="NAICS_611310_Colleges">Colleges and Uni</button>
-			  <button class="btn-secondary btn-sm" data-dataset="PSC_DA10_SaaS">PSC DA10 SaaS</button>
+			  <button class="btn-secondary btn-sm" data-dataset="USAF_SEP24">Air Force Sep24</button>
+			  <button class="btn-secondary btn-sm" data-dataset="NAICS_611310_Colleges">Colleges & Uni</button>
 			  <button class="btn-secondary btn-sm" data-dataset="carahsoft_DA10">Carahsoft DA10</button>
             </div>
           </div>
@@ -3331,85 +3320,65 @@ const charts = {
   },
   
   createRenewalTable() {
-    const popChartElement = elements.popChart;
-    if (!popChartElement) return;
-    
-    const renewalsContainer = popChartElement.parentElement;
-    if (!renewalsContainer) return;
-    
-    renewalsContainer.innerHTML = `
-  <div style="overflow-x: auto; background-color: var(--bg-primary); border-radius: 8px; border: 1px solid var(--border);">
-    <div style="padding: 16px 20px; border-bottom: 1px solid var(--border); background-color: var(--bg-secondary);">
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-        <div>
-          <h4 style="margin: 0; color: var(--text-primary);">Upcoming End of PoP</h4>
-          <p style="margin: 4px 0 0 0; color: var(--text-secondary); font-size: 0.9rem;">Contracts expiring within the next year</p>
-        </div>
-        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <button id="downloadRenewalsCSV" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 4px;">
-            <i class="fas fa-download"></i>
-            Download CSV
-          </button>
-          <div style="display: flex; gap: 8px; align-items: center;">
-            <span style="color: #dc3545; font-weight: 600; font-size: 0.85rem;">●</span>
-            <span style="font-size: 0.85rem; color: var(--text-secondary);">High Priority (≤90 days)</span>
-            <span style="color: #fd7e14; font-weight: 600; font-size: 0.85rem;">●</span>
-            <span style="font-size: 0.85rem; color: var(--text-secondary);">Medium (≤180 days)</span>
+  const popChartElement = elements.popChart;
+  if (!popChartElement) return;
+  
+  const renewalsContainer = popChartElement.parentElement;
+  if (!renewalsContainer) return;
+  
+  renewalsContainer.innerHTML = `
+    <div class="table-section">
+      <div style="padding: var(--space); border-bottom: 1px solid var(--border); background: var(--bg-secondary);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-sm);">
+          <div>
+            <h3 style="margin: 0; color: var(--text-primary); font-size: 1.1rem; font-weight: 600;">Upcoming End of PoP</h3>
+            <p style="margin: 2px 0 0 0; color: var(--text-secondary); font-size: 0.8rem;">Contracts expiring within the next year</p>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: var(--space-xs); align-items: flex-end;">
+            <button id="downloadRenewalsCSV" class="btn btn-secondary btn-sm">
+              <i class="fas fa-download"></i> CSV
+            </button>
+            <div style="display: flex; gap: var(--space-xs); align-items: center; font-size: 0.7rem;">
+              <span style="color: #dc3545;">●</span><span style="color: var(--text-secondary);">High</span>
+              <span style="color: #fd7e14;">●</span><span style="color: var(--text-secondary);">Med</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
-      <table class="renewal-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem; table-layout: auto; min-width: 800px;">
+      
+      <table class="data-table" id="renewalTable">
         <thead>
-          <tr style="background-color: var(--bg-tertiary);">
-            <th class="sortable" data-column="id" style="width: 12%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-              Contract ID <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-            </th>
-            <th class="sortable" data-column="vendor" style="width: 15%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-              Vendor <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-            </th>
-            <th class="sortable" data-column="agency" style="width: 17%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-              Agency <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-            </th>
-            <th class="sortable" data-column="description" style="width: 20%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-              Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-            </th>
-            <th class="sortable" data-column="value" style="width: 10%; padding: 8px 12px; text-align: right; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-              Value <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-            </th>
-            <th class="sortable" data-column="popEndDate" style="width: 8%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-              Expires <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-            </th>
-            <th class="sortable" data-column="daysUntilExpiry" style="width: 8%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-              Days Left <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-            </th>
-            <th class="sortable" data-column="priority" style="width: 7%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-              Priority <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-            </th>
-            <th style="width: 6%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); font-size: 0.8rem;">Action</th>
+          <tr>
+            <th class="sortable" data-column="id">Contract ID <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+            <th class="sortable" data-column="vendor">Vendor <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+            <th class="sortable" data-column="agency">Agency <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+            <th class="sortable" data-column="description">Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+            <th class="sortable" data-column="value">Value <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+            <th class="sortable" data-column="popEndDate">Expires <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+            <th class="sortable" data-column="daysUntilExpiry">Days Left <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+            <th class="sortable" data-column="priority">Priority <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody id="renewalTableBody">
         </tbody>
       </table>
+      
+      <div id="renewalTableEmpty" style="display: none; padding: var(--space-xl); text-align: center; color: var(--text-secondary);">
+        <p style="margin: 0; font-size: 1rem;">No upcoming renewals found</p>
+        <p style="margin: var(--space-xs) 0 0 0; font-size: 0.8rem;">Contracts with performance end dates will appear here</p>
+      </div>
     </div>
-    <div id="renewalTableEmpty" style="display: none; padding: 40px; text-align: center; color: var(--text-secondary);">
-      <p style="margin: 0; font-size: 1.1rem;">No upcoming renewals found</p>
-      <p style="margin: 8px 0 0 0; font-size: 0.9rem;">Contracts with performance end dates will appear here</p>
-    </div>
-  </div>
-`;
-    
-    const downloadBtn = document.getElementById('downloadRenewalsCSV');
-    if (downloadBtn) {
-      downloadBtn.addEventListener('click', () => this.downloadRenewalsCSV());
-    }
+  `;
+  
+  const downloadBtn = document.getElementById('downloadRenewalsCSV');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => this.downloadRenewalsCSV());
+  }
 
-    this.setupRenewalTableSorting();
-    this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
-  },
-
+  this.setupRenewalTableSorting();
+  this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
+},
   setupRenewalTableSorting() {
     const sortableHeaders = document.querySelectorAll('.renewal-table .sortable');
     sortableHeaders.forEach(header => {
@@ -3509,90 +3478,81 @@ const charts = {
   },
 
   renderRenewalTableRows() {
-    const tbody = document.getElementById('renewalTableBody');
-    if (!tbody || !this.renewalContracts) return;
+  const tbody = document.getElementById('renewalTableBody');
+  if (!tbody || !this.renewalContracts) return;
 
-    tbody.innerHTML = '';
+  tbody.innerHTML = '';
 
-    this.renewalContracts.forEach((contract, index) => {
-      const row = document.createElement('tr');
-      row.style.borderBottom = '1px solid var(--border)';
-      row.style.transition = 'background-color 0.2s ease';
-      
-      row.addEventListener('mouseenter', () => {
-        row.style.backgroundColor = 'var(--bg-tertiary)';
-      });
-      row.addEventListener('mouseleave', () => {
-        row.style.backgroundColor = 'transparent';
-      });
-      
-      let priorityColor = 'var(--text-secondary)';
-      let priorityText = 'Low';
-      let priorityDot = '●';
-      
-      if (contract.daysUntilExpiry < 0) {
-        priorityColor = '#dc3545';
-        priorityText = 'EXPIRED';
-        priorityDot = '⚠️';
-      } else if (contract.daysUntilExpiry <= 30) {
-        priorityColor = '#dc3545';
-        priorityText = 'URGENT';
-        priorityDot = '🔴';
-      } else if (contract.daysUntilExpiry <= 90) {
-        priorityColor = '#dc3545';
-        priorityText = 'HIGH';
-        priorityDot = '●';
-      } else if (contract.daysUntilExpiry <= 180) {
-        priorityColor = '#fd7e14';
-        priorityText = 'Medium';
-        priorityDot = '●';
-      }
-      
-      const daysDisplay = contract.daysUntilExpiry < 0 
-        ? `<span style="color: #dc3545; font-weight: 600;">${Math.abs(contract.daysUntilExpiry)} days ago</span>`
-        : `<span style="font-weight: 600;">${contract.daysUntilExpiry}</span>`;
-      
-      row.innerHTML = `
-  <td style="padding: 8px 12px;">
-    <div style="font-family: monospace; font-size: 0.75rem; font-weight: 600; color: var(--text-primary);">${utils.truncateText(contract.id, 15)}</div>
-    ${contract.reference ? `<div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 1px;">Ref: ${utils.truncateText(contract.reference, 12)}</div>` : ''}
-  </td>
-  <td style="padding: 8px 12px;">
-    <div class="entity-badge" style="display: flex; align-items: center; gap: 6px;">
-      <div class="entity-icon" style="width: 18px; height: 18px; border-radius: 50%; background-color: ${utils.getEntityColor(contract.vendor)}; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 600; color: white;">
-        ${utils.getInitials(contract.vendor)}
-      </div>
-      <span style="font-weight: 500; font-size: 0.75rem;">${utils.truncateText(contract.vendor, 25)}</span>
-    </div>
-  </td>
-  <td style="padding: 8px 12px;">
-    <div style="font-weight: 500; font-size: 0.75rem;">${utils.truncateText(contract.agency, 35)}</div>
-    ${contract.office ? `<div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 1px;">${utils.truncateText(contract.office, 25)}</div>` : ''}
-  </td>
-  <td style="padding: 8px 12px;">
-    <div style="font-size: 0.75rem; line-height: 1.2; color: var(--text-primary); word-wrap: break-word;" title="${contract.description || ''}">${utils.truncateText(contract.description || 'No description available', 100)}</div>
-  </td>
-  <td style="padding: 8px 12px; text-align: right; font-weight: 600; color: var(--text-primary); font-size: 0.75rem;">${utils.formatMoney(contract.value)}</td>
-  <td style="padding: 8px 12px; text-align: center; font-size: 0.75rem;">${utils.formatDate(contract.popEndDate)}</td>
-  <td style="padding: 8px 12px; text-align: center; font-size: 0.75rem;">${daysDisplay}</td>
-  <td style="padding: 8px 12px; text-align: center;">
-    <span style="color: ${priorityColor}; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 2px; font-size: 0.75rem;">
-      <span style="font-size: 0.7rem;">${priorityDot}</span>
-      ${priorityText}
-    </span>
-  </td>
-  <td style="padding: 8px 12px; text-align: center;">
-    <button class="btn btn-sm btn-secondary view-details-btn" 
-            data-contract-id="${contract.id}"
-            style="font-size: 0.7rem; padding: 3px 6px;">
-      View
-    </button>
-  </td>
-`;
-      
-      tbody.appendChild(row);
-    });
-  },
+  this.renewalContracts.forEach((contract, index) => {
+    const row = document.createElement('tr');
+    
+    let priorityColor = 'var(--text-secondary)';
+    let priorityText = 'Low';
+    let priorityDot = '●';
+    
+    if (contract.daysUntilExpiry < 0) {
+      priorityColor = '#dc3545';
+      priorityText = 'EXPIRED';
+      priorityDot = '⚠️';
+    } else if (contract.daysUntilExpiry <= 30) {
+      priorityColor = '#dc3545';
+      priorityText = 'URGENT';
+      priorityDot = '🔴';
+    } else if (contract.daysUntilExpiry <= 90) {
+      priorityColor = '#dc3545';
+      priorityText = 'HIGH';
+      priorityDot = '●';
+    } else if (contract.daysUntilExpiry <= 180) {
+      priorityColor = '#fd7e14';
+      priorityText = 'Medium';
+      priorityDot = '●';
+    }
+    
+    const daysDisplay = contract.daysUntilExpiry < 0 
+      ? `<span style="color: #dc3545; font-weight: 600;">${Math.abs(contract.daysUntilExpiry)} days ago</span>`
+      : `<span style="font-weight: 600;">${contract.daysUntilExpiry}</span>`;
+    
+    row.innerHTML = `
+      <td>
+        <div style="font-family: monospace; font-size: 0.75rem; font-weight: 600;">${utils.truncateText(contract.id, 15)}</div>
+        ${contract.reference ? `<div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 1px;">Ref: ${utils.truncateText(contract.reference, 12)}</div>` : ''}
+      </td>
+      <td>
+        <div class="entity-badge">
+          <div class="entity-icon" style="background-color: ${utils.getEntityColor(contract.vendor)}">
+            ${utils.getInitials(contract.vendor)}
+          </div>
+          ${utils.truncateText(contract.vendor, 25)}
+        </div>
+      </td>
+      <td>
+        <div class="entity-badge">
+          <div class="entity-icon" style="background-color: ${utils.getEntityColor(contract.agency)}">
+            ${utils.getInitials(contract.agency)}
+          </div>
+          ${utils.truncateText(contract.agency, 20)}
+        </div>
+      </td>
+      <td class="truncate" title="${contract.description || ''}">${utils.truncateText(contract.description || 'No description available', 40)}</td>
+      <td class="text-right">${utils.formatMoney(contract.value)}</td>
+      <td>${utils.formatDate(contract.popEndDate)}</td>
+      <td>${daysDisplay}</td>
+      <td>
+        <span style="color: ${priorityColor}; font-weight: 600; display: flex; align-items: center; gap: 2px; font-size: 0.75rem;">
+          <span style="font-size: 0.7rem;">${priorityDot}</span>
+          ${priorityText}
+        </span>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-secondary view-details-btn" data-contract-id="${contract.id}">
+          View
+        </button>
+      </td>
+    `;
+    
+    tbody.appendChild(row);
+  });
+},
   
   updateTimeline() {
     const chart = app.charts.timeline;
