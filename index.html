@@ -3348,22 +3348,22 @@ const charts = {
       
       <div style="max-height: 400px; overflow-y: auto; overflow-x: auto;">
         <table class="data-table" id="renewalTable">
-          <thead>
-            <tr>
-              <th class="sortable" data-column="id">Contract ID <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-              <th class="sortable" data-column="vendor">Vendor <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-              <th class="sortable" data-column="agency">Agency <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-              <th class="sortable" data-column="description">Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-              <th class="sortable" data-column="value">Value <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-              <th class="sortable" data-column="popEndDate">Expires <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-              <th class="sortable" data-column="daysUntilExpiry">Days Left <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-              <th class="sortable" data-column="priority">Priority <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="renewalTableBody">
-          </tbody>
-        </table>
+  <thead>
+    <tr>
+      <th class="sortable" data-column="id" style="width: 12%;">Contract ID <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+      <th class="sortable" data-column="vendor" style="width: 15%;">Vendor <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+      <th class="sortable" data-column="agency" style="width: 18%;">Agency <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+      <th class="sortable" data-column="description" style="width: 18%;">Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+      <th class="sortable" data-column="value" style="width: 10%;">Value <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+      <th class="sortable" data-column="popEndDate" style="width: 8%;">Expires <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+      <th class="sortable" data-column="daysUntilExpiry" style="width: 8%;">Days Left <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+      <th class="sortable" data-column="priority" style="width: 7%;">Priority <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+      <th style="width: 4%;">Action</th>
+    </tr>
+  </thead>
+  <tbody id="renewalTableBody">
+  </tbody>
+</table>
       </div>
       
       <div id="renewalTableEmpty" style="display: none; padding: var(--space-xl); text-align: center; color: var(--text-secondary);">
@@ -3382,102 +3382,114 @@ const charts = {
   this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
 },
   setupRenewalTableSorting() {
-    const sortableHeaders = document.querySelectorAll('.renewal-table .sortable');
-    sortableHeaders.forEach(header => {
-      header.addEventListener('click', () => {
-        const column = header.dataset.column;
-        this.sortRenewalTable(column);
-      });
+  // Remove any existing listeners first
+  const existingHeaders = document.querySelectorAll('#renewalTable .sortable');
+  existingHeaders.forEach(header => {
+    const newHeader = header.cloneNode(true);
+    header.parentNode.replaceChild(newHeader, header);
+  });
+  
+  // Add new listeners
+  const sortableHeaders = document.querySelectorAll('#renewalTable .sortable');
+  sortableHeaders.forEach(header => {
+    header.addEventListener('click', (e) => {
+      e.preventDefault();
+      const column = header.dataset.column;
+      this.sortRenewalTable(column);
     });
-  },
+  });
+},
 
   sortRenewalTable(column) {
-    const tbody = document.getElementById('renewalTableBody');
-    if (!tbody || !this.renewalContracts) return;
+  const tbody = document.getElementById('renewalTableBody');
+  if (!tbody || !this.renewalContracts) return;
 
-    if (this.currentSort.column === column) {
-      this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.currentSort = { column, direction: 'asc' };
+  // Toggle sort direction
+  if (this.currentSort && this.currentSort.column === column) {
+    this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
+  } else {
+    this.currentSort = { column, direction: 'asc' };
+  }
+
+  // Update sort icons
+  this.updateSortIcons();
+
+  // Sort the data
+  this.renewalContracts.sort((a, b) => {
+    let valueA, valueB;
+
+    switch (column) {
+      case 'id':
+        valueA = (a.id || '').toLowerCase();
+        valueB = (b.id || '').toLowerCase();
+        break;
+      case 'vendor':
+        valueA = (a.vendor || '').toLowerCase();
+        valueB = (b.vendor || '').toLowerCase();
+        break;
+      case 'agency':
+        valueA = (a.agency || '').toLowerCase();
+        valueB = (b.agency || '').toLowerCase();
+        break;
+      case 'description':
+        valueA = (a.description || '').toLowerCase();
+        valueB = (b.description || '').toLowerCase();
+        break;
+      case 'value':
+        valueA = utils.safeParseFloat(a.value);
+        valueB = utils.safeParseFloat(b.value);
+        break;
+      case 'popEndDate':
+        valueA = a.popEndDate ? a.popEndDate.getTime() : 0;
+        valueB = b.popEndDate ? b.popEndDate.getTime() : 0;
+        break;
+      case 'daysUntilExpiry':
+        valueA = a.daysUntilExpiry || 0;
+        valueB = b.daysUntilExpiry || 0;
+        break;
+      case 'priority':
+        const getPriorityValue = (days) => {
+          if (days < 0) return 0; // Expired = highest priority
+          if (days <= 30) return 1; // Urgent
+          if (days <= 90) return 2; // High
+          if (days <= 180) return 3; // Medium
+          return 4; // Low
+        };
+        valueA = getPriorityValue(a.daysUntilExpiry);
+        valueB = getPriorityValue(b.daysUntilExpiry);
+        break;
+      default:
+        return 0;
     }
 
-    this.updateSortIcons();
+    let result;
+    if (typeof valueA === 'string') {
+      result = valueA.localeCompare(valueB);
+    } else {
+      result = valueA - valueB;
+    }
 
-    this.renewalContracts.sort((a, b) => {
-      let valueA, valueB;
+    return this.currentSort.direction === 'desc' ? -result : result;
+  });
 
-      switch (column) {
-        case 'id':
-          valueA = (a.id || '').toLowerCase();
-          valueB = (b.id || '').toLowerCase();
-          break;
-        case 'vendor':
-          valueA = (a.vendor || '').toLowerCase();
-          valueB = (b.vendor || '').toLowerCase();
-          break;
-        case 'agency':
-          valueA = (a.agency || '').toLowerCase();
-          valueB = (b.agency || '').toLowerCase();
-          break;
-        case 'description':
-          valueA = (a.description || '').toLowerCase();
-          valueB = (b.description || '').toLowerCase();
-          break;
-        case 'value':
-          valueA = utils.safeParseFloat(a.value);
-          valueB = utils.safeParseFloat(b.value);
-          break;
-        case 'popEndDate':
-          valueA = a.popEndDate ? a.popEndDate.getTime() : 0;
-          valueB = b.popEndDate ? b.popEndDate.getTime() : 0;
-          break;
-        case 'daysUntilExpiry':
-          valueA = a.daysUntilExpiry || 0;
-          valueB = b.daysUntilExpiry || 0;
-          break;
-        case 'priority':
-          const getPriorityValue = (days) => {
-            if (days < 0) return 0;
-            if (days <= 30) return 1;
-            if (days <= 90) return 2;
-            if (days <= 180) return 3;
-            return 4;
-          };
-          valueA = getPriorityValue(a.daysUntilExpiry);
-          valueB = getPriorityValue(b.daysUntilExpiry);
-          break;
-        default:
-          return 0;
-      }
-
-      let result;
-      if (typeof valueA === 'string') {
-        result = valueA.localeCompare(valueB);
-      } else {
-        result = valueA - valueB;
-      }
-
-      return this.currentSort.direction === 'desc' ? -result : result;
-    });
-
-    this.renderRenewalTableRows();
-  },
-
+  // Re-render the table
+  this.renderRenewalTableRows();
+},
   updateSortIcons() {
-    const sortableHeaders = document.querySelectorAll('.renewal-table .sortable');
-    sortableHeaders.forEach(header => {
-      const icon = header.querySelector('i');
-      const column = header.dataset.column;
-      
-      if (column === this.currentSort.column) {
-        icon.className = this.currentSort.direction === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
-        icon.style.opacity = '1';
-      } else {
-        icon.className = 'fas fa-sort';
-        icon.style.opacity = '0.5';
-      }
-    });
-  },
+  const sortableHeaders = document.querySelectorAll('#renewalTable .sortable');
+  sortableHeaders.forEach(header => {
+    const icon = header.querySelector('i');
+    const column = header.dataset.column;
+    
+    if (column === this.currentSort.column) {
+      icon.className = this.currentSort.direction === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
+      icon.style.opacity = '1';
+    } else {
+      icon.className = 'fas fa-sort';
+      icon.style.opacity = '0.5';
+    }
+  });
+},
 renderRenewalTableRows() {
   const tbody = document.getElementById('renewalTableBody');
   if (!tbody || !this.renewalContracts) return;
