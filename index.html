@@ -1693,7 +1693,7 @@ body {
 			  <button class="btn-secondary btn-sm" data-dataset="USAF_SEP24">Air Force Sep 24</button>
 			  <button class="btn-secondary btn-sm" data-dataset="NAICS_611310_Colleges">Colleges and Uni</button>
 			  <button class="btn-secondary btn-sm" data-dataset="PSC_DA10_SaaS">PSC DA10 SaaS</button>
-			  <button class="btn-secondary btn-sm" data-dataset="carahsoft_YTD">Carahsoft Direct</button>
+			  <button class="btn-secondary btn-sm" data-dataset="carahsoft_DA10">Carahsoft DA10</button>
             </div>
           </div>
 		  
@@ -2876,7 +2876,7 @@ const dataProcessor = {
         '334111_Electronic_Computer': '334111_Electronic_Computer.csv',
         'DISA_CY24_25': 'DISA_CY24_25.csv',
         'dhs_CY24_25': 'dhs_CY24_25.csv',
-		'carahsoft_YTD': 'carahsoft_YTD.csv',
+		'carahsoft_DA10': 'carahsoft_DA10.csv',
 		'NAICS_611310_Colleges': 'NAICS_611310_Colleges.csv',
 		'USAF_SEP24': 'USAF_SEP24.csv',
 		'PSC_DA10_SaaS': 'PSC_DA10_SaaS.csv',
@@ -2900,28 +2900,39 @@ const dataProcessor = {
   },
   
   detectCSVFormat(headers) {
-    // Detect USASpending format
-    const usaSpendingFields = [
-      'award_id_piid', 'award_base_action_date', 'awarding_agency_name',
-      'recipient_name', 'total_obligated_amount', 'naics_code'
-    ];
-    
-    const usaSpendingMatches = usaSpendingFields.filter(field => 
-      headers.some(h => h.toLowerCase().includes(field.toLowerCase()))
-    ).length;
-    
-    // Detect FPDS format
-    const fpdsFields = [
-      'Contract ID', 'Date Signed', 'Contracting Agency',
-      'Legal Business Name', 'Action Obligation ($)'
-    ];
-    
-    const fpdsMatches = fpdsFields.filter(field => headers.includes(field)).length;
-    
-    if (usaSpendingMatches >= 4) return 'usaspending';
-    if (fpdsMatches >= 3) return 'fpds';
-    return 'unknown';
-  },
+  // Detect USASpending Subaward format
+  const subawardFields = [
+    'prime_award_piid', 'prime_award_base_action_date', 'prime_award_awarding_agency_name',
+    'prime_awardee_name', 'prime_award_amount', 'subaward_amount', 'subawardee_name'
+  ];
+  
+  const subawardMatches = subawardFields.filter(field => 
+    headers.some(h => h.toLowerCase().includes(field.toLowerCase()))
+  ).length;
+
+  // Detect USASpending prime award format
+  const usaSpendingFields = [
+    'award_id_piid', 'award_base_action_date', 'awarding_agency_name',
+    'recipient_name', 'total_obligated_amount', 'naics_code'
+  ];
+  
+  const usaSpendingMatches = usaSpendingFields.filter(field => 
+    headers.some(h => h.toLowerCase().includes(field.toLowerCase()))
+  ).length;
+  
+  // Detect FPDS format
+  const fpdsFields = [
+    'Contract ID', 'Date Signed', 'Contracting Agency',
+    'Legal Business Name', 'Action Obligation ($)'
+  ];
+  
+  const fpdsMatches = fpdsFields.filter(field => headers.includes(field)).length;
+  
+  if (subawardMatches >= 5) return 'subaward';
+  if (usaSpendingMatches >= 4) return 'usaspending';
+  if (fpdsMatches >= 3) return 'fpds';
+  return 'unknown';
+},
 
   processData(csvText) {
     try {
@@ -2949,7 +2960,7 @@ const dataProcessor = {
       
       if (format === 'unknown') {
         throw new Error(
-          `Unrecognized CSV format. Expected either FPDS format with fields like "Contract ID", "Date Signed", etc. or USASpending format with fields like "award_id_piid", "award_base_action_date", etc. Available fields: ${csvData.headers.slice(0, 10).join(', ')}...`
+          `Unrecognized CSV format. Expected FPDS format (Contract ID, Date Signed...), USASpending prime awards (award_id_piid, award_base_action_date...), or USASpending subawards (prime_award_piid, subaward_amount...). Available fields: ${csvData.headers.slice(0, 10).join(', ')}...`
         );
       }
       
@@ -2957,10 +2968,12 @@ const dataProcessor = {
         .map((row, index) => {
           try {
             if (format === 'usaspending') {
-              return this.processUSASpendingRow(row);
-            } else {
-              return this.processFPDSRow(row);
-            }
+  return this.processUSASpendingRow(row);
+} else if (format === 'subaward') {
+  return this.processSubawardRow(row);
+} else {
+  return this.processFPDSRow(row);
+}
           } catch (rowError) {
             console.warn(`Error processing row ${index + 1}:`, rowError);
             return null;
@@ -3061,7 +3074,39 @@ const dataProcessor = {
     usaSpendingUrl: String(row['usaspending_permalink'] || '')
   };
 },
+processSubawardRow(row) {
+  const parsedDate = utils.parseDate(row['prime_award_base_action_date']);
+  const value = utils.parseMoney(row['subaward_amount'] || row['prime_award_amount']);
+  const popStartDate = utils.parseDate(row['prime_award_period_of_performance_start_date']);
+  const popEndDate = utils.parseDate(row['prime_award_period_of_performance_current_end_date']);
   
+  return {
+    id: String(row['prime_award_piid'] || ''),
+    reference: String(row['prime_award_parent_piid'] || ''),
+    modification: '',
+    date: String(row['prime_award_base_action_date'] || ''),
+    parsedDate: parsedDate,
+    type: String(row['subaward_type'] || 'Subaward'),
+    agency: String(row['prime_award_awarding_agency_name'] || ''),
+    office: String(row['prime_award_awarding_office_name'] || ''),
+    vendor: String(row['subawardee_name'] || row['prime_awardee_name'] || ''),
+    primeVendor: String(row['prime_awardee_name'] || ''),
+    value: value,
+    naics: String(row['prime_award_naics_code'] || ''),
+    naicsDescription: String(row['prime_award_naics_description'] || ''),
+    psc: '',
+    pscDescription: '',
+    description: String(row['subaward_description'] || row['prime_award_base_transaction_description'] || row['prime_award_project_title'] || ''),
+    popStartDate: popStartDate,
+    popEndDate: popEndDate,
+    popStartDateRaw: String(row['prime_award_period_of_performance_start_date'] || ''),
+    popEndDateRaw: String(row['prime_award_period_of_performance_current_end_date'] || ''),
+    usaSpendingUrl: String(row['usaspending_permalink'] || ''),
+    subawardNumber: String(row['subaward_number'] || ''),
+    subawardDate: String(row['subaward_action_date'] || ''),
+    isSubaward: true
+  };
+},
   populateFilters() {
     this.populateSelect('agencyFilter', app.agencies);
     this.populateSelect('vendorFilter', app.vendors);
@@ -4261,7 +4306,9 @@ const modal = {
             <h4 style="color: var(--text-primary); margin-bottom: var(--space);">Parties Involved</h4>
             <p><strong>Agency:</strong> ${contract.agency || 'N/A'}</p>
             <p><strong>Office:</strong> ${contract.office || 'N/A'}</p>
-            <p><strong>Vendor:</strong> ${contract.vendor || 'N/A'}</p>
+           <p><strong>Vendor:</strong> ${contract.vendor || 'N/A'}</p>
+${contract.isSubaward && contract.primeVendor ? `<p><strong>Prime Contractor:</strong> ${contract.primeVendor}</p>` : ''}
+${contract.isSubaward && contract.subawardNumber ? `<p><strong>Subaward #:</strong> ${contract.subawardNumber}</p>` : ''}
           </div>
         </div>
         ${popSection}
