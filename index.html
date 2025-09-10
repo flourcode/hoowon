@@ -1727,7 +1727,48 @@ body {
 
     <main class="dashboard hidden" id="dashboard">
       <section>
-
+<div class="controls-section" id="controlsSection" style="display: none;">
+          <div class="main-filters">
+            <div class="search-wrapper"><input type="text" id="searchInput" class="form-input search-input" placeholder="Search contracts, agencies, vendors..."></div>
+            <select id="agencyFilter" class="form-select"><option value="">All Agencies</option></select>
+            <select id="vendorFilter" class="form-select"><option value="">All Vendors</option></select>
+            <select id="naicsFilter" class="form-select"><option value="">All NAICS</option></select>
+            <div style="display: flex; gap: var(--space-sm);">
+              <button id="resetBtn" class="btn btn-secondary btn-sm">Reset</button>
+              <button id="moreFiltersBtn" class="btn btn-secondary btn-sm">More</button>
+            </div>
+          </div>
+          
+          <div class="advanced-filters" id="advancedFilters">
+            <div class="filters-grid">
+              <div class="form-group"><label class="form-label">Start Date</label><input type="date" id="startDate" class="form-input"></div>
+              <div class="form-group"><label class="form-label">End Date</label><input type="date" id="endDate" class="form-input"></div>
+              <div class="form-group"><label class="form-label">Office</label><select id="officeFilter" class="form-select"><option value="">Any Office</option></select></div>
+              <div class="form-group"><label class="form-label">Value Range</label><select id="valueFilter" class="form-select"><option value="">Any Value</option><option value="0-100000">Under $100K</option><option value="100000-500000">$100K - $500K</option><option value="500000-1000000">$500K - $1M</option><option value="1000000-5000000">$1M - $5M</option><option value="5000000-10000000">$5M - $10M</option><option value="10000000-999999999999">Over $10M</option></select></div>
+            </div>
+			<div class="comparison-controls" id="comparisonControls" style="display: none;">
+            <div class="comparison-header">
+              <button id="toggleComparison" class="btn btn-secondary comparison-toggle-btn"><i class="fas fa-balance-scale"></i> Compare Vendors</button>
+              <button id="closeComparison" class="btn btn-secondary btn-sm comparison-close hidden"><i class="fas fa-times"></i> Exit Comparison</button>
+            </div>
+            <div class="vendor-selectors hidden" id="vendorSelectors">
+              <div class="combo-box" id="vendorAComboBox">
+                  <input type="text" id="vendorAInput" placeholder="Select Vendor A" class="form-input combo-box-input" autocomplete="off">
+                  <i class="fas fa-chevron-down combo-box-arrow"></i>
+                  <div class="combo-box-options" id="vendorAOptions"></div>
+              </div>
+              <div class="combo-box" id="vendorBComboBox">
+                  <input type="text" id="vendorBInput" placeholder="Select Vendor B" class="form-input combo-box-input" autocomplete="off">
+                  <i class="fas fa-chevron-down combo-box-arrow"></i>
+                  <div class="combo-box-options" id="vendorBOptions"></div>
+              </div>
+              <button id="runComparison" class="btn btn-primary btn-sm">Compare</button>
+            </div>
+          </div>
+          </div>
+        </div>
+		</section>
+		<section>
         <div class="stats-grid">
           <div class="stat-card" id="statCard1"><div class="stat-label">Total Value</div><div class="stat-value" id="totalValue">$0</div></div>
           <div class="stat-card" id="statCard2"><div class="stat-label">Contracts</div><div class="stat-value" id="totalContracts">0</div></div>
@@ -1773,45 +1814,7 @@ body {
     <i class="fas fa-times"></i>
   </button>
 </div>
-	  <div class="controls-section" id="controlsSection" style="display: none;">
-          <div class="main-filters">
-            <div class="search-wrapper"><input type="text" id="searchInput" class="form-input search-input" placeholder="Search contracts, agencies, vendors..."></div>
-            <select id="agencyFilter" class="form-select"><option value="">All Agencies</option></select>
-            <select id="vendorFilter" class="form-select"><option value="">All Vendors</option></select>
-            <select id="naicsFilter" class="form-select"><option value="">All NAICS</option></select>
-            <div style="display: flex; gap: var(--space-sm);">
-              <button id="resetBtn" class="btn btn-secondary btn-sm">Reset</button>
-              <button id="moreFiltersBtn" class="btn btn-secondary btn-sm">More</button>
-            </div>
-          </div>
-          <div class="comparison-controls" id="comparisonControls" style="display: none;">
-            <div class="comparison-header">
-              <button id="toggleComparison" class="btn btn-secondary comparison-toggle-btn"><i class="fas fa-balance-scale"></i> Compare Vendors</button>
-              <button id="closeComparison" class="btn btn-secondary btn-sm comparison-close hidden"><i class="fas fa-times"></i> Exit Comparison</button>
-            </div>
-            <div class="vendor-selectors hidden" id="vendorSelectors">
-              <div class="combo-box" id="vendorAComboBox">
-                  <input type="text" id="vendorAInput" placeholder="Select Vendor A" class="form-input combo-box-input" autocomplete="off">
-                  <i class="fas fa-chevron-down combo-box-arrow"></i>
-                  <div class="combo-box-options" id="vendorAOptions"></div>
-              </div>
-              <div class="combo-box" id="vendorBComboBox">
-                  <input type="text" id="vendorBInput" placeholder="Select Vendor B" class="form-input combo-box-input" autocomplete="off">
-                  <i class="fas fa-chevron-down combo-box-arrow"></i>
-                  <div class="combo-box-options" id="vendorBOptions"></div>
-              </div>
-              <button id="runComparison" class="btn btn-primary btn-sm">Compare</button>
-            </div>
-          </div>
-          <div class="advanced-filters" id="advancedFilters">
-            <div class="filters-grid">
-              <div class="form-group"><label class="form-label">Start Date</label><input type="date" id="startDate" class="form-input"></div>
-              <div class="form-group"><label class="form-label">End Date</label><input type="date" id="endDate" class="form-input"></div>
-              <div class="form-group"><label class="form-label">Office</label><select id="officeFilter" class="form-select"><option value="">Any Office</option></select></div>
-              <div class="form-group"><label class="form-label">Value Range</label><select id="valueFilter" class="form-select"><option value="">Any Value</option><option value="0-100000">Under $100K</option><option value="100000-500000">$100K - $500K</option><option value="500000-1000000">$500K - $1M</option><option value="1000000-5000000">$1M - $5M</option><option value="5000000-10000000">$5M - $10M</option><option value="10000000-999999999999">Over $10M</option></select></div>
-            </div>
-          </div>
-        </div>
+	  
 	  <section class="chart-section cta-section">
         <div class="cta-icon">
          <i class="fa-regular fa-comments"></i>
