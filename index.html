@@ -1757,6 +1757,13 @@ body {
         <h2 class="section-title" style="margin-bottom: var(--space);">Seasonal Buying Pattern</h2>
         <div class="chart-container" style="height: 200px; max-height: 200px; padding-bottom: 5px;"><canvas id="timelineChart"></canvas></div>
       </section>
+	  <section class="chart-section">
+  <h3>Potential Renewal Pipeline</h3>
+  <div class="chart-container" id="popChartContainer">
+    <!-- This div will be replaced by the JavaScript with the renewal table -->
+    <div id="popChart"></div>
+  </div>
+</section>
 	  <div class="data-source-banner hidden" id="dataSourceBanner">
   <div class="data-source-text">
     <i class="fas fa-file-csv data-source-icon"></i>
@@ -2200,6 +2207,7 @@ function cacheElements() {
   });
   elements.timelineChart = getElement('timelineChart')?.getContext('2d');
   elements.industryChart = getElement('industryChart')?.getContext('2d');
+  elements.popChart = getElement('popChart');
   elements.recentTable = document.querySelector('#recentTable tbody');
   elements.largestTable = document.querySelector('#largestTable tbody');
   elements.officesTable = document.querySelector('#officesTable tbody');
@@ -2541,6 +2549,7 @@ function animateCountUp(elementId, endValue) {
   }
   requestAnimationFrame(animationStep);
 }
+
 const stateManager = {
   showState: function(state, message = '') {
     const states = ['loadingState', 'errorState', 'emptyState', 'dashboard'];
@@ -2612,7 +2621,7 @@ const stateManager = {
       }
     }
   },
-  
+
   applyFilters: function() {
     if (!app.data || app.data.length === 0) return;
     app.isUpdating = true;
@@ -2886,6 +2895,30 @@ const dataProcessor = {
     }
   },
   
+  detectCSVFormat(headers) {
+    // Detect USASpending format
+    const usaSpendingFields = [
+      'award_id_piid', 'award_base_action_date', 'awarding_agency_name',
+      'recipient_name', 'total_obligated_amount', 'naics_code'
+    ];
+    
+    const usaSpendingMatches = usaSpendingFields.filter(field => 
+      headers.some(h => h.toLowerCase().includes(field.toLowerCase()))
+    ).length;
+    
+    // Detect FPDS format
+    const fpdsFields = [
+      'Contract ID', 'Date Signed', 'Contracting Agency',
+      'Legal Business Name', 'Action Obligation ($)'
+    ];
+    
+    const fpdsMatches = fpdsFields.filter(field => headers.includes(field)).length;
+    
+    if (usaSpendingMatches >= 4) return 'usaspending';
+    if (fpdsMatches >= 3) return 'fpds';
+    return 'unknown';
+  },
+
   processData(csvText) {
     try {
       stateManager.showState('loadingState');
@@ -2907,42 +2940,23 @@ const dataProcessor = {
         throw new Error(`CSV errors: ${csvData.errors.join(', ')}`);
       }
       
-      const requiredFields = [
-        'Contract ID', 'Date Signed', 'Contracting Agency', 
-        'Legal Business Name', 'Action Obligation ($)'
-      ];
+      // Detect CSV format
+      const format = this.detectCSVFormat(csvData.headers);
       
-      for (const field of requiredFields) {
-        if (!csvData.headers.includes(field)) {
-          throw new Error(
-            `Required field "${field}" not found in CSV. Available fields: ${csvData.headers.join(', ')}`
-          );
-        }
+      if (format === 'unknown') {
+        throw new Error(
+          `Unrecognized CSV format. Expected either FPDS format with fields like "Contract ID", "Date Signed", etc. or USASpending format with fields like "award_id_piid", "award_base_action_date", etc. Available fields: ${csvData.headers.slice(0, 10).join(', ')}...`
+        );
       }
       
       app.data = csvData.data
         .map((row, index) => {
           try {
-            const parsedDate = utils.parseDate(row['Date Signed']);
-            const value = utils.parseMoney(row['Action Obligation ($)']);
-            
-            return {
-              id: String(row['Contract ID'] || ''),
-              reference: String(row['Reference IDV'] || ''),
-              modification: String(row['Modification Number'] || ''),
-              date: String(row['Date Signed'] || ''),
-              parsedDate: parsedDate,
-              type: String(row['Award/IDV Type'] || ''),
-              agency: String(row['Contracting Agency'] || ''),
-              office: String(row['Contracting Office Name'] || ''),
-              vendor: String(row['Legal Business Name'] || ''),
-              value: value,
-              naics: String(row['NAICS'] || ''),
-              naicsDescription: String(row['NAICS Description'] || ''),
-              psc: String(row['PSC'] || ''),
-              pscDescription: String(row['PSC Description'] || ''),
-              description: String(row['PSC Description'] || row['Description of Requirement'] || '')
-            };
+            if (format === 'usaspending') {
+              return this.processUSASpendingRow(row);
+            } else {
+              return this.processFPDSRow(row);
+            }
           } catch (rowError) {
             console.warn(`Error processing row ${index + 1}:`, rowError);
             return null;
@@ -2977,8 +2991,8 @@ const dataProcessor = {
       sankeyChart.updateButtons('sankeyLimit10');
       charts.initAll();
       dashboard.updateAll();
-document.querySelectorAll('.stat-card').forEach(card => card.classList.add('fade-in')); // Add this line
-stateManager.updateFilterDisplay();
+      document.querySelectorAll('.stat-card').forEach(card => card.classList.add('fade-in'));
+      stateManager.updateFilterDisplay();
       stateManager.syncFiltersToUI();
       
       if (elements.comparisonControls) {
@@ -2990,6 +3004,59 @@ stateManager.updateFilterDisplay();
       stateManager.showState('errorState', error.message);
     }
   },
+
+  processFPDSRow(row) {
+    const parsedDate = utils.parseDate(row['Date Signed']);
+    const value = utils.parseMoney(row['Action Obligation ($)']);
+    
+    return {
+      id: String(row['Contract ID'] || ''),
+      reference: String(row['Reference IDV'] || ''),
+      modification: String(row['Modification Number'] || ''),
+      date: String(row['Date Signed'] || ''),
+      parsedDate: parsedDate,
+      type: String(row['Award/IDV Type'] || ''),
+      agency: String(row['Contracting Agency'] || ''),
+      office: String(row['Contracting Office Name'] || ''),
+      vendor: String(row['Legal Business Name'] || ''),
+      value: value,
+      naics: String(row['NAICS'] || ''),
+      naicsDescription: String(row['NAICS Description'] || ''),
+      psc: String(row['PSC'] || ''),
+      pscDescription: String(row['PSC Description'] || ''),
+      description: String(row['PSC Description'] || row['Description of Requirement'] || '')
+    };
+  },
+
+  processUSASpendingRow(row) {
+  const parsedDate = utils.parseDate(row['award_base_action_date']);
+  const value = utils.parseMoney(row['total_obligated_amount']);
+  const popStartDate = utils.parseDate(row['period_of_performance_start_date']);
+  const popEndDate = utils.parseDate(row['period_of_performance_current_end_date']);
+  
+  return {
+    id: String(row['award_id_piid'] || ''),
+    reference: String(row['parent_award_id_piid'] || ''),
+    modification: '',
+    date: String(row['award_base_action_date'] || ''),
+    parsedDate: parsedDate,
+    type: String(row['award_type'] || ''),
+    agency: String(row['awarding_agency_name'] || ''),
+    office: String(row['awarding_office_name'] || ''),
+    vendor: String(row['recipient_name'] || ''),
+    value: value,
+    naics: String(row['naics_code'] || ''),
+    naicsDescription: String(row['naics_description'] || ''),
+    psc: String(row['product_or_service_code'] || ''),
+    pscDescription: String(row['product_or_service_code_description'] || ''),
+    description: String(row['prime_award_base_transaction_description'] || row['product_or_service_code_description'] || ''),
+    popStartDate: popStartDate,
+    popEndDate: popEndDate,
+    popStartDateRaw: String(row['period_of_performance_start_date'] || ''),
+    popEndDateRaw: String(row['period_of_performance_current_end_date'] || ''),
+    usaSpendingUrl: String(row['usaspending_permalink'] || '')
+  };
+},
   
   populateFilters() {
     this.populateSelect('agencyFilter', app.agencies);
@@ -3074,6 +3141,7 @@ const charts = {
     
     this.initTimelineChart();
     this.initIndustryChart();
+    this.initPopChart();
     
     if(!skipUpdate) {
         sankeyChart.init();
@@ -3102,10 +3170,10 @@ const charts = {
         }] 
       },
       options: {
-    animation: { // Add this block
-      duration: 1000,
-      easing: 'easeOutQuart'
-    },
+        animation: {
+          duration: 1000,
+          easing: 'easeOutQuart'
+        },
         responsive: true,
         maintainAspectRatio: false,
         plugins: { 
@@ -3148,11 +3216,11 @@ const charts = {
         }] 
       },
       options: {
-    animation: { // Add this block
-      duration: 1000,
-      easing: 'easeOutQuart'
-    },
-    responsive: true,
+        animation: {
+          duration: 1000,
+          easing: 'easeOutQuart'
+        },
+        responsive: true,
         maintainAspectRatio: false,
         plugins: {
           legend: { position: 'bottom' },
@@ -3179,6 +3247,272 @@ const charts = {
         }
       },
       plugins: [this.centerTextPlugin]
+    });
+  },
+
+  initPopChart() {
+    this.createRenewalTable();
+  },
+  
+  createRenewalTable() {
+    const popChartElement = elements.popChart;
+    if (!popChartElement) return;
+    
+    const renewalsContainer = popChartElement.parentElement;
+    if (!renewalsContainer) return;
+    
+    renewalsContainer.innerHTML = `
+      <div style="overflow-x: auto; background-color: var(--bg-primary); border-radius: 8px; border: 1px solid var(--border);">
+        <div style="padding: 16px 20px; border-bottom: 1px solid var(--border); background-color: var(--bg-secondary);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h4 style="margin: 0; color: var(--text-primary);">Upcoming End of PoP</h4>
+              <p style="margin: 4px 0 0 0; color: var(--text-secondary); font-size: 0.9rem;">Contracts expiring within the next year</p>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <button id="downloadRenewalsCSV" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 4px;">
+                <i class="fas fa-download"></i>
+                Download CSV
+              </button>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <span style="color: #dc3545; font-weight: 600; font-size: 0.85rem;">●</span>
+                <span style="font-size: 0.85rem; color: var(--text-secondary);">High Priority (≤90 days)</span>
+                <span style="color: #fd7e14; font-weight: 600; font-size: 0.85rem;">●</span>
+                <span style="font-size: 0.85rem; color: var(--text-secondary);">Medium (≤180 days)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <table class="renewal-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem; table-layout: fixed;">
+          <thead>
+            <tr style="background-color: var(--bg-tertiary);">
+              <th class="sortable" data-column="id" style="width: 12%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+                Contract ID <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+              </th>
+              <th class="sortable" data-column="vendor" style="width: 15%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+                Vendor <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+              </th>
+              <th class="sortable" data-column="agency" style="width: 12%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+                Agency <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+              </th>
+              <th class="sortable" data-column="description" style="width: 25%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+                Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+              </th>
+              <th class="sortable" data-column="value" style="width: 10%; padding: 8px 12px; text-align: right; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+                Value <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+              </th>
+              <th class="sortable" data-column="popEndDate" style="width: 8%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+                Expires <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+              </th>
+              <th class="sortable" data-column="daysUntilExpiry" style="width: 8%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+                Days Left <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+              </th>
+              <th class="sortable" data-column="priority" style="width: 7%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+                Priority <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+              </th>
+              <th style="width: 6%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); font-size: 0.8rem;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="renewalTableBody">
+          </tbody>
+        </table>
+        <div id="renewalTableEmpty" style="display: none; padding: 40px; text-align: center; color: var(--text-secondary);">
+          <p style="margin: 0; font-size: 1.1rem;">No upcoming renewals found</p>
+          <p style="margin: 8px 0 0 0; font-size: 0.9rem;">Contracts with performance end dates will appear here</p>
+        </div>
+      </div>
+    `;
+    
+    const downloadBtn = document.getElementById('downloadRenewalsCSV');
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', () => this.downloadRenewalsCSV());
+    }
+
+    this.setupRenewalTableSorting();
+    this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
+  },
+
+  setupRenewalTableSorting() {
+    const sortableHeaders = document.querySelectorAll('.renewal-table .sortable');
+    sortableHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const column = header.dataset.column;
+        this.sortRenewalTable(column);
+      });
+    });
+  },
+
+  sortRenewalTable(column) {
+    const tbody = document.getElementById('renewalTableBody');
+    if (!tbody || !this.renewalContracts) return;
+
+    if (this.currentSort.column === column) {
+      this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.currentSort = { column, direction: 'asc' };
+    }
+
+    this.updateSortIcons();
+
+    this.renewalContracts.sort((a, b) => {
+      let valueA, valueB;
+
+      switch (column) {
+        case 'id':
+          valueA = (a.id || '').toLowerCase();
+          valueB = (b.id || '').toLowerCase();
+          break;
+        case 'vendor':
+          valueA = (a.vendor || '').toLowerCase();
+          valueB = (b.vendor || '').toLowerCase();
+          break;
+        case 'agency':
+          valueA = (a.agency || '').toLowerCase();
+          valueB = (b.agency || '').toLowerCase();
+          break;
+        case 'description':
+          valueA = (a.description || '').toLowerCase();
+          valueB = (b.description || '').toLowerCase();
+          break;
+        case 'value':
+          valueA = utils.safeParseFloat(a.value);
+          valueB = utils.safeParseFloat(b.value);
+          break;
+        case 'popEndDate':
+          valueA = a.popEndDate ? a.popEndDate.getTime() : 0;
+          valueB = b.popEndDate ? b.popEndDate.getTime() : 0;
+          break;
+        case 'daysUntilExpiry':
+          valueA = a.daysUntilExpiry || 0;
+          valueB = b.daysUntilExpiry || 0;
+          break;
+        case 'priority':
+          const getPriorityValue = (days) => {
+            if (days < 0) return 0;
+            if (days <= 30) return 1;
+            if (days <= 90) return 2;
+            if (days <= 180) return 3;
+            return 4;
+          };
+          valueA = getPriorityValue(a.daysUntilExpiry);
+          valueB = getPriorityValue(b.daysUntilExpiry);
+          break;
+        default:
+          return 0;
+      }
+
+      let result;
+      if (typeof valueA === 'string') {
+        result = valueA.localeCompare(valueB);
+      } else {
+        result = valueA - valueB;
+      }
+
+      return this.currentSort.direction === 'desc' ? -result : result;
+    });
+
+    this.renderRenewalTableRows();
+  },
+
+  updateSortIcons() {
+    const sortableHeaders = document.querySelectorAll('.renewal-table .sortable');
+    sortableHeaders.forEach(header => {
+      const icon = header.querySelector('i');
+      const column = header.dataset.column;
+      
+      if (column === this.currentSort.column) {
+        icon.className = this.currentSort.direction === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
+        icon.style.opacity = '1';
+      } else {
+        icon.className = 'fas fa-sort';
+        icon.style.opacity = '0.5';
+      }
+    });
+  },
+
+  renderRenewalTableRows() {
+    const tbody = document.getElementById('renewalTableBody');
+    if (!tbody || !this.renewalContracts) return;
+
+    tbody.innerHTML = '';
+
+    this.renewalContracts.forEach((contract, index) => {
+      const row = document.createElement('tr');
+      row.style.borderBottom = '1px solid var(--border)';
+      row.style.transition = 'background-color 0.2s ease';
+      
+      row.addEventListener('mouseenter', () => {
+        row.style.backgroundColor = 'var(--bg-tertiary)';
+      });
+      row.addEventListener('mouseleave', () => {
+        row.style.backgroundColor = 'transparent';
+      });
+      
+      let priorityColor = 'var(--text-secondary)';
+      let priorityText = 'Low';
+      let priorityDot = '●';
+      
+      if (contract.daysUntilExpiry < 0) {
+        priorityColor = '#dc3545';
+        priorityText = 'EXPIRED';
+        priorityDot = '⚠️';
+      } else if (contract.daysUntilExpiry <= 30) {
+        priorityColor = '#dc3545';
+        priorityText = 'URGENT';
+        priorityDot = '🔴';
+      } else if (contract.daysUntilExpiry <= 90) {
+        priorityColor = '#dc3545';
+        priorityText = 'HIGH';
+        priorityDot = '●';
+      } else if (contract.daysUntilExpiry <= 180) {
+        priorityColor = '#fd7e14';
+        priorityText = 'Medium';
+        priorityDot = '●';
+      }
+      
+      const daysDisplay = contract.daysUntilExpiry < 0 
+        ? `<span style="color: #dc3545; font-weight: 600;">${Math.abs(contract.daysUntilExpiry)} days ago</span>`
+        : `<span style="font-weight: 600;">${contract.daysUntilExpiry}</span>`;
+      
+      row.innerHTML = `
+        <td style="padding: 8px 12px;">
+          <div style="font-family: monospace; font-size: 0.8rem; font-weight: 600; color: var(--text-primary);">${utils.truncateText(contract.id, 12)}</div>
+          ${contract.reference ? `<div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 1px;">Ref: ${utils.truncateText(contract.reference, 10)}</div>` : ''}
+        </td>
+        <td style="padding: 8px 12px;">
+          <div class="entity-badge" style="display: flex; align-items: center; gap: 6px;">
+            <div class="entity-icon" style="width: 20px; height: 20px; border-radius: 50%; background-color: ${utils.getEntityColor(contract.vendor)}; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 600; color: white;">
+              ${utils.getInitials(contract.vendor)}
+            </div>
+            <span style="font-weight: 500; font-size: 0.8rem;">${utils.truncateText(contract.vendor, 18)}</span>
+          </div>
+        </td>
+        <td style="padding: 8px 12px;">
+          <div style="font-weight: 500; font-size: 0.8rem;">${utils.truncateText(contract.agency, 15)}</div>
+          ${contract.office ? `<div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 1px;">${utils.truncateText(contract.office, 18)}</div>` : ''}
+        </td>
+        <td style="padding: 8px 12px;">
+          <div style="font-size: 0.75rem; line-height: 1.2; color: var(--text-primary); word-wrap: break-word;" title="${contract.description || ''}">${utils.truncateText(contract.description || 'No description available', 80)}</div>
+        </td>
+        <td style="padding: 8px 12px; text-align: right; font-weight: 600; color: var(--text-primary); font-size: 0.85rem;">${utils.formatMoney(contract.value)}</td>
+        <td style="padding: 8px 12px; text-align: center; font-size: 0.8rem;">${utils.formatDate(contract.popEndDate)}</td>
+        <td style="padding: 8px 12px; text-align: center; font-size: 0.8rem;">${daysDisplay}</td>
+        <td style="padding: 8px 12px; text-align: center;">
+          <span style="color: ${priorityColor}; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 2px; font-size: 0.75rem;">
+            <span style="font-size: 0.7rem;">${priorityDot}</span>
+            ${priorityText}
+          </span>
+        </td>
+        <td style="padding: 8px 12px; text-align: center;">
+          <button class="btn btn-sm btn-secondary view-details-btn" 
+                  data-contract-id="${contract.id}"
+                  style="font-size: 0.7rem; padding: 3px 6px;">
+            View
+          </button>
+        </td>
+      `;
+      
+      tbody.appendChild(row);
     });
   },
   
@@ -3241,9 +3575,183 @@ const charts = {
     chart.data.datasets[0].borderColor = solidColors;
     
     chart.update('none');
+  },
+
+  updatePop() {
+    this.updateRenewalTable();
+  },
+
+  updateRenewalTable() {
+    if (!app.filteredData || comparisonManager.isActive) return;
+    
+    const tbody = document.getElementById('renewalTableBody');
+    const emptyState = document.getElementById('renewalTableEmpty');
+    
+    if (!tbody || !emptyState) return;
+    
+    const today = new Date();
+    this.renewalContracts = app.filteredData
+      .filter(contract => contract && contract.popEndDate)
+      .map(contract => {
+        const daysUntilExpiry = Math.ceil((contract.popEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        return { ...contract, daysUntilExpiry };
+      })
+      .filter(contract => contract.daysUntilExpiry > -30 && contract.daysUntilExpiry < 365)
+      .slice(0, 50);
+    
+    if (this.renewalContracts.length === 0) {
+      tbody.style.display = 'none';
+      emptyState.style.display = 'block';
+      
+      const hasPopData = app.filteredData.some(contract => contract && contract.popEndDate);
+      if (!hasPopData) {
+        const popSection = document.querySelector('section:has(#renewalTableBody)');
+        if (popSection) popSection.style.display = 'none';
+      }
+      return;
+    }
+    
+    tbody.style.display = 'table-row-group';
+    emptyState.style.display = 'none';
+    
+    const popSection = document.querySelector('section:has(#renewalTableBody)');
+    if (popSection) popSection.style.display = 'block';
+    
+    if (this.currentSort) {
+      this.sortRenewalTable(this.currentSort.column);
+    } else {
+      this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
+      this.sortRenewalTable('daysUntilExpiry');
+    }
+  },
+
+  downloadRenewalsCSV() {
+    const downloadBtn = document.getElementById('downloadRenewalsCSV');
+    if (!downloadBtn) return;
+
+    if (!app.filteredData || comparisonManager.isActive) {
+      this.showDownloadFeedback(downloadBtn, 'error', 'No Data', 'fas fa-exclamation-triangle');
+      return;
+    }
+    
+    const today = new Date();
+    const renewalContracts = app.filteredData
+      .filter(contract => contract && contract.popEndDate)
+      .map(contract => {
+        const daysUntilExpiry = Math.ceil((contract.popEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        return { ...contract, daysUntilExpiry };
+      })
+      .sort((a, b) => a.daysUntilExpiry - b.daysUntilExpiry);
+    
+    if (renewalContracts.length === 0) {
+      this.showDownloadFeedback(downloadBtn, 'error', 'No Renewals', 'fas fa-exclamation-triangle');
+      return;
+    }
+    
+    try {
+      const headers = [
+  'award_id_piid', 'parent_award_id_piid', 'recipient_name', 'awarding_agency_name', 'awarding_office_name',
+  'total_obligated_amount', 'period_of_performance_start_date', 'period_of_performance_current_end_date',
+  'Days Until Expiry', 'Priority', 'Status', 'naics_code',
+  'naics_description', 'product_or_service_code', 'product_or_service_code_description', 'prime_award_base_transaction_description'
+];
+      
+      const csvRows = [headers.join(',')];
+      
+      renewalContracts.forEach(contract => {
+        let priorityText = 'Low';
+        let statusText = 'Active';
+        
+        if (contract.daysUntilExpiry < 0) {
+          priorityText = 'EXPIRED';
+          statusText = 'Expired';
+        } else if (contract.daysUntilExpiry <= 30) {
+          priorityText = 'URGENT';
+          statusText = 'Expiring Soon';
+        } else if (contract.daysUntilExpiry <= 90) {
+          priorityText = 'HIGH';
+          statusText = 'Renewal Due';
+        } else if (contract.daysUntilExpiry <= 180) {
+          priorityText = 'Medium';
+          statusText = 'Plan Renewal';
+        }
+        
+        const row = [
+  this.escapeCSV(contract.id || ''),                    // award_id_piid
+  this.escapeCSV(contract.reference || ''),             // parent_award_id_piid  
+  this.escapeCSV(contract.vendor || ''),                // recipient_name
+  this.escapeCSV(contract.agency || ''),                // awarding_agency_name
+  this.escapeCSV(contract.office || ''),                // awarding_office_name
+  contract.value || 0,                                  // total_obligated_amount
+  contract.popStartDateRaw || '',                       // period_of_performance_start_date
+  contract.popEndDateRaw || '',                         // period_of_performance_current_end_date
+  contract.daysUntilExpiry,                             // Days Until Expiry (custom)
+  priorityText,                                         // Priority (custom)
+  statusText,                                           // Status (custom)
+  this.escapeCSV(contract.naics || ''),                 // naics_code
+  this.escapeCSV(contract.naicsDescription || ''),      // naics_description
+  this.escapeCSV(contract.psc || ''),                   // product_or_service_code
+  this.escapeCSV(contract.pscDescription || ''),        // product_or_service_code_description
+  this.escapeCSV(contract.description || '')            // prime_award_base_transaction_description
+];
+        
+        csvRows.push(row.join(','));
+      });
+      
+      const csvContent = csvRows.join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      
+      if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `all_contract_renewals_${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.showDownloadFeedback(downloadBtn, 'success', `Downloaded ${renewalContracts.length} contracts!`, 'fas fa-check');
+      }
+    } catch (error) {
+      console.error('CSV download error:', error);
+      this.showDownloadFeedback(downloadBtn, 'error', 'Failed', 'fas fa-exclamation-triangle');
+    }
+  },
+
+  escapeCSV(str) {
+    if (str === null || str === undefined) return '';
+    const stringValue = String(str);
+    if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
+      return `"${stringValue.replace(/"/g, '""')}"`;
+    }
+    return stringValue;
+  },
+
+  showDownloadFeedback(button, type, text, iconClass) {
+    const originalHTML = button.innerHTML;
+    const originalColor = button.style.backgroundColor;
+    
+    if (type === 'success') {
+      button.innerHTML = `<i class="${iconClass}"></i> ${text}`;
+      button.style.backgroundColor = 'var(--primary)';
+      button.style.color = 'white';
+    } else {
+      button.innerHTML = `<i class="${iconClass}"></i> ${text}`;
+      button.style.backgroundColor = '#dc3545';
+      button.style.color = 'white';
+    }
+    
+    button.disabled = true;
+    
+    setTimeout(() => {
+      button.innerHTML = originalHTML;
+      button.style.backgroundColor = originalColor;
+      button.style.color = '';
+      button.disabled = false;
+    }, 2000);
   }
 };
-
 const sankeyChart = {
   init() {
     this.update();
@@ -3572,11 +4080,12 @@ animateCountUp('totalCompanies', uniqueCompanies);
   },
   
   updateCharts() {
-    if (comparisonManager.isActive) return;
-    charts.updateTimeline();
-    charts.updateIndustry();
-    sankeyChart.update();
-  },
+  if (comparisonManager.isActive) return;
+  charts.updateTimeline();
+  charts.updateIndustry();
+  charts.updatePop();
+  sankeyChart.update();
+},
   
   updateTables() {
     this.updateTable('recent', 
@@ -3714,7 +4223,25 @@ const modal = {
     const contract = app.data.find(c => c && c.id === contractId);
     if (!contract) return;
     
-    const fpdsUrl = `https://www.fpds.gov/ezsearch/fpdsportal?q=PIID%3A%22${encodeURIComponent(contract.id)}%22`;
+    // Determine if this is USASpending or FPDS data
+    const isUSASpending = contract.usaSpendingUrl && contract.usaSpendingUrl.length > 0;
+    const externalUrl = isUSASpending 
+      ? contract.usaSpendingUrl 
+      : `https://www.fpds.gov/ezsearch/fpdsportal?q=PIID%3A%22${encodeURIComponent(contract.id)}%22`;
+    
+    const externalLinkText = isUSASpending ? "View on USASpending.gov" : "View on FPDS.gov";
+    
+    // Build Period of Performance section if we have the data
+    let popSection = '';
+    if (contract.popStartDate || contract.popEndDate || contract.popStartDateRaw || contract.popEndDateRaw) {
+      popSection = `
+        <div style="margin-top: var(--space-lg);">
+          <h4 style="color: var(--text-primary); margin-bottom: var(--space);">Period of Performance</h4>
+          <p><strong>Start Date:</strong> ${contract.popStartDateRaw ? utils.formatDate(contract.popStartDateRaw) : 'N/A'}</p>
+          <p><strong>End Date:</strong> ${contract.popEndDateRaw ? utils.formatDate(contract.popEndDateRaw) : 'N/A'}</p>
+        </div>
+      `;
+    }
     
     if (elements.modalContent) {
       elements.modalContent.innerHTML = `
@@ -3733,6 +4260,7 @@ const modal = {
             <p><strong>Vendor:</strong> ${contract.vendor || 'N/A'}</p>
           </div>
         </div>
+        ${popSection}
         <div style="margin-top: var(--space-lg);">
           <h4 style="color: var(--text-primary); margin-bottom: var(--space);">Description & Codes</h4>
           <p><strong>Description:</strong> ${contract.description || 'No description available'}</p>
@@ -3740,8 +4268,8 @@ const modal = {
           <p><strong>PSC:</strong> ${contract.psc || 'N/A'} - ${contract.pscDescription || ''}</p>
         </div>
         <div style="margin-top: var(--space-lg); text-align: center;">
-          <a href="${fpdsUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-            View on FPDS.gov
+          <a href="${externalUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            ${externalLinkText}
           </a>
         </div>
       `;
@@ -3758,8 +4286,6 @@ const modal = {
     }
   }
 };
-
-// Continue with comparisonManager and the rest of the code...
 
 const comparisonManager = {
   isActive: false,
@@ -4356,31 +4882,28 @@ const eventListeners = {
   },
   
   setupUIHandlers() {
-    const tabsContainer = document.querySelector('.tabs');
-    if (tabsContainer) {
-      tabsContainer.addEventListener('click', (e) => {
-        if (e.target.matches('.tab-btn')) {
-          document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-          document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-          
-          e.target.classList.add('active');
-          const tabId = e.target.dataset.tab + 'Tab';
-          const tabContent = getElement(tabId);
-          if (tabContent) tabContent.classList.add('active');
-        }
-      });
+  const tabsContainer = document.querySelector('.tabs');
+  if (tabsContainer) {
+    tabsContainer.addEventListener('click', (e) => {
+      if (e.target.matches('.tab-btn')) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        e.target.classList.add('active');
+        const tabId = e.target.dataset.tab + 'Tab';
+        const tabContent = getElement(tabId);
+        if (tabContent) tabContent.classList.add('active');
+      }
+    });
+  }
+  
+  document.addEventListener('click', (e) => {
+    if (e.target.matches('.view-details-btn')) {
+      const contractId = e.target.dataset.contractId;
+      if (contractId) modal.show(contractId);
     }
-    
-    const tableSection = document.querySelector('.table-section');
-    if (tableSection) {
-      tableSection.addEventListener('click', (e) => {
-        if (e.target.matches('.view-details-btn')) {
-          const contractId = e.target.dataset.contractId;
-          if (contractId) modal.show(contractId);
-        }
-      });
-    }
-  },
+  });
+},
   
   setupChartHandlers() {
     const chartControls = document.querySelector('.chart-controls');
