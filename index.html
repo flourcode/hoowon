@@ -3346,23 +3346,25 @@ const charts = {
         </div>
       </div>
       
-      <table class="data-table" id="renewalTable">
-        <thead>
-          <tr>
-            <th class="sortable" data-column="id">Contract ID <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-            <th class="sortable" data-column="vendor">Vendor <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-            <th class="sortable" data-column="agency">Agency <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-            <th class="sortable" data-column="description">Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-            <th class="sortable" data-column="value">Value <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-            <th class="sortable" data-column="popEndDate">Expires <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-            <th class="sortable" data-column="daysUntilExpiry">Days Left <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-            <th class="sortable" data-column="priority">Priority <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="renewalTableBody">
-        </tbody>
-      </table>
+      <div style="max-height: 400px; overflow-y: auto; overflow-x: auto;">
+        <table class="data-table" id="renewalTable">
+          <thead>
+            <tr>
+              <th class="sortable" data-column="id">Contract ID <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+              <th class="sortable" data-column="vendor">Vendor <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+              <th class="sortable" data-column="agency">Agency <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+              <th class="sortable" data-column="description">Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+              <th class="sortable" data-column="value">Value <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+              <th class="sortable" data-column="popEndDate">Expires <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+              <th class="sortable" data-column="daysUntilExpiry">Days Left <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+              <th class="sortable" data-column="priority">Priority <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="renewalTableBody">
+          </tbody>
+        </table>
+      </div>
       
       <div id="renewalTableEmpty" style="display: none; padding: var(--space-xl); text-align: center; color: var(--text-secondary);">
         <p style="margin: 0; font-size: 1rem;">No upcoming renewals found</p>
