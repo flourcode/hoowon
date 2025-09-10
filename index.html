@@ -3341,10 +3341,10 @@ const charts = {
               <th class="sortable" data-column="vendor" style="width: 15%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
                 Vendor <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
               </th>
-              <th class="sortable" data-column="agency" style="width: 12%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+              <th class="sortable" data-column="agency" style="width: 17%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
                 Agency <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
               </th>
-              <th class="sortable" data-column="description" style="width: 25%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+              <th class="sortable" data-column="description" style="width: 20%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
                 Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
               </th>
               <th class="sortable" data-column="value" style="width: 10%; padding: 8px 12px; text-align: right; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
@@ -3524,42 +3524,42 @@ const charts = {
         : `<span style="font-weight: 600;">${contract.daysUntilExpiry}</span>`;
       
       row.innerHTML = `
-        <td style="padding: 8px 12px;">
-          <div style="font-family: monospace; font-size: 0.8rem; font-weight: 600; color: var(--text-primary);">${utils.truncateText(contract.id, 12)}</div>
-          ${contract.reference ? `<div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 1px;">Ref: ${utils.truncateText(contract.reference, 10)}</div>` : ''}
-        </td>
-        <td style="padding: 8px 12px;">
-          <div class="entity-badge" style="display: flex; align-items: center; gap: 6px;">
-            <div class="entity-icon" style="width: 20px; height: 20px; border-radius: 50%; background-color: ${utils.getEntityColor(contract.vendor)}; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 600; color: white;">
-              ${utils.getInitials(contract.vendor)}
-            </div>
-            <span style="font-weight: 500; font-size: 0.8rem;">${utils.truncateText(contract.vendor, 18)}</span>
-          </div>
-        </td>
-        <td style="padding: 8px 12px;">
-          <div style="font-weight: 500; font-size: 0.8rem;">${utils.truncateText(contract.agency, 15)}</div>
-          ${contract.office ? `<div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 1px;">${utils.truncateText(contract.office, 18)}</div>` : ''}
-        </td>
-        <td style="padding: 8px 12px;">
-          <div style="font-size: 0.75rem; line-height: 1.2; color: var(--text-primary); word-wrap: break-word;" title="${contract.description || ''}">${utils.truncateText(contract.description || 'No description available', 80)}</div>
-        </td>
-        <td style="padding: 8px 12px; text-align: right; font-weight: 600; color: var(--text-primary); font-size: 0.85rem;">${utils.formatMoney(contract.value)}</td>
-        <td style="padding: 8px 12px; text-align: center; font-size: 0.8rem;">${utils.formatDate(contract.popEndDate)}</td>
-        <td style="padding: 8px 12px; text-align: center; font-size: 0.8rem;">${daysDisplay}</td>
-        <td style="padding: 8px 12px; text-align: center;">
-          <span style="color: ${priorityColor}; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 2px; font-size: 0.75rem;">
-            <span style="font-size: 0.7rem;">${priorityDot}</span>
-            ${priorityText}
-          </span>
-        </td>
-        <td style="padding: 8px 12px; text-align: center;">
-          <button class="btn btn-sm btn-secondary view-details-btn" 
-                  data-contract-id="${contract.id}"
-                  style="font-size: 0.7rem; padding: 3px 6px;">
-            View
-          </button>
-        </td>
-      `;
+  <td style="padding: 8px 12px;">
+    <div style="font-family: monospace; font-size: 0.75rem; font-weight: 600; color: var(--text-primary);">${utils.truncateText(contract.id, 15)}</div>
+    ${contract.reference ? `<div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 1px;">Ref: ${utils.truncateText(contract.reference, 12)}</div>` : ''}
+  </td>
+  <td style="padding: 8px 12px;">
+    <div class="entity-badge" style="display: flex; align-items: center; gap: 6px;">
+      <div class="entity-icon" style="width: 18px; height: 18px; border-radius: 50%; background-color: ${utils.getEntityColor(contract.vendor)}; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 600; color: white;">
+        ${utils.getInitials(contract.vendor)}
+      </div>
+      <span style="font-weight: 500; font-size: 0.75rem;">${utils.truncateText(contract.vendor, 25)}</span>
+    </div>
+  </td>
+  <td style="padding: 8px 12px;">
+    <div style="font-weight: 500; font-size: 0.75rem;">${utils.truncateText(contract.agency, 35)}</div>
+    ${contract.office ? `<div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 1px;">${utils.truncateText(contract.office, 25)}</div>` : ''}
+  </td>
+  <td style="padding: 8px 12px;">
+    <div style="font-size: 0.75rem; line-height: 1.2; color: var(--text-primary); word-wrap: break-word;" title="${contract.description || ''}">${utils.truncateText(contract.description || 'No description available', 100)}</div>
+  </td>
+  <td style="padding: 8px 12px; text-align: right; font-weight: 600; color: var(--text-primary); font-size: 0.75rem;">${utils.formatMoney(contract.value)}</td>
+  <td style="padding: 8px 12px; text-align: center; font-size: 0.75rem;">${utils.formatDate(contract.popEndDate)}</td>
+  <td style="padding: 8px 12px; text-align: center; font-size: 0.75rem;">${daysDisplay}</td>
+  <td style="padding: 8px 12px; text-align: center;">
+    <span style="color: ${priorityColor}; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 2px; font-size: 0.75rem;">
+      <span style="font-size: 0.7rem;">${priorityDot}</span>
+      ${priorityText}
+    </span>
+  </td>
+  <td style="padding: 8px 12px; text-align: center;">
+    <button class="btn btn-sm btn-secondary view-details-btn" 
+            data-contract-id="${contract.id}"
+            style="font-size: 0.7rem; padding: 3px 6px;">
+      View
+    </button>
+  </td>
+`;
       
       tbody.appendChild(row);
     });
