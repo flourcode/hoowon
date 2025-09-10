@@ -1665,6 +1665,33 @@ body {
     margin-bottom: var(--space);
   }
 }
+.table-section { 
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.renewal-table {
+  min-width: 800px !important;
+  display: table !important;
+}
+
+.renewal-table thead,
+.renewal-table tbody {
+  display: table-header-group !important;
+}
+
+.renewal-table tbody {
+  display: table-row-group !important;
+}
+
+.renewal-table tr {
+  display: table-row !important;
+}
+
+.renewal-table th,
+.renewal-table td {
+  display: table-cell !important;
+}
 </style>
 </head>
 <body>
@@ -3311,66 +3338,68 @@ const charts = {
     if (!renewalsContainer) return;
     
     renewalsContainer.innerHTML = `
-      <div style="overflow-x: auto; background-color: var(--bg-primary); border-radius: 8px; border: 1px solid var(--border);">
-        <div style="padding: 16px 20px; border-bottom: 1px solid var(--border); background-color: var(--bg-secondary);">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-            <div>
-              <h4 style="margin: 0; color: var(--text-primary);">Upcoming End of PoP</h4>
-              <p style="margin: 4px 0 0 0; color: var(--text-secondary); font-size: 0.9rem;">Contracts expiring within the next year</p>
-            </div>
-            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-              <button id="downloadRenewalsCSV" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 4px;">
-                <i class="fas fa-download"></i>
-                Download CSV
-              </button>
-              <div style="display: flex; gap: 8px; align-items: center;">
-                <span style="color: #dc3545; font-weight: 600; font-size: 0.85rem;">●</span>
-                <span style="font-size: 0.85rem; color: var(--text-secondary);">High Priority (≤90 days)</span>
-                <span style="color: #fd7e14; font-weight: 600; font-size: 0.85rem;">●</span>
-                <span style="font-size: 0.85rem; color: var(--text-secondary);">Medium (≤180 days)</span>
-              </div>
-            </div>
+  <div style="overflow-x: auto; background-color: var(--bg-primary); border-radius: 8px; border: 1px solid var(--border);">
+    <div style="padding: 16px 20px; border-bottom: 1px solid var(--border); background-color: var(--bg-secondary);">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <h4 style="margin: 0; color: var(--text-primary);">Upcoming End of PoP</h4>
+          <p style="margin: 4px 0 0 0; color: var(--text-secondary); font-size: 0.9rem;">Contracts expiring within the next year</p>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <button id="downloadRenewalsCSV" class="btn btn-secondary btn-sm" style="display: flex; align-items: center; gap: 4px;">
+            <i class="fas fa-download"></i>
+            Download CSV
+          </button>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span style="color: #dc3545; font-weight: 600; font-size: 0.85rem;">●</span>
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">High Priority (≤90 days)</span>
+            <span style="color: #fd7e14; font-weight: 600; font-size: 0.85rem;">●</span>
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">Medium (≤180 days)</span>
           </div>
         </div>
-        <table class="renewal-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem; table-layout: fixed;">
-          <thead>
-            <tr style="background-color: var(--bg-tertiary);">
-              <th class="sortable" data-column="id" style="width: 12%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-                Contract ID <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-              </th>
-              <th class="sortable" data-column="vendor" style="width: 15%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-                Vendor <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-              </th>
-              <th class="sortable" data-column="agency" style="width: 17%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-                Agency <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-              </th>
-              <th class="sortable" data-column="description" style="width: 20%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-                Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-              </th>
-              <th class="sortable" data-column="value" style="width: 10%; padding: 8px 12px; text-align: right; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-                Value <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-              </th>
-              <th class="sortable" data-column="popEndDate" style="width: 8%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-                Expires <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-              </th>
-              <th class="sortable" data-column="daysUntilExpiry" style="width: 8%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-                Days Left <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-              </th>
-              <th class="sortable" data-column="priority" style="width: 7%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
-                Priority <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
-              </th>
-              <th style="width: 6%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); font-size: 0.8rem;">Action</th>
-            </tr>
-          </thead>
-          <tbody id="renewalTableBody">
-          </tbody>
-        </table>
-        <div id="renewalTableEmpty" style="display: none; padding: 40px; text-align: center; color: var(--text-secondary);">
-          <p style="margin: 0; font-size: 1.1rem;">No upcoming renewals found</p>
-          <p style="margin: 8px 0 0 0; font-size: 0.9rem;">Contracts with performance end dates will appear here</p>
-        </div>
       </div>
-    `;
+    </div>
+    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch;">
+      <table class="renewal-table" style="width: 100%; border-collapse: collapse; font-size: 0.85rem; table-layout: auto; min-width: 800px;">
+        <thead>
+          <tr style="background-color: var(--bg-tertiary);">
+            <th class="sortable" data-column="id" style="width: 12%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+              Contract ID <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+            </th>
+            <th class="sortable" data-column="vendor" style="width: 15%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+              Vendor <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+            </th>
+            <th class="sortable" data-column="agency" style="width: 17%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+              Agency <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+            </th>
+            <th class="sortable" data-column="description" style="width: 20%; padding: 8px 12px; text-align: left; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+              Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+            </th>
+            <th class="sortable" data-column="value" style="width: 10%; padding: 8px 12px; text-align: right; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+              Value <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+            </th>
+            <th class="sortable" data-column="popEndDate" style="width: 8%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+              Expires <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+            </th>
+            <th class="sortable" data-column="daysUntilExpiry" style="width: 8%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+              Days Left <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+            </th>
+            <th class="sortable" data-column="priority" style="width: 7%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); cursor: pointer; user-select: none; font-size: 0.8rem;">
+              Priority <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i>
+            </th>
+            <th style="width: 6%; padding: 8px 12px; text-align: center; font-weight: 600; color: var(--text-primary); border-bottom: 2px solid var(--border); font-size: 0.8rem;">Action</th>
+          </tr>
+        </thead>
+        <tbody id="renewalTableBody">
+        </tbody>
+      </table>
+    </div>
+    <div id="renewalTableEmpty" style="display: none; padding: 40px; text-align: center; color: var(--text-secondary);">
+      <p style="margin: 0; font-size: 1.1rem;">No upcoming renewals found</p>
+      <p style="margin: 8px 0 0 0; font-size: 0.9rem;">Contracts with performance end dates will appear here</p>
+    </div>
+  </div>
+`;
     
     const downloadBtn = document.getElementById('downloadRenewalsCSV');
     if (downloadBtn) {
@@ -3631,48 +3660,60 @@ const charts = {
   },
 
   updateRenewalTable() {
-    if (!app.filteredData || comparisonManager.isActive) return;
+  if (!app.filteredData || comparisonManager.isActive) return;
+  
+  const tbody = document.getElementById('renewalTableBody');
+  const emptyState = document.getElementById('renewalTableEmpty');
+  
+  if (!tbody || !emptyState) return;
+  
+  const today = new Date();
+  this.renewalContracts = app.filteredData
+    .filter(contract => contract && contract.popEndDate)
+    .map(contract => {
+      const daysUntilExpiry = Math.ceil((contract.popEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+      return { ...contract, daysUntilExpiry };
+    })
+    .filter(contract => contract.daysUntilExpiry > -30 && contract.daysUntilExpiry < 365)
+    .slice(0, 50);
+  
+  if (this.renewalContracts.length === 0) {
+    tbody.style.display = 'none';
+    emptyState.style.display = 'block';
     
-    const tbody = document.getElementById('renewalTableBody');
-    const emptyState = document.getElementById('renewalTableEmpty');
-    
-    if (!tbody || !emptyState) return;
-    
-    const today = new Date();
-    this.renewalContracts = app.filteredData
-      .filter(contract => contract && contract.popEndDate)
-      .map(contract => {
-        const daysUntilExpiry = Math.ceil((contract.popEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-        return { ...contract, daysUntilExpiry };
-      })
-      .filter(contract => contract.daysUntilExpiry > -30 && contract.daysUntilExpiry < 365)
-      .slice(0, 50);
-    
-    if (this.renewalContracts.length === 0) {
-      tbody.style.display = 'none';
-      emptyState.style.display = 'block';
-      
-      const hasPopData = app.filteredData.some(contract => contract && contract.popEndDate);
-      if (!hasPopData) {
-        const popSection = document.querySelector('section:has(#renewalTableBody)');
-        if (popSection) popSection.style.display = 'none';
-      }
-      return;
+    const hasPopData = app.filteredData.some(contract => contract && contract.popEndDate);
+    if (!hasPopData) {
+      const popSection = document.querySelector('section:has(#popChartContainer)');
+      if (popSection) popSection.style.display = 'none';
     }
-    
-    tbody.style.display = 'table-row-group';
-    emptyState.style.display = 'none';
-    
-    const popSection = document.querySelector('section:has(#renewalTableBody)');
-    if (popSection) popSection.style.display = 'block';
-    
-    if (this.currentSort) {
-      this.sortRenewalTable(this.currentSort.column);
-    } else {
-      this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
-      this.sortRenewalTable('daysUntilExpiry');
-    }
-  },
+    return;
+  }
+  
+  // Force display the section and table
+  const popSection = document.querySelector('section:has(#popChartContainer)');
+  if (popSection) {
+    popSection.style.display = 'block';
+    popSection.style.visibility = 'visible';
+  }
+  
+  tbody.style.display = '';
+  tbody.style.visibility = 'visible';
+  emptyState.style.display = 'none';
+  
+  // Ensure the table container is visible
+  const tableContainer = tbody.closest('table');
+  if (tableContainer) {
+    tableContainer.style.display = '';
+    tableContainer.style.visibility = 'visible';
+  }
+  
+  if (this.currentSort) {
+    this.sortRenewalTable(this.currentSort.column);
+  } else {
+    this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
+    this.sortRenewalTable('daysUntilExpiry');
+  }
+},
 
   downloadRenewalsCSV() {
     const downloadBtn = document.getElementById('downloadRenewalsCSV');
