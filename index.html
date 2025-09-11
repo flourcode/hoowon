@@ -12,6 +12,7 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/d3-sankey/0.12.3/d3-sankey.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.4.0/chartjs-plugin-annotation.min.js"></script>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZM1YXC1RQ"></script>
 <script>
@@ -385,7 +386,7 @@ body {
 
 .primary-charts { 
   display: grid; 
-  grid-template-columns: 3fr 2fr; 
+  grid-template-columns: 3.2fr 1.8fr; 
   gap: var(--space-xl); 
   height: 450px; 
 }
@@ -1682,6 +1683,7 @@ body {
     height: 250px;
   }
 }
+
 </style>
 </head>
 <body>
@@ -1810,11 +1812,11 @@ body {
           <div class="chart-container industry-chart-container"><canvas id="industryChart"></canvas></div>
         </div>
       </section>
-	 
-      <section class="chart-section">
-        <h2 class="section-title" style="margin-bottom: var(--space);">Seasonal Buying Pattern</h2>
-        <div class="chart-container" style="height: 200px; max-height: 200px; padding-bottom: 5px;"><canvas id="timelineChart"></canvas></div>
-      </section>
+
+     <section class="chart-section">
+  <h2 class="section-title" style="margin-bottom: var(--space);">Contract Lifecycle Timeline</h2>
+  <div class="chart-container" style="height: 250px; max-height: 250px; padding-bottom: 5px;"><canvas id="timelineChart"></canvas></div>
+</section>
 	  <section class="chart-section">
   <h2 class="section-title" style="margin-bottom: var(--space);">Potential Opportunities</h2>
   <div class="chart-container" id="popChartContainer">
@@ -2090,6 +2092,16 @@ body {
   </div>
 
 <script>
+window.addEventListener('error', (event) => {
+  console.error('Global error:', event.error);
+  // Don't crash the entire app on individual component failures
+  event.preventDefault();
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled promise rejection:', event.reason);
+  event.preventDefault();
+});
 const themeManager = {
   themes: {
     light: {
@@ -2228,6 +2240,7 @@ function cacheElements() {
   elements.timelineChart = getElement('timelineChart')?.getContext('2d');
   elements.industryChart = getElement('industryChart')?.getContext('2d');
   elements.popChart = getElement('popChart');
+  elements.popTimelineChart = document.getElementById('popTimelineChart')?.getContext('2d');
   elements.recentTable = document.querySelector('#recentTable tbody');
   elements.largestTable = document.querySelector('#largestTable tbody');
   elements.officesTable = document.querySelector('#officesTable tbody');
@@ -2800,34 +2813,40 @@ const stateManager = {
   },
   
   resetFilters: function() {
-    if (comparisonManager.isActive) {
-        comparisonManager.clearComparison();
-    }
-    app.filters = {
-      search: null,
-      agency: null,
-      vendor: null,
-      naics: null,
-      office: null,
-      startDate: null,
-      endDate: null,
-      valueRange: null
-    };
-    app.selection = { type: null, value: null, container: null };
-    app.filteredData = [...app.data];
-    app.sankeyDisplayLimit = 10;
-    
-    this.analyzeFilteredData();
-    sankeyChart.updateButtons('sankeyLimit10');
-    dashboard.updateAll();
-    
-    if (elements.advancedFilters) {
-      elements.advancedFilters.classList.remove('active');
-    }
-    
-    this.updateFilterDisplay();
-    this.syncFiltersToUI();
-  },
+  // Clear timeline drill-down if active
+  if (timelineDrillDown.activeFilter) {
+    timelineDrillDown.clearFilter();
+  }
+  
+  // Continue with full reset regardless
+  if (comparisonManager.isActive) {
+      comparisonManager.clearComparison();
+  }
+  app.filters = {
+    search: null,
+    agency: null,
+    vendor: null,
+    naics: null,
+    office: null,
+    startDate: null,
+    endDate: null,
+    valueRange: null
+  };
+  app.selection = { type: null, value: null, container: null };
+  app.filteredData = [...app.data];
+  app.sankeyDisplayLimit = 10;
+  
+  this.analyzeFilteredData();
+  sankeyChart.updateButtons('sankeyLimit10');
+  dashboard.updateAll();
+  
+  if (elements.advancedFilters) {
+    elements.advancedFilters.classList.remove('active');
+  }
+  
+  this.updateFilterDisplay();
+  this.syncFiltersToUI();
+},
   
   applySelectionFilter: function(type, value) {
     if (app.filters[type] === value) {
@@ -3193,10 +3212,20 @@ const charts = {
   },
   
   initAll(skipUpdate = false) {
-    Object.values(app.charts).forEach(chart => {
-      if (chart && typeof chart.destroy === 'function') chart.destroy();
+  // Clean up event listeners and references
+  if (this.sortHandlers) {
+    this.sortHandlers.forEach((handler, element) => {
+      element.removeEventListener('click', handler);
     });
-    app.charts = {};
+    this.sortHandlers.clear();
+  }
+  
+  Object.values(app.charts).forEach(chart => {
+    if (chart && typeof chart.destroy === 'function') {
+      chart.destroy();
+    }
+  });
+  app.charts = {};
     
     if (window.Chart) {
       Chart.defaults.font.family = "'Atkinson Hyperlegible Next', sans-serif";
@@ -3213,26 +3242,89 @@ const charts = {
     }
   },
   
-  initTimelineChart() {
-    if (!elements.timelineChart) return;
-    
-    const timelineColor = PALETTE[2];
-    const fillOpacityHex = utils.getOpacityHex(chartConfig.fillOpacity);
-    
+initTimelineChart() {
+  if (!elements.timelineChart) {
+    console.warn('Timeline chart canvas not found');
+    return;
+  }
+  
+  // Clean up existing chart first
+  if (app.charts.timeline) {
+    try {
+      app.charts.timeline.destroy();
+    } catch (e) {
+      console.warn('Error destroying existing timeline chart:', e);
+    }
+    app.charts.timeline = null;
+  }
+  
+  // Define the today line plugin
+  const todayLinePlugin = {
+    id: 'todayLine',
+    afterDraw: (chart) => {
+      // Safety checks
+      if (!chart.todayLineConfig || 
+          !chart.todayLineConfig.show || 
+          !chart.chartArea ||
+          chart.todayLineConfig.index === null || 
+          chart.todayLineConfig.index === undefined) {
+        return;
+      }
+      
+      const ctx = chart.ctx;
+      const chartArea = chart.chartArea;
+      const todayIndex = chart.todayLineConfig.index;
+      
+      if (!ctx || chartArea.width <= 0 || chartArea.height <= 0) return;
+      
+      try {
+        // Calculate x position
+        const xPos = chart.scales.x.getPixelForValue(todayIndex);
+        
+        if (xPos < chartArea.left || xPos > chartArea.right) return;
+        
+        ctx.save();
+        
+        // Draw dashed line
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-primary') || '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(xPos, chartArea.top);
+        ctx.lineTo(xPos, chartArea.bottom);
+        ctx.stroke();
+        
+        // Draw label background
+        const labelText = 'Today';
+        ctx.font = 'bold 11px Arial';
+        const textWidth = ctx.measureText(labelText).width;
+        const labelX = xPos - textWidth / 2;
+        const labelY = chartArea.top - 5;
+        
+        // Draw label text
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-primary') || '#333';
+ctx.textAlign = 'center';
+ctx.fillText(labelText, xPos, labelY - 8);
+        
+        ctx.restore();
+      } catch (error) {
+        console.warn('Error drawing today line:', error);
+        ctx.restore(); // Ensure context is restored even on error
+      }
+    }
+  };
+  
+  // Register the plugin
+  if (window.Chart && !Chart.registry.plugins.get('todayLine')) {
+    Chart.register(todayLinePlugin);
+  }
+  
+  try {
     app.charts.timeline = new Chart(elements.timelineChart, {
       type: 'line',
       data: { 
         labels: [], 
-        datasets: [{ 
-          data: [], 
-          borderColor: `transparent`, 
-          borderWidth: 0.5,    
-          backgroundColor: `${timelineColor}${fillOpacityHex}`,
-          tension: 0.4, 
-          fill: true,
-          pointRadius: 0,
-          pointHoverRadius: 3
-        }] 
+        datasets: []
       },
       options: {
         animation: {
@@ -3242,25 +3334,123 @@ const charts = {
         responsive: true,
         maintainAspectRatio: false,
         plugins: { 
-          legend: { display: false },
+          legend: { 
+            display: true,
+            position: 'top',
+            labels: {
+              usePointStyle: true,
+              boxWidth: 6
+            }
+          },
           tooltip: { 
             callbacks: { 
-              label: c => utils.formatMoney(c.raw) 
-            } 
+              label: function(context) {
+                const label = context.dataset.label || '';
+                const value = utils.formatMoney(context.raw);
+                return `${label}: ${value}`;
+              },
+              title: function(context) {
+                return `Month: ${context[0].label}`;
+              },
+              afterLabel: function(context) {
+                return 'Click to drill down to contracts';
+              }
+            }
           }
         },
         scales: {
-          x: { grid: { display: false } },
+          x: { 
+            grid: { display: false },
+            title: { display: false }
+          },
           y: { 
             beginAtZero: true, 
             grid: { display: false },
-            ticks: { callback: v => utils.formatMoney(v) }
+            ticks: { callback: v => utils.formatMoney(v) },
+            title: { display: false }
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'point'
+        },
+        onClick: (event, activeElements) => {
+          // Safety check
+          if (!app.charts.timeline || !app.charts.timeline.data) return;
+          
+          try {
+            if (activeElements.length === 0) {
+              // Handle clicks near data points
+              const canvasPosition = Chart.helpers.getRelativePosition(event, app.charts.timeline);
+              
+              let closestElement = null;
+              let minDistance = Infinity;
+              
+              app.charts.timeline.data.datasets.forEach((dataset, datasetIndex) => {
+                if (!dataset.data) return;
+                
+                dataset.data.forEach((value, index) => {
+                  if (value > 0) {
+                    const pointX = app.charts.timeline.scales.x.getPixelForValue(index);
+                    const pointY = app.charts.timeline.scales.y.getPixelForValue(value);
+                    const distance = Math.sqrt(
+                      Math.pow(canvasPosition.x - pointX, 2) + 
+                      Math.pow(canvasPosition.y - pointY, 2)
+                    );
+                    
+                    if (distance < 20 && distance < minDistance) {
+                      minDistance = distance;
+                      closestElement = { datasetIndex, index };
+                    }
+                  }
+                });
+              });
+              
+              if (closestElement) {
+                const monthLabel = app.charts.timeline.data.labels[closestElement.index];
+                const datasetLabel = app.charts.timeline.data.datasets[closestElement.datasetIndex].label;
+                if (timelineDrillDown && timelineDrillDown.filterByMonth) {
+                  timelineDrillDown.filterByMonth(monthLabel, datasetLabel, closestElement.datasetIndex);
+                }
+              }
+            } else {
+              // Handle direct clicks on data points
+              const datasetIndex = activeElements[0].datasetIndex;
+              const index = activeElements[0].index;
+              const monthLabel = app.charts.timeline.data.labels[index];
+              const datasetLabel = app.charts.timeline.data.datasets[datasetIndex].label;
+              
+              if (timelineDrillDown && timelineDrillDown.filterByMonth) {
+                timelineDrillDown.filterByMonth(monthLabel, datasetLabel, datasetIndex);
+              }
+            }
+          } catch (error) {
+            console.warn('Error handling timeline chart click:', error);
           }
         }
-      }
+      },
+      plugins: [todayLinePlugin]
     });
-  },
-  
+    
+    // Initialize the today line config safely
+    if (app.charts.timeline) {
+      app.charts.timeline.todayLineConfig = { show: false, index: null };
+    }
+    
+  } catch (error) {
+    console.error('Failed to create timeline chart:', error);
+    app.charts.timeline = null;
+    
+    // Show error message in chart container
+    if (elements.timelineChart && elements.timelineChart.parentElement) {
+      elements.timelineChart.parentElement.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; height: 250px; color: var(--text-secondary);">
+          <p>Timeline chart failed to load</p>
+        </div>
+      `;
+    }
+  }
+},
   initIndustryChart() {
     if (!elements.industryChart) return;
     
@@ -3332,7 +3522,7 @@ const charts = {
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-sm);">
           <div>
             <h3 style="margin: 0; color: var(--text-primary); font-size: 1.1rem; font-weight: 600;">Upcoming End of PoP</h3>
-            <p style="margin: 2px 0 0 0; color: var(--text-secondary); font-size: 0.8rem;">Contracts expiring within the next year</p>
+            <p style="margin: 2px 0 0 0; color: var(--text-secondary); font-size: 0.8rem;">Contracts expiring within the next 2 years</p>
           </div>
           <div style="display: flex; flex-direction: column; gap: var(--space-xs); align-items: flex-end;">
             <button id="downloadRenewalsCSV" class="btn btn-secondary btn-sm">
@@ -3382,7 +3572,7 @@ const charts = {
   this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
 },
   setupRenewalTableSorting() {
-  // Remove any existing listeners first
+  // Clean up existing listeners first
   const existingHeaders = document.querySelectorAll('#renewalTable .sortable');
   existingHeaders.forEach(header => {
     const newHeader = header.cloneNode(true);
@@ -3396,6 +3586,15 @@ const charts = {
       e.preventDefault();
       const column = header.dataset.column;
       this.sortRenewalTable(column);
+    });
+    
+    // Make it keyboard accessible
+    header.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const column = header.dataset.column;
+        this.sortRenewalTable(column);
+      }
     });
   });
 },
@@ -3576,21 +3775,64 @@ renderRenewalTableRows() {
   });
 },
   
-  updateTimeline() {
-    const chart = app.charts.timeline;
-    if (!chart || !app.filteredData || comparisonManager.isActive) return;
+
+updateTimeline() {
+  const chart = app.charts.timeline;
+  if (!chart || !app.filteredData || comparisonManager.isActive) return;
+  
+  try {
+    // Check if any contracts have PoP end dates
+    const hasPopData = app.filteredData.some(contract => 
+      contract && contract.popEndDate
+    );
     
-    const monthlyData = {};
+    // Separate data for award start dates and PoP end dates
+    const monthlyAwardData = {};
+    const monthlyPopEndData = {};
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
     app.filteredData.forEach(contract => {
-      if (contract && contract.parsedDate) {
+      if (!contract) return;
+      
+      const value = utils.safeParseFloat(contract.value);
+      
+      // Award start dates (contract signing)
+      if (contract.parsedDate) {
         const key = `${contract.parsedDate.getUTCFullYear()}-${(contract.parsedDate.getUTCMonth() + 1).toString().padStart(2, '0')}`;
-        monthlyData[key] = (monthlyData[key] || 0) + utils.safeParseFloat(contract.value);
+        monthlyAwardData[key] = (monthlyAwardData[key] || 0) + value;
+      }
+      
+      // PoP end dates (only if we have PoP data and end date is in the future)
+      if (hasPopData && contract.popEndDate && contract.popEndDate > today) {
+        const key = `${contract.popEndDate.getUTCFullYear()}-${(contract.popEndDate.getUTCMonth() + 1).toString().padStart(2, '0')}`;
+        monthlyPopEndData[key] = (monthlyPopEndData[key] || 0) + value;
       }
     });
     
-    const sortedMonths = Object.keys(monthlyData).sort();
+    // Get all unique months from awards data
+    const allMonthsSet = new Set(Object.keys(monthlyAwardData));
     
-    chart.data.labels = sortedMonths.map(month => {
+    // Only add PoP months that have actual data (non-zero values)
+    if (hasPopData) {
+      Object.keys(monthlyPopEndData).forEach(month => {
+        if (monthlyPopEndData[month] > 0) {
+          allMonthsSet.add(month);
+        }
+      });
+    }
+    
+    const allMonths = Array.from(allMonthsSet).sort();
+    
+    if (allMonths.length === 0) {
+      chart.data.labels = [];
+      chart.data.datasets = [];
+      chart.update('none');
+      return;
+    }
+    
+    // Create labels
+    chart.data.labels = allMonths.map(month => {
       const [year, monthNum] = month.split('-');
       return new Date(Date.UTC(parseInt(year), parseInt(monthNum) - 1))
         .toLocaleDateString('en-US', {
@@ -3600,10 +3842,112 @@ renderRenewalTableRows() {
         });
     });
     
-    chart.data.datasets[0].data = sortedMonths.map(month => monthlyData[month] || 0);
+    // Build datasets dynamically
+    const datasets = [];
+    
+    // Always include Awards Started
+    datasets.push({
+      label: ' Award Date',
+      data: allMonths.map(month => monthlyAwardData[month] || 0),
+      borderColor: '#5A9485', 
+      borderWidth: 2,    
+      backgroundColor: `#5A9485${utils.getOpacityHex(0.3)}`,
+      tension: 0.46, 
+      fill: true,
+      pointRadius: 3,
+      pointHoverRadius: 8,
+      pointHitRadius: 15
+    });
+    
+    if (hasPopData && Object.keys(monthlyPopEndData).some(month => monthlyPopEndData[month] > 0)) {
+      // Find the first month with PoP data
+      const firstPopMonth = allMonths.find(month => monthlyPopEndData[month] > 0);
+      const firstPopIndex = allMonths.indexOf(firstPopMonth);
+      
+      // Create the PoP data array with a leading zero if needed
+      const filteredPopData = allMonths.map((month, index) => {
+        const value = monthlyPopEndData[month];
+        
+        // Add a zero point right before the first actual data point
+        if (index === firstPopIndex - 1 && firstPopIndex > 0) {
+          return 0;
+        }
+        
+        // Return actual value if it exists and is > 0, otherwise null
+        return value > 0 ? value : null;
+      });
+      
+      datasets.push({
+        label: ' End of PoP',
+        data: filteredPopData,
+        borderColor: '#dc3545', 
+        borderWidth: 2,    
+        backgroundColor: `#dc3545${utils.getOpacityHex(0.3)}`,
+        tension: 0.4, 
+        fill: true,
+        pointRadius: 3,
+        pointHoverRadius: 8,
+        pointHitRadius: 15,
+        spanGaps: false
+      });
+    }
+    
+    chart.data.datasets = datasets;
+    
+    // Update legend visibility based on dataset count
+    chart.options.plugins.legend.display = datasets.length > 1;
+    
+    // Update the Today marker position
+    const todayKey = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}`;
+    
+    // Find the index of today's month in the chart labels
+    let todayIndex = -1;
+    for (let i = 0; i < allMonths.length; i++) {
+      if (allMonths[i] === todayKey) {
+        todayIndex = i;
+        break;
+      }
+    }
+    
+    // Update today line config safely
+    if (chart.todayLineConfig) {
+      if (todayIndex >= 0) {
+        chart.todayLineConfig.index = todayIndex;
+        chart.todayLineConfig.show = true;
+      } else {
+        // Position relative to data if today isn't in the dataset
+        const todayTime = today.getTime();
+        let insertIndex = 0;
+        
+        for (let i = 0; i < allMonths.length; i++) {
+          const [year, monthNum] = allMonths[i].split('-');
+          const monthTime = new Date(parseInt(year), parseInt(monthNum) - 1).getTime();
+          if (monthTime < todayTime) {
+            insertIndex = i + 1;
+          } else {
+            break;
+          }
+        }
+        
+        if (insertIndex === 0) {
+          chart.todayLineConfig.index = -0.5;
+        } else if (insertIndex >= allMonths.length) {
+          chart.todayLineConfig.index = allMonths.length - 0.5;
+        } else {
+          chart.todayLineConfig.index = insertIndex - 0.5;
+        }
+        chart.todayLineConfig.show = true;
+      }
+    }
+    
     chart.update('none');
-  },
-  
+    
+  } catch (error) {
+    console.error('Error updating timeline chart:', error);
+    // Don't crash the app - just log the error
+  }
+},
+
   updateIndustry() {
     const chart = app.charts.industry;
     if (!chart || !app.naicsCodes || comparisonManager.isActive || chart.config.type !== 'doughnut') return;
@@ -3656,7 +4000,7 @@ renderRenewalTableRows() {
       const daysUntilExpiry = Math.ceil((contract.popEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
       return { ...contract, daysUntilExpiry };
     })
-    .filter(contract => contract.daysUntilExpiry > -30 && contract.daysUntilExpiry < 365)
+    .filter(contract => contract.daysUntilExpiry >= 0 && contract.daysUntilExpiry < 730)
     .slice(0, 50);
   
   if (this.renewalContracts.length === 0) {
@@ -3824,6 +4168,177 @@ renderRenewalTableRows() {
     }, 2000);
   }
 };
+const timelineDrillDown = {
+  activeFilter: null,
+  originalTitle: null,
+  originalFilteredData: null,
+  
+  filterByMonth(monthLabel, datasetLabel, datasetIndex) {
+  const monthDate = this.parseMonthLabel(monthLabel);
+  if (!monthDate) return;
+  
+  const year = monthDate.getUTCFullYear();
+  const month = monthDate.getUTCMonth();
+  
+  // Use current filtered data as the source (respects existing filters)
+  const sourceData = this.originalFilteredData || app.filteredData;
+  
+  let filteredContracts;
+  if (datasetIndex === 0) {
+    filteredContracts = sourceData.filter(contract => {
+      if (!contract || !contract.parsedDate) return false;
+      return contract.parsedDate.getUTCFullYear() === year && 
+             contract.parsedDate.getUTCMonth() === month;
+    });
+  } else {
+    filteredContracts = sourceData.filter(contract => {
+      if (!contract || !contract.popEndDate) return false;
+      return contract.popEndDate.getUTCFullYear() === year && 
+             contract.popEndDate.getUTCMonth() === month;
+    });
+  }
+  
+  // Store the pre-drill-down filtered data only on first drill-down
+  if (!this.originalFilteredData) {
+    this.originalFilteredData = [...app.filteredData];
+  }
+  
+  if (filteredContracts.length === 0) {
+    this.showNoResultsMessage(monthLabel, datasetLabel);
+    return;
+  }
+  
+  this.activeFilter = {
+    monthLabel,
+    datasetLabel,
+    datasetIndex,
+    contracts: filteredContracts
+  };
+  
+  this.showDrillDownState(filteredContracts, monthLabel, datasetLabel);
+  this.updateChartsAndTables(filteredContracts);
+},
+  
+  parseMonthLabel(monthLabel) {
+    // Parse labels like "Jan 24" back to a date
+    const parts = monthLabel.split(' ');
+    if (parts.length !== 2) return null;
+    
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const monthIndex = monthNames.indexOf(parts[0]);
+    if (monthIndex === -1) return null;
+    
+    let year = parseInt('20' + parts[1]); // Convert "24" to 2024
+    if (isNaN(year)) return null;
+    
+    return new Date(Date.UTC(year, monthIndex, 1));
+  },
+  
+  showDrillDownState(contracts, monthLabel, datasetLabel) {
+  // Update the timeline chart title
+  const timelineSection = document.querySelector('.chart-section:has(#timelineChart)');
+  const titleElement = timelineSection.querySelector('.section-title');
+  
+  if (!this.originalTitle) {
+    this.originalTitle = titleElement.textContent;
+  }
+  
+  // Calculate total value for the drill-down
+  const totalValue = contracts.reduce((sum, c) => sum + utils.safeParseFloat(c.value), 0);
+  
+  titleElement.innerHTML = `
+    ${this.originalTitle} 
+    <span style="font-size: 0.8em; color: var(--text-secondary); font-weight: normal;">
+      - ${datasetLabel} in ${monthLabel}: ${contracts.length} contracts (${utils.formatMoney(totalValue)})
+      <button id="clearTimelineFilter" class="btn btn-sm btn-secondary" style="margin-left: var(--space); font-size: 0.7em;">
+        Clear Filter
+      </button>
+    </span>
+  `;
+  
+  // Add event listener to clear button
+  const clearBtn = document.getElementById('clearTimelineFilter');
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => this.clearFilter());
+  }
+  
+  // Update filter display with more context
+  const filterDisplay = document.getElementById('filterDisplay');
+  if (filterDisplay) {
+    filterDisplay.innerHTML = `
+      <strong>Timeline Filter:</strong> ${datasetLabel} in ${monthLabel} 
+      <span style="color: var(--text-secondary);">(${contracts.length} contracts, ${utils.formatMoney(totalValue)})</span>
+    `;
+  }
+},
+  
+  updateChartsAndTables(filteredContracts) {
+  if (!this.originalFilteredData) {
+    this.originalFilteredData = [...app.filteredData];
+  }
+  
+  // Update app.filteredData and keep it updated
+  app.filteredData = filteredContracts;
+  
+  stateManager.analyzeFilteredData();
+  dashboard.updateStats();
+  charts.updateIndustry();
+  charts.updatePop();
+  sankeyChart.update();
+  dashboard.updateTables();
+  
+  // Don't restore here - leave the filtered data active
+},
+  clearFilter() {
+  if (!this.activeFilter) return;
+  
+  this.activeFilter = null;
+  
+  // Clean up stored handlers if they exist
+  if (this.sortHandlers) {
+    this.sortHandlers.clear();
+  }
+  
+  // Restore original filtered data
+  if (this.originalFilteredData) {
+    app.filteredData = [...this.originalFilteredData];
+    this.originalFilteredData = null;
+  }
+  
+  // Restore original title
+  const timelineSection = document.querySelector('.chart-section:has(#timelineChart)');
+  const titleElement = timelineSection.querySelector('.section-title');
+  if (this.originalTitle) {
+    titleElement.textContent = this.originalTitle;
+  }
+  
+  // Clear filter display
+  const filterDisplay = document.getElementById('filterDisplay');
+  if (filterDisplay) {
+    filterDisplay.innerHTML = '';
+  }
+  
+  // Restore original data and update everything
+  stateManager.analyzeFilteredData();
+  dashboard.updateAll();
+},
+  
+  showNoResultsMessage(monthLabel, datasetLabel) {
+    // Show a temporary message
+    const filterDisplay = document.getElementById('filterDisplay');
+    if (filterDisplay) {
+      filterDisplay.innerHTML = `
+        <span style="color: #dc3545;">No contracts found for ${datasetLabel} in ${monthLabel}</span>
+      `;
+      
+      // Clear the message after 3 seconds
+      setTimeout(() => {
+        filterDisplay.innerHTML = '';
+      }, 3000);
+    }
+  }
+};
 const sankeyChart = {
   init() {
     this.update();
@@ -3861,9 +4376,36 @@ const sankeyChart = {
       .extent([[1, 5], [width - 1, height - 5]]);
     
     const {nodes, links} = sankey({
-      nodes: data.nodes.map(d => Object.assign({}, d)),
-      links: data.links.map(d => Object.assign({}, d))
-    });
+  nodes: data.nodes.map(d => Object.assign({}, d)),
+  links: data.links.map(d => Object.assign({}, d))
+});
+
+// Identify which nodes are agencies, offices, and vendors
+const agencyNodes = nodes.filter(node => app.agencies.has(node.name));
+const officeNodes = nodes.filter(node => app.offices.has(node.name));
+const vendorNodes = nodes.filter(node => app.vendors.has(node.name));
+
+// Move office nodes closer to agency nodes
+const compressionFactor = 0.8; // Adjust this (0.5 = half distance, 0.8 = 80% distance)
+
+if (agencyNodes.length > 0 && officeNodes.length > 0) {
+  // Calculate the average x position of agency and office nodes
+  const avgAgencyX = agencyNodes.reduce((sum, node) => sum + (node.x0 + node.x1) / 2, 0) / agencyNodes.length;
+  const avgOfficeX = officeNodes.reduce((sum, node) => sum + (node.x0 + node.x1) / 2, 0) / officeNodes.length;
+  
+  // Calculate new position for office nodes
+  const originalDistance = avgOfficeX - avgAgencyX;
+  const newDistance = originalDistance * compressionFactor;
+  const newAvgOfficeX = avgAgencyX + newDistance;
+  const offsetX = newAvgOfficeX - avgOfficeX;
+  
+  // Move all office nodes by the calculated offset
+  officeNodes.forEach(node => {
+    const nodeWidth = node.x1 - node.x0;
+    node.x0 += offsetX;
+    node.x1 = node.x0 + nodeWidth;
+  });
+}
     
     app.sankeyTotal = app.filteredData
       .filter(c => c && c.vendor && data.vendorNames.has(c.vendor))
@@ -3959,148 +4501,311 @@ const sankeyChart = {
   },
   
   generateData() {
-    if (!app.filteredData || app.filteredData.length === 0) {
-      return { nodes: [], links: [], vendorNames: new Set() };
-    }
-    
-    const isMobile = window.innerWidth <= 768;
-    const isTablet = window.innerWidth <= 1024;
-    
-    let vendorLimit = app.sankeyDisplayLimit;
-    let officeLimit = 25;
-    let agencyLimit = 15;
-    
-    if (isMobile) {
-      vendorLimit = Math.min(app.sankeyDisplayLimit > 0 ? app.sankeyDisplayLimit : 10, 5);
-      officeLimit = 8;
-      agencyLimit = 5;
-    } else if (isTablet) {
-      vendorLimit = Math.min(app.sankeyDisplayLimit > 0 ? app.sankeyDisplayLimit : 10, 8);
-      officeLimit = 15;
-      agencyLimit = 10;
-    }
-    
-    const vendorTotals = {};
-    app.filteredData.forEach(contract => {
-      if (contract && contract.vendor && utils.safeParseFloat(contract.value) > 0) {
-        const vendor = contract.vendor;
-        const value = utils.safeParseFloat(contract.value);
-        vendorTotals[vendor] = (vendorTotals[vendor] || 0) + value;
-      }
-    });
-    
-    if (Object.keys(vendorTotals).length === 0) {
-      return { nodes: [], links: [], vendorNames: new Set() };
-    }
-    
-    const sortedVendors = Object.keys(vendorTotals)
-      .sort((a, b) => vendorTotals[b] - vendorTotals[a]);
-    
-    const actualVendorLimit = vendorLimit > 0 ? Math.min(vendorLimit, sortedVendors.length) : sortedVendors.length;
-    const topVendorNames = new Set(sortedVendors.slice(0, actualVendorLimit));
-    
-    const topVendorContracts = app.filteredData.filter(c => 
-      c && c.vendor && topVendorNames.has(c.vendor)
-    );
-    
-    const relevantOfficeTotals = {};
-    const relevantAgencyTotals = {};
-    
-    topVendorContracts.forEach(c => {
-      const value = utils.safeParseFloat(c.value);
-      if (c.office && value > 0) {
-        relevantOfficeTotals[c.office] = (relevantOfficeTotals[c.office] || 0) + value;
-      }
-      if (c.agency && value > 0) {
-        relevantAgencyTotals[c.agency] = (relevantAgencyTotals[c.agency] || 0) + value;
-      }
-    });
-    
-    const sortedRelevantOffices = Object.keys(relevantOfficeTotals)
-      .sort((a, b) => relevantOfficeTotals[b] - relevantOfficeTotals[a]);
-    const topOfficeNames = new Set(sortedRelevantOffices.slice(0, officeLimit));
-    
-    const sortedRelevantAgencies = Object.keys(relevantAgencyTotals)
-      .sort((a, b) => relevantAgencyTotals[b] - relevantAgencyTotals[a]);
-    const topAgencyNames = new Set(sortedRelevantAgencies.slice(0, agencyLimit));
-    
-    const agencyOfficeFlows = {};
-    const officeVendorFlows = {};
-    
-    topVendorContracts.forEach(contract => {
-      if (!contract.agency || !contract.office || !contract.vendor) return;
-      
-      const value = utils.safeParseFloat(contract.value);
-      if (value <= 0) return;
-      
-      if (topAgencyNames.has(contract.agency) &&
-          topOfficeNames.has(contract.office) &&
-          topVendorNames.has(contract.vendor)) {
-        
-        const aoKey = `${contract.agency}|${contract.office}`;
-        agencyOfficeFlows[aoKey] = (agencyOfficeFlows[aoKey] || 0) + value;
-        
-        const ovKey = `${contract.office}|${contract.vendor}`;
-        officeVendorFlows[ovKey] = (officeVendorFlows[ovKey] || 0) + value;
-      }
-    });
-    
-    const sortedAgencyOfficeFlows = Object.entries(agencyOfficeFlows)
-      .sort(([,a], [,b]) => b - a);
-    
-    const sortedOfficeVendorFlows = Object.entries(officeVendorFlows)
-      .sort(([,a], [,b]) => b - a);
-    
-    const allFlows = [
-      ...sortedAgencyOfficeFlows.map(([key, value]) => ({
-        source: key.split('|')[0],
-        target: key.split('|')[1],
-        value
-      })),
-      ...sortedOfficeVendorFlows.map(([key, value]) => ({
-        source: key.split('|')[0],
-        target: key.split('|')[1],
-        value
-      }))
-    ];
-    
-    if (allFlows.length === 0) {
-      return { nodes: [], links: [], vendorNames: topVendorNames };
-    }
-    
-    const nodeMap = new Map();
-    allFlows.forEach(flow => {
-      if (!nodeMap.has(flow.source)) {
-        nodeMap.set(flow.source, { name: flow.source });
-      }
-      if (!nodeMap.has(flow.target)) {
-        nodeMap.set(flow.target, { name: flow.target });
-      }
-    });
-    
-    const nodesArray = Array.from(nodeMap.values());
-    const nodeIndexMap = new Map(nodesArray.map((node, i) => [node.name, i]));
-    
-    const links = allFlows
-      .map(flow => ({
-        source: nodeIndexMap.get(flow.source),
-        target: nodeIndexMap.get(flow.target),
-        value: flow.value
-      }))
-      .filter(link => 
-        link.source !== undefined && 
-        link.target !== undefined && 
-        link.source !== link.target &&
-        link.value > 0
-      );
-    
-    return { 
-      nodes: nodesArray, 
-      links, 
-      vendorNames: topVendorNames 
-    };
-  },
+  if (!app.filteredData || app.filteredData.length === 0) {
+    return { nodes: [], links: [], vendorNames: new Set() };
+  }
   
+  // Check if this is subaward data
+  const isSubawardData = app.filteredData.some(contract => contract.isSubaward);
+  
+  if (isSubawardData) {
+    return this.generateSubawardData();
+  } else {
+    return this.generateStandardData();
+  }
+},
+
+generateSubawardData() {
+  const isMobile = window.innerWidth <= 768;
+  const isTablet = window.innerWidth <= 1024;
+  
+  let entityLimit = app.sankeyDisplayLimit;
+  if (isMobile) {
+    entityLimit = Math.min(entityLimit > 0 ? entityLimit : 10, 8);
+  } else if (isTablet) {
+    entityLimit = Math.min(entityLimit > 0 ? entityLimit : 10, 12);
+  }
+  
+  // Get top entities for each node type based on value
+  const subAgencyTotals = {};
+  const fundingOfficeTotals = {};
+  const primeAwardeeTotals = {};
+  const subawardeeTotals = {};
+  
+  app.filteredData.forEach(contract => {
+    if (!contract || !contract.isSubaward) return;
+    
+    const value = utils.safeParseFloat(contract.value);
+    if (value <= 0) return;
+    
+    const subAgency = contract.agency;
+    const fundingOffice = contract.office;
+    const primeAwardee = contract.primeVendor;
+    const subawardee = contract.vendor;
+    
+    if (subAgency) {
+      subAgencyTotals[subAgency] = (subAgencyTotals[subAgency] || 0) + value;
+    }
+    if (fundingOffice) {
+      fundingOfficeTotals[fundingOffice] = (fundingOfficeTotals[fundingOffice] || 0) + value;
+    }
+    if (primeAwardee) {
+      primeAwardeeTotals[primeAwardee] = (primeAwardeeTotals[primeAwardee] || 0) + value;
+    }
+    if (subawardee) {
+      subawardeeTotals[subawardee] = (subawardeeTotals[subawardee] || 0) + value;
+    }
+  });
+  
+  // Get top entities for each type
+  const topSubAgencies = Object.keys(subAgencyTotals)
+    .sort((a, b) => subAgencyTotals[b] - subAgencyTotals[a])
+    .slice(0, entityLimit);
+  
+  const topFundingOffices = Object.keys(fundingOfficeTotals)
+    .sort((a, b) => fundingOfficeTotals[b] - fundingOfficeTotals[a])
+    .slice(0, entityLimit);
+    
+  const topPrimeAwardees = Object.keys(primeAwardeeTotals)
+    .sort((a, b) => primeAwardeeTotals[b] - primeAwardeeTotals[a])
+    .slice(0, entityLimit);
+    
+  const topSubawardees = Object.keys(subawardeeTotals)
+    .sort((a, b) => subawardeeTotals[b] - subawardeeTotals[a])
+    .slice(0, entityLimit);
+  
+  // Create flows between the 4 node types
+  const subAgencyToFundingOffice = {};
+  const fundingOfficeToPrimeAwardee = {};
+  const primeAwardeeToSubawardee = {};
+  
+  app.filteredData.forEach(contract => {
+    if (!contract || !contract.isSubaward) return;
+    
+    const value = utils.safeParseFloat(contract.value);
+    if (value <= 0) return;
+    
+    const subAgency = contract.agency;
+    const fundingOffice = contract.office;
+    const primeAwardee = contract.primeVendor;
+    const subawardee = contract.vendor;
+    
+    // Only include flows between top entities
+    if (topSubAgencies.includes(subAgency) && 
+        topFundingOffices.includes(fundingOffice) &&
+        topPrimeAwardees.includes(primeAwardee) &&
+        topSubawardees.includes(subawardee)) {
+      
+      // Sub Agency -> Funding Office
+      const saToFo = `${subAgency}|${fundingOffice}`;
+      subAgencyToFundingOffice[saToFo] = (subAgencyToFundingOffice[saToFo] || 0) + value;
+      
+      // Funding Office -> Prime Awardee
+      const foToPa = `${fundingOffice}|${primeAwardee}`;
+      fundingOfficeToPrimeAwardee[foToPa] = (fundingOfficeToPrimeAwardee[foToPa] || 0) + value;
+      
+      // Prime Awardee -> Subawardee
+      const paToSa = `${primeAwardee}|${subawardee}`;
+      primeAwardeeToSubawardee[paToSa] = (primeAwardeeToSubawardee[paToSa] || 0) + value;
+    }
+  });
+  
+  // Create flows array
+  const allFlows = [
+    ...Object.entries(subAgencyToFundingOffice).map(([key, value]) => ({
+      source: key.split('|')[0],
+      target: key.split('|')[1],
+      value
+    })),
+    ...Object.entries(fundingOfficeToPrimeAwardee).map(([key, value]) => ({
+      source: key.split('|')[0],
+      target: key.split('|')[1],
+      value
+    })),
+    ...Object.entries(primeAwardeeToSubawardee).map(([key, value]) => ({
+      source: key.split('|')[0],
+      target: key.split('|')[1],
+      value
+    }))
+  ].filter(flow => flow.value > 0);
+  
+  if (allFlows.length === 0) {
+    return { nodes: [], links: [], vendorNames: new Set(topSubawardees) };
+  }
+  
+  // Create nodes
+  const nodeMap = new Map();
+  allFlows.forEach(flow => {
+    if (!nodeMap.has(flow.source)) {
+      nodeMap.set(flow.source, { name: flow.source });
+    }
+    if (!nodeMap.has(flow.target)) {
+      nodeMap.set(flow.target, { name: flow.target });
+    }
+  });
+  
+  const nodesArray = Array.from(nodeMap.values());
+  const nodeIndexMap = new Map(nodesArray.map((node, i) => [node.name, i]));
+  
+  // Create links
+  const links = allFlows
+    .map(flow => ({
+      source: nodeIndexMap.get(flow.source),
+      target: nodeIndexMap.get(flow.target),
+      value: flow.value
+    }))
+    .filter(link => 
+      link.source !== undefined && 
+      link.target !== undefined && 
+      link.source !== link.target &&
+      link.value > 0
+    );
+  
+  return { 
+    nodes: nodesArray, 
+    links, 
+    vendorNames: new Set(topSubawardees)
+  };
+},
+
+generateStandardData() {
+  const isMobile = window.innerWidth <= 768;
+  const isTablet = window.innerWidth <= 1024;
+  
+  let vendorLimit = app.sankeyDisplayLimit;
+  let officeLimit = 25;
+  let agencyLimit = 15;
+  
+  if (isMobile) {
+    vendorLimit = Math.min(app.sankeyDisplayLimit > 0 ? app.sankeyDisplayLimit : 10, 5);
+    officeLimit = 8;
+    agencyLimit = 5;
+  } else if (isTablet) {
+    vendorLimit = Math.min(app.sankeyDisplayLimit > 0 ? app.sankeyDisplayLimit : 10, 8);
+    officeLimit = 15;
+    agencyLimit = 10;
+  }
+  
+  const vendorTotals = {};
+  app.filteredData.forEach(contract => {
+    if (contract && contract.vendor && utils.safeParseFloat(contract.value) > 0) {
+      const vendor = contract.vendor;
+      const value = utils.safeParseFloat(contract.value);
+      vendorTotals[vendor] = (vendorTotals[vendor] || 0) + value;
+    }
+  });
+  
+  if (Object.keys(vendorTotals).length === 0) {
+    return { nodes: [], links: [], vendorNames: new Set() };
+  }
+  
+  const sortedVendors = Object.keys(vendorTotals)
+    .sort((a, b) => vendorTotals[b] - vendorTotals[a]);
+  
+  const actualVendorLimit = vendorLimit > 0 ? Math.min(vendorLimit, sortedVendors.length) : sortedVendors.length;
+  const topVendorNames = new Set(sortedVendors.slice(0, actualVendorLimit));
+  
+  const topVendorContracts = app.filteredData.filter(c => 
+    c && c.vendor && topVendorNames.has(c.vendor)
+  );
+  
+  const relevantOfficeTotals = {};
+  const relevantAgencyTotals = {};
+  
+  topVendorContracts.forEach(c => {
+    const value = utils.safeParseFloat(c.value);
+    if (c.office && value > 0) {
+      relevantOfficeTotals[c.office] = (relevantOfficeTotals[c.office] || 0) + value;
+    }
+    if (c.agency && value > 0) {
+      relevantAgencyTotals[c.agency] = (relevantAgencyTotals[c.agency] || 0) + value;
+    }
+  });
+  
+  const sortedRelevantOffices = Object.keys(relevantOfficeTotals)
+    .sort((a, b) => relevantOfficeTotals[b] - relevantOfficeTotals[a]);
+  const topOfficeNames = new Set(sortedRelevantOffices.slice(0, officeLimit));
+  
+  const sortedRelevantAgencies = Object.keys(relevantAgencyTotals)
+    .sort((a, b) => relevantAgencyTotals[b] - relevantAgencyTotals[a]);
+  const topAgencyNames = new Set(sortedRelevantAgencies.slice(0, agencyLimit));
+  
+  const agencyOfficeFlows = {};
+  const officeVendorFlows = {};
+  
+  topVendorContracts.forEach(contract => {
+    if (!contract.agency || !contract.office || !contract.vendor) return;
+    
+    const value = utils.safeParseFloat(contract.value);
+    if (value <= 0) return;
+    
+    if (topAgencyNames.has(contract.agency) &&
+        topOfficeNames.has(contract.office) &&
+        topVendorNames.has(contract.vendor)) {
+      
+      const aoKey = `${contract.agency}|${contract.office}`;
+      agencyOfficeFlows[aoKey] = (agencyOfficeFlows[aoKey] || 0) + value;
+      
+      const ovKey = `${contract.office}|${contract.vendor}`;
+      officeVendorFlows[ovKey] = (officeVendorFlows[ovKey] || 0) + value;
+    }
+  });
+  
+  const sortedAgencyOfficeFlows = Object.entries(agencyOfficeFlows)
+    .sort(([,a], [,b]) => b - a);
+  
+  const sortedOfficeVendorFlows = Object.entries(officeVendorFlows)
+    .sort(([,a], [,b]) => b - a);
+  
+  const allFlows = [
+    ...sortedAgencyOfficeFlows.map(([key, value]) => ({
+      source: key.split('|')[0],
+      target: key.split('|')[1],
+      value
+    })),
+    ...sortedOfficeVendorFlows.map(([key, value]) => ({
+      source: key.split('|')[0],
+      target: key.split('|')[1],
+      value
+    }))
+  ];
+  
+  if (allFlows.length === 0) {
+    return { nodes: [], links: [], vendorNames: topVendorNames };
+  }
+  
+  const nodeMap = new Map();
+  allFlows.forEach(flow => {
+    if (!nodeMap.has(flow.source)) {
+      nodeMap.set(flow.source, { name: flow.source });
+    }
+    if (!nodeMap.has(flow.target)) {
+      nodeMap.set(flow.target, { name: flow.target });
+    }
+  });
+  
+  const nodesArray = Array.from(nodeMap.values());
+  const nodeIndexMap = new Map(nodesArray.map((node, i) => [node.name, i]));
+  
+  const links = allFlows
+    .map(flow => ({
+      source: nodeIndexMap.get(flow.source),
+      target: nodeIndexMap.get(flow.target),
+      value: flow.value
+    }))
+    .filter(link => 
+      link.source !== undefined && 
+      link.target !== undefined && 
+      link.source !== link.target &&
+      link.value > 0
+    );
+  
+  return { 
+    nodes: nodesArray, 
+    links, 
+    vendorNames: topVendorNames 
+  };
+},
   updateButtons(activeId) {
     const buttons = document.querySelectorAll('.chart-controls .btn');
     buttons.forEach(btn => {
@@ -4151,8 +4856,36 @@ animateCountUp('totalContracts', totalContracts);
 animateCountUp('totalCompanies', uniqueCompanies);
   },
   
-  updateCharts() {
+  // In dashboard.updateCharts(), update the timeline title logic:
+updateCharts() {
   if (comparisonManager.isActive) return;
+  
+  // Check if we have PoP data to determine timeline title
+  const hasPopData = app.filteredData.some(contract => 
+    contract && contract.popEndDate
+  );
+  
+  // Update timeline section title
+  const timelineSection = document.querySelector('.chart-section:has(#timelineChart)');
+  const timelineTitle = timelineSection?.querySelector('.section-title');
+  if (timelineTitle && !timelineDrillDown.activeFilter) {
+    timelineTitle.textContent = hasPopData 
+      ? "Contract Lifecycle Timeline" 
+      : "Award Timeline";
+  }
+  
+  // Update chart title and layout based on data type
+  const isSubawardData = app.filteredData.some(contract => contract.isSubaward);
+  const chartSection = document.querySelector('.chart-section:has(.primary-charts)');
+  
+  if (isSubawardData) {
+    elements.primaryChartTitle.textContent = "Subaward Flow: Agency → Office → Prime → Sub";
+    if (chartSection) chartSection.classList.add('subaward-layout');
+  } else {
+    elements.primaryChartTitle.textContent = "Award Flow & NAICS Distribution";
+    if (chartSection) chartSection.classList.remove('subaward-layout');
+  }
+  
   charts.updateTimeline();
   charts.updateIndustry();
   charts.updatePop();
@@ -5310,6 +6043,7 @@ function hideDataSourceBanner() {
     banner.classList.add('hidden');
   }
 }
+
 
 // Initialize FPDS search on page load
 document.addEventListener('DOMContentLoaded', () => {
