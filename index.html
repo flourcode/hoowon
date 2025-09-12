@@ -3558,7 +3558,7 @@ const todayLinePlugin = {
       <th class="sortable" data-column="description" style="width: 18%;">Description <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
       <th class="sortable" data-column="value" style="width: 10%;">Value <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
       <th class="sortable" data-column="popEndDate" style="width: 8%;">Expires <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
-      <th class="sortable" data-column="daysUntilExpiry" style="width: 8%;">Days Left <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
+      <th class="sortable" data-column="daysUntilExpiry" style="width: 8%;">Days Left <i class="fas fa-sort-up" style="opacity: 1; margin-left: 4px;"></i></th>
       <th class="sortable" data-column="priority" style="width: 7%;">Priority <i class="fas fa-sort" style="opacity: 0.5; margin-left: 4px;"></i></th>
       <th style="width: 4%;">Action</th>
     </tr>
@@ -3581,9 +3581,11 @@ const todayLinePlugin = {
   }
 
   this.setupRenewalTableSorting();
+  // Set default sort to show nearest expiration first
   this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
 },
-  setupRenewalTableSorting() {
+
+setupRenewalTableSorting() {
   // Clean up existing listeners first
   const existingHeaders = document.querySelectorAll('#renewalTable .sortable');
   existingHeaders.forEach(header => {
@@ -3611,7 +3613,7 @@ const todayLinePlugin = {
   });
 },
 
-  sortRenewalTable(column) {
+sortRenewalTable(column) {
   const tbody = document.getElementById('renewalTableBody');
   if (!tbody || !this.renewalContracts) return;
 
@@ -3686,7 +3688,8 @@ const todayLinePlugin = {
   // Re-render the table
   this.renderRenewalTableRows();
 },
-  updateSortIcons() {
+
+updateSortIcons() {
   const sortableHeaders = document.querySelectorAll('#renewalTable .sortable');
   sortableHeaders.forEach(header => {
     const icon = header.querySelector('i');
@@ -3701,6 +3704,7 @@ const todayLinePlugin = {
     }
   });
 },
+
 renderRenewalTableRows() {
   const tbody = document.getElementById('renewalTableBody');
   if (!tbody || !this.renewalContracts) return;
@@ -3786,7 +3790,6 @@ renderRenewalTableRows() {
     tbody.appendChild(row);
   });
 },
-  
 
 updateTimeline() {
   const chart = app.charts.timeline;
@@ -3997,7 +4000,7 @@ updateTimeline() {
     this.updateRenewalTable();
   },
 
-  updateRenewalTable() {
+updateRenewalTable() {
   if (!app.filteredData || comparisonManager.isActive) return;
   
   const tbody = document.getElementById('renewalTableBody');
@@ -4007,13 +4010,14 @@ updateTimeline() {
   
   const today = new Date();
   this.renewalContracts = app.filteredData
-    .filter(contract => contract && contract.popEndDate)
-    .map(contract => {
-      const daysUntilExpiry = Math.ceil((contract.popEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-      return { ...contract, daysUntilExpiry };
-    })
-    .filter(contract => contract.daysUntilExpiry >= 0 && contract.daysUntilExpiry < 730)
-    .slice(0, 50);
+  .filter(contract => contract && contract.popEndDate)
+  .map(contract => {
+    const daysUntilExpiry = Math.ceil((contract.popEndDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    return { ...contract, daysUntilExpiry };
+  })
+  .filter(contract => contract.daysUntilExpiry >= 0 && contract.daysUntilExpiry < 730)
+  .sort((a, b) => a.daysUntilExpiry - b.daysUntilExpiry) // Pre-sort by nearest first
+  .slice(0, 50);
   
   if (this.renewalContracts.length === 0) {
     tbody.style.display = 'none';
@@ -4045,14 +4049,10 @@ updateTimeline() {
     tableContainer.style.visibility = 'visible';
   }
   
-  if (this.currentSort) {
-    this.sortRenewalTable(this.currentSort.column);
-  } else {
-    this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
-    this.sortRenewalTable('daysUntilExpiry');
-  }
+  // Set default sort to show nearest renewals first
+  this.currentSort = { column: 'daysUntilExpiry', direction: 'asc' };
+  this.sortRenewalTable('daysUntilExpiry');
 },
-
   downloadRenewalsCSV() {
     const downloadBtn = document.getElementById('downloadRenewalsCSV');
     if (!downloadBtn) return;
