@@ -1697,7 +1697,7 @@ body {
     <div class="logo-mark">Hoowon?</div>
   </a>
 </div>
-            <div class="logo-subtitle">A free tool for exploring government contracts</div>
+            <div class="logo-subtitle">A follow the money tool for government contracts</div>
           </div>
           <div class="theme-controls" id="themeControls">
             <button class="theme-btn" data-theme="light">Light</button>
@@ -3258,61 +3258,73 @@ initTimelineChart() {
     app.charts.timeline = null;
   }
   
-  // Define the today line plugin
-  const todayLinePlugin = {
-    id: 'todayLine',
-    afterDraw: (chart) => {
-      // Safety checks
-      if (!chart.todayLineConfig || 
-          !chart.todayLineConfig.show || 
-          !chart.chartArea ||
-          chart.todayLineConfig.index === null || 
-          chart.todayLineConfig.index === undefined) {
-        return;
-      }
-      
-      const ctx = chart.ctx;
-      const chartArea = chart.chartArea;
-      const todayIndex = chart.todayLineConfig.index;
-      
-      if (!ctx || chartArea.width <= 0 || chartArea.height <= 0) return;
-      
-      try {
-        // Calculate x position
-        const xPos = chart.scales.x.getPixelForValue(todayIndex);
-        
-        if (xPos < chartArea.left || xPos > chartArea.right) return;
-        
-        ctx.save();
-        
-        // Draw dashed line
-        ctx.setLineDash([5, 5]);
-        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-primary') || '#333';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(xPos, chartArea.top);
-        ctx.lineTo(xPos, chartArea.bottom);
-        ctx.stroke();
-        
-        // Draw label background
-        const labelText = 'Today';
-        ctx.font = 'bold 11px Arial';
-        const textWidth = ctx.measureText(labelText).width;
-        const labelX = xPos - textWidth / 2;
-        const labelY = chartArea.top - 5;
-        
-        // Draw label text
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-primary') || '#333';
-ctx.textAlign = 'center';
-ctx.fillText(labelText, xPos, labelY - 8);
-        
-        ctx.restore();
-      } catch (error) {
-        console.warn('Error drawing today line:', error);
-        ctx.restore(); // Ensure context is restored even on error
-      }
+// Define the today line plugin
+const todayLinePlugin = {
+  id: 'todayLine',
+  afterDraw: (chart) => {
+    // Safety checks
+    if (!chart.todayLineConfig || 
+        !chart.todayLineConfig.show || 
+        !chart.chartArea ||
+        chart.todayLineConfig.index === null || 
+        chart.todayLineConfig.index === undefined) {
+      return;
     }
-  };
+    
+    const ctx = chart.ctx;
+    const chartArea = chart.chartArea;
+    const todayIndex = chart.todayLineConfig.index;
+    
+    if (!ctx || chartArea.width <= 0 || chartArea.height <= 0) return;
+    
+    try {
+      // Calculate x position
+      const xPos = chart.scales.x.getPixelForValue(todayIndex);
+      
+      if (xPos < chartArea.left || xPos > chartArea.right) return;
+      
+      ctx.save();
+      
+      // Draw dashed line
+      ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-primary') || '#333';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(xPos, chartArea.top);
+      ctx.lineTo(xPos, chartArea.bottom);
+      ctx.stroke();
+      
+      // Position label above the dashed line
+      const labelText = 'Today';
+      ctx.font = 'bold 11px Arial';
+      const textWidth = ctx.measureText(labelText).width;
+      
+      // Position label above the top of the dashed line
+      const labelY = chartArea.top - 0;
+      
+      // Draw background box
+      const padding = 4;
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--bg-primary');
+      ctx.fillRect(
+        xPos - textWidth/2 - padding, 
+        labelY - 12, 
+        textWidth + padding * 2, 
+        16
+      );
+      
+      // Draw label text
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-primary') || '#333';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(labelText, xPos, labelY - 4);
+      
+      ctx.restore();
+    } catch (error) {
+      console.warn('Error drawing today line:', error);
+      ctx.restore(); // Ensure context is restored even on error
+    }
+  }
+};
   
   // Register the plugin
   if (window.Chart && !Chart.registry.plugins.get('todayLine')) {
@@ -3336,7 +3348,7 @@ ctx.fillText(labelText, xPos, labelY - 8);
         plugins: { 
           legend: { 
             display: true,
-            position: 'top',
+            position: 'bottom',
             labels: {
               usePointStyle: true,
               boxWidth: 6
@@ -5445,10 +5457,14 @@ const comparisonManager = {
         .attr("width", d => x2(d.valueB) - width/2).attr("height", y.bandwidth()).attr("fill", colorB);
       
       svg.append("text").attr("x", width/4).attr("y", -10).attr("text-anchor", "middle").style("fill", colorA).text(utils.truncateText(this.vendorA, 20));
-      svg.append("text").attr("x", width*0.75).attr("y", -10).attr("text-anchor", "middle").style("fill", colorB).text(utils.truncateText(this.vendorB, 20));
-      
-    } catch (error) {
-      console.error('Error creating overlap chart:', error);
+svg.append("text").attr("x", width*0.75).attr("y", -10).attr("text-anchor", "middle").style("fill", colorB).text(utils.truncateText(this.vendorB, 20));
+
+// Override all text colors to use primary text color
+svg.selectAll("text")
+  .style("fill", getComputedStyle(document.documentElement).getPropertyValue('--text-primary'));
+
+} catch (error) {
+  console.error('Error creating overlap chart:', error);
       this.showError(
         container,
         'Chart Error',
