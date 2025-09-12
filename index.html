@@ -2155,7 +2155,6 @@ const themeManager = {
         root.style.setProperty(key, value);
       }
       PALETTE = theme.chartPalette;
-      utils._colorCache.clear();
 	  
       document.querySelectorAll('.theme-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.theme === themeName);
@@ -2248,41 +2247,23 @@ function cacheElements() {
 
 // Optimized utility functions with memoization
 const utils = {
-  // Cache for expensive formatting operations
-  _formatCache: new Map(),
-  _dateCache: new Map(),
-  _colorCache: new Map(),
-  
   formatMoney: function(value) {
     if (!value && value !== 0) return '$0';
-    
-    const cacheKey = value.toString();
-    if (this._formatCache.has(cacheKey)) {
-      return this._formatCache.get(cacheKey);
-    }
     
     const number = parseFloat(value);
     if (isNaN(number)) return '$0';
     
-    let result;
     const abs = Math.abs(number);
     
     if (abs >= 1e9) {
-      result = '$' + (number / 1e9).toFixed(abs >= 10e9 ? 0 : 1) + 'B';
+      return '$' + (number / 1e9).toFixed(abs >= 10e9 ? 0 : 1) + 'B';
     } else if (abs >= 1e6) {
-      result = '$' + (number / 1e6).toFixed(abs >= 10e6 ? 0 : 1) + 'M';
+      return '$' + (number / 1e6).toFixed(abs >= 10e6 ? 0 : 1) + 'M';
     } else if (abs >= 1e3) {
-      result = '$' + (number / 1e3).toFixed(abs >= 10e3 ? 0 : 1) + 'K';
+      return '$' + (number / 1e3).toFixed(abs >= 10e3 ? 0 : 1) + 'K';
     } else {
-      result = '$' + number.toLocaleString(undefined, { maximumFractionDigits: 0 });
+      return '$' + number.toLocaleString(undefined, { maximumFractionDigits: 0 });
     }
-    
-    // Limit cache size
-    if (this._formatCache.size > 1000) {
-      this._formatCache.clear();
-    }
-    this._formatCache.set(cacheKey, result);
-    return result;
   },
   
   getOpacityHex: function(opacity) {
@@ -2457,48 +2438,37 @@ const utils = {
   },
   
   parseDate: function(dateString) {
-    if (!dateString) return null;
-    if (dateString instanceof Date && !isNaN(dateString)) return dateString;
-    
-    const cacheKey = dateString.toString();
-    if (this._dateCache.has(cacheKey)) {
-      return this._dateCache.get(cacheKey);
+  if (!dateString) return null;
+  if (dateString instanceof Date && !isNaN(dateString)) return dateString;
+  
+  const s = String(dateString).trim();
+  
+  let parts = s.match(/^(\d{1,2})-(\w{3})-(\d{2,4})$/);
+  if (parts) {
+    const months = {
+      'Jan':0,'Feb':1,'Mar':2,'Apr':3,'May':4,'Jun':5,
+      'Jul':6,'Aug':7,'Sep':8,'Oct':9,'Nov':10,'Dec':11
+    };
+    const day = parseInt(parts[1]);
+    const month = months[parts[2]];
+    let year = parseInt(parts[3]);
+    if (year < 100) year = year < 50 ? 2000 + year : 1900 + year;
+    if (!isNaN(day) && month !== undefined && !isNaN(year)) {
+      return new Date(Date.UTC(year, month, day));
     }
-    
-    const s = String(dateString).trim();
-    let result = null;
-    
-    let parts = s.match(/^(\d{1,2})-(\w{3})-(\d{2,4})$/);
-    if (parts) {
-      const months = {
-        'Jan':0,'Feb':1,'Mar':2,'Apr':3,'May':4,'Jun':5,
-        'Jul':6,'Aug':7,'Sep':8,'Oct':9,'Nov':10,'Dec':11
-      };
-      const day = parseInt(parts[1]);
-      const month = months[parts[2]];
-      let year = parseInt(parts[3]);
-      if (year < 100) year = year < 50 ? 2000 + year : 1900 + year;
-      if (!isNaN(day) && month !== undefined && !isNaN(year)) {
-        result = new Date(Date.UTC(year, month, day));
-      }
-    } else {
-      const date = new Date(s);
-      if (!isNaN(date.getTime())) {
-        result = new Date(Date.UTC(
-          date.getFullYear(), 
-          date.getMonth(), 
-          date.getDate()
-        ));
-      }
-    }
-    
-    // Limit cache size
-    if (this._dateCache.size > 1000) {
-      this._dateCache.clear();
-    }
-    this._dateCache.set(cacheKey, result);
-    return result;
-  },
+  }
+  
+  const date = new Date(s);
+  if (!isNaN(date.getTime())) {
+    return new Date(Date.UTC(
+      date.getFullYear(), 
+      date.getMonth(), 
+      date.getDate()
+    ));
+  }
+  
+  return null;
+},
   
   truncateText: function(text, maxLength) {
     if (!text) return '';
@@ -2508,27 +2478,16 @@ const utils = {
   },
   
   getEntityColor: function(entityName) {
-    if (!entityName) return PALETTE[0];
-    
-    if (this._colorCache.has(entityName)) {
-      return this._colorCache.get(entityName);
-    }
-    
-    let hash = 0;
-    const name = String(entityName);
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    
-    const color = PALETTE[Math.abs(hash) % PALETTE.length];
-    
-    // Limit cache size
-    if (this._colorCache.size > 1000) {
-      this._colorCache.clear();
-    }
-    this._colorCache.set(entityName, color);
-    return color;
-  },
+  if (!entityName) return PALETTE[0];
+  
+  let hash = 0;
+  const name = String(entityName);
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  
+  return PALETTE[Math.abs(hash) % PALETTE.length];
+},
   
   getInitials: function(name) {
     if (!name) return '?'; 
