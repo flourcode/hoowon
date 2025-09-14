@@ -11,7 +11,7 @@
   <style>
     :root {
       --primary: #007AFF;
-      --primary-dark: #0056CC;
+      --primary-dark: #0A65D1; /* Slightly adjusted for better hover */
       --success: #34C759;
       --warning: #FF9500;
       --danger: #FF3B30;
@@ -27,8 +27,9 @@
       --glass-border: rgba(255, 255, 255, 0.1);
       --radius: 12px;
       --radius-lg: 20px;
-      --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.4);
+      /* MODIFIED: Subtle shadows for a cleaner look */
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
 
     * {
@@ -85,8 +86,9 @@
     }
 
     .search-container:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 60px rgba(0, 0, 0, 0.5);
+      transform: translateY(-3px);
+      /* MODIFIED: Use the same subtle shadow on hover */
+      box-shadow: var(--shadow-lg); 
     }
 
     .search-form {
@@ -123,7 +125,8 @@
     }
 
     .search-btn {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      /* MODIFIED: Removed gradient */
+      background: var(--primary);
       color: white;
       border: none;
       border-radius: var(--radius);
@@ -139,8 +142,10 @@
     }
 
     .search-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 25px rgba(0, 122, 255, 0.4);
+      /* MODIFIED: Changed hover state to a solid color and removed shadow */
+      transform: translateY(-2px);
+      background: var(--primary-dark);
+      box-shadow: none;
     }
 
     .search-btn:active {
@@ -230,13 +235,16 @@
     }
 
     .action-btn.primary {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      /* MODIFIED: Removed gradient */
+      background: var(--primary);
       color: white;
     }
 
     .action-btn.primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 25px rgba(0, 122, 255, 0.4);
+      /* MODIFIED: Changed hover state to a solid color and removed shadow */
+      transform: translateY(-2px);
+      background: var(--primary-dark);
+      box-shadow: none;
     }
 
     .action-btn.secondary {
@@ -248,7 +256,7 @@
     .action-btn.secondary:hover {
       background: var(--bg-secondary);
       border-color: var(--primary);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
     }
 
     .results-title {
@@ -290,10 +298,8 @@
       font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
-      background: linear-gradient(135deg, var(--primary) 0%, #00D2FF 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      /* MODIFIED: Removed text gradient, replaced with solid color */
+      color: var(--primary);
     }
 
     .metric-label {
@@ -434,19 +440,19 @@
       gap: 1rem;
     }
 
-    /* CORRECTED: CSS fix for vendor avatar */
     .vendor-avatar {
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary) 0%, #00D2FF 100%);
+      /* MODIFIED: Removed gradient, replaced with solid color */
+      background: var(--primary);
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 600;
       font-size: 0.9rem;
-      flex-shrink: 0; /* Prevents the circle from being squished */
+      flex-shrink: 0; 
     }
 
     .vendor-name {
@@ -742,6 +748,68 @@
   letter-spacing: -0.02em;
   margin: 0;
 }
+.search-btn, .form-input, .form-select, .action-btn {
+    min-height: 44px; /* Apple's recommended minimum tap target size */
+    padding: 0.75rem;
+}
+@media (max-width: 768px) {
+  .filters-container {
+    position: sticky;
+    top: 0;
+    background: var(--bg-card);
+    z-index: 10;
+  }
+  
+  /* Show only most important filters on mobile */
+  .filter-select:nth-child(n+3) {
+    display: none;
+  }
+
+.opportunities-table thead {
+    /* Hide the table header on mobile, as labels will be in the cards */
+    display: none;
+}
+
+.opportunities-table tr {
+    /* Each row becomes a card */
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    background: var(--bg-secondary);
+}
+
+.opportunities-table td {
+    display: flex; /* Use flexbox for alignment within the "cell" */
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+    text-align: right; /* Align cell content to the right */
+}
+
+.opportunities-table td:last-child {
+    border-bottom: none;
+}
+
+.opportunities-table td::before {
+    /* Use the data-label attribute for the cell's title */
+    content: attr(data-label);
+    font-weight: 600;
+    text-align: left;
+    margin-right: 1rem;
+    color: var(--text-secondary);
+}
+
+/* Adjust specific cells for better layout */
+.opportunities-table td .vendor-info,
+.opportunities-table td .description-text {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
+}
+}
 </style>
 </head>
 <body>
@@ -756,7 +824,7 @@
       <div class="search-container">
         <div class="search-form">
           <div class="input-group">
-            <input type="text" id="searchKeywords" class="form-input" placeholder="Search keywords (e.g., amazon, cisco, or cyber security)" />
+            <input type="search" id="searchKeywords" class="form-input" placeholder="Search keywords (e.g., amazon, cisco, or cyber security)" />
           </div>
           <div class="input-group">
             <select id="minValue" class="form-select">
@@ -788,8 +856,7 @@
           <i class="fas fa-search"></i>
           Find Opportunities
         </button>
-        <!-- Add this right after the search-container div and before the error message -->
-<div class="search-help">
+        <div class="search-help">
   <div class="search-help-toggle" id="searchHelpToggle">
     <i class="fas fa-question-circle"></i>
     How to search
@@ -850,8 +917,7 @@
     </div>
 
     <section class="results-section hidden" id="resultsSection">
-      <!-- Update the results-header section -->
-<div class="results-header">
+      <div class="results-header">
   <div>
     <div class="results-logo">
       <div class="logo-icon-small">R</div>
@@ -1210,49 +1276,41 @@
           const daysClass = `days-${opp.priority.level}`;
           
           return `
-            <tr class="slide-up">
-              <td>
-                <span class="priority-badge ${priorityClass}">
-                  ${opp.priority.label}
-                </span>
-              </td>
-              <td>
-                <div class="days-remaining ${daysClass}">
-                  ${opp.daysRemaining} days
-                </div>
-                <div class="expiry-date">
-                  Expires ${utils.formatDate(opp.popEndDate)}
-                </div>
-              </td>
-              <td>
-                <div class="vendor-info">
-                  <div class="vendor-avatar" style="background: ${utils.getColorForVendor(opp.vendor)}">
-                    ${utils.getInitials(opp.vendor)}
-                  </div>
-                  <div>
-                    <div class="vendor-name">${utils.truncateText(opp.vendor, 30)}</div>
-                    <div class="vendor-id">${utils.truncateText(opp.id, 25)}</div>
-                  </div>
-                </div>
-              </td>
-              <td>
-                <div class="contract-value">${utils.formatMoney(opp.value)}</div>
-              </td>
-              <td>
-                <div class="agency-info">${utils.truncateText(opp.agency, 25)}</div>
-                <div class="office-info">${utils.truncateText(opp.office, 25)}</div>
-              </td>
-              <td>
-                <div class="description-text">
-                  ${utils.truncateText(opp.description, 120)}
-                </div>
-              </td>
-              <td>
-                ${opp.awardLink ? `<a href="${opp.awardLink}" target="_blank" class="view-award-btn"><i class="fas fa-external-link-alt"></i> View</a>` : ''}
-              </td>
-            </tr>
-          `;
-        }).join('');
+    <tr class="slide-up">
+      <td data-label="Priority">
+        <span class="priority-badge ${priorityClass}">${opp.priority.label}</span>
+      </td>
+      <td data-label="Days Left">
+        <div class="days-remaining ${daysClass}">${opp.daysRemaining} days</div>
+        <div class="expiry-date">Expires ${utils.formatDate(opp.popEndDate)}</div>
+      </td>
+      <td data-label="Vendor">
+        <div class="vendor-info">
+          <div class="vendor-avatar" style="background: ${utils.getColorForVendor(opp.vendor)}">
+            ${utils.getInitials(opp.vendor)}
+          </div>
+          <div>
+            <div class="vendor-name">${utils.truncateText(opp.vendor, 30)}</div>
+            <div class="vendor-id">${utils.truncateText(opp.id, 25)}</div>
+          </div>
+        </div>
+      </td>
+      <td data-label="Value">
+        <div class="contract-value">${utils.formatMoney(opp.value)}</div>
+      </td>
+      <td data-label="Agency">
+        <div class="agency-info">${utils.truncateText(opp.agency, 25)}</div>
+        <div class="office-info">${utils.truncateText(opp.office, 25)}</div>
+      </td>
+      <td data-label="Description">
+        <div class="description-text">${utils.truncateText(opp.description, 120)}</div>
+      </td>
+      <td data-label="Action">
+        ${opp.awardLink ? `<a href="${opp.awardLink}" target="_blank" class="view-award-btn"><i class="fas fa-external-link-alt"></i> View</a>` : ''}
+      </td>
+    </tr>
+  `;
+}).join('');
       },
 
       updateFilters() {
