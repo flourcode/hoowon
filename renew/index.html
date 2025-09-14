@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pipeline</title>
+  <title>renool.</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,7 +39,7 @@
 
     body {
       font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+      background: var(--bg-primary);
       color: var(--text-primary);
       line-height: 1.5;
       font-weight: 400;
@@ -61,18 +61,6 @@
       text-align: center;
       padding: 2rem;
       position: relative;
-      background: radial-gradient(circle at 50% 0%, rgba(0, 122, 255, 0.1) 0%, transparent 50%);
-    }
-
-    .hero-title {
-      font-size: clamp(3rem, 8vw, 6rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #FFFFFF 0%, #8E8E93 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
 
     .hero-subtitle {
@@ -321,7 +309,7 @@
       margin: 0 auto;
       background: var(--bg-card);
       border-radius: var(--radius-lg);
-      overflow: hidden;
+      overflow-x: auto;
       border: 1px solid var(--border);
     }
 
@@ -369,7 +357,26 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       border-bottom: 1px solid var(--border);
+      user-select: none;
     }
+
+    /* Style for sortable headers */
+    .opportunities-table th[data-sort] {
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    .opportunities-table th[data-sort]:hover {
+      color: var(--text-primary);
+    }
+    .sort-icon {
+      margin-left: 0.5rem;
+      opacity: 0.5;
+    }
+    .sort-active {
+      opacity: 1;
+      color: var(--primary);
+    }
+
 
     .opportunities-table td {
       padding: 1.2rem 1rem;
@@ -427,6 +434,7 @@
       gap: 1rem;
     }
 
+    /* CORRECTED: CSS fix for vendor avatar */
     .vendor-avatar {
       width: 40px;
       height: 40px;
@@ -438,6 +446,7 @@
       justify-content: center;
       font-weight: 600;
       font-size: 0.9rem;
+      flex-shrink: 0; /* Prevents the circle from being squished */
     }
 
     .vendor-name {
@@ -586,19 +595,168 @@
         padding: 0.8rem 0.5rem;
       }
     }
-  </style>
+	.search-help {
+  max-width: 800px;
+  margin: 1rem auto 0;
+}
+
+.search-help-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(142, 142, 147, 0.1);
+  border: 1px solid rgba(142, 142, 147, 0.2);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  justify-content: center;
+}
+
+.search-help-toggle:hover {
+  background: rgba(142, 142, 147, 0.15);
+  color: var(--text-primary);
+}
+
+.search-help-content {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+}
+
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.help-item {
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.help-label {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+}
+
+.help-example {
+  font-family: 'SF Mono', Monaco, monospace;
+  background: rgba(0, 122, 255, 0.1);
+  color: var(--primary);
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.help-description {
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+#helpChevron {
+  margin-left: auto;
+  transition: transform 0.2s ease;
+}
+
+.help-expanded #helpChevron {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+  .help-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .search-help-content {
+    padding: 1rem;
+  }
+}
+.results-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.logo-icon-small {
+  background: var(--primary);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.results-logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.results-title {
+  font-size: 1.5rem; /* Slightly smaller since we now have the main title above */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.hero-logo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.logo-icon-large {
+  background: var(--primary);
+  color: white;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 3.5rem;
+}
+
+.hero-logo-text {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+</style>
 </head>
 <body>
   <div class="app-container">
-    <!-- Hero Section -->
     <section class="hero-section" id="heroSection">
-      <h1 class="hero-title">renool.</h1>
-      <p class="hero-subtitle">Discover contract renewals before your competitors do</p>
+  <div class="hero-logo">
+    <div class="logo-icon-large">R</div>
+    <h1 class="hero-logo-text">Renool.</h1>
+  </div>
+  <p class="hero-subtitle">Discover contract renewals before your competitors do</p>
       
       <div class="search-container">
         <div class="search-form">
           <div class="input-group">
-            <input type="text" id="searchKeywords" class="form-input" placeholder="Search keywords (e.g., cybersecurity, cloud)" />
+            <input type="text" id="searchKeywords" class="form-input" placeholder="Search keywords (e.g., amazon, cisco, or cyber security)" />
           </div>
           <div class="input-group">
             <select id="minValue" class="form-select">
@@ -630,7 +788,54 @@
           <i class="fas fa-search"></i>
           Find Opportunities
         </button>
-        
+        <!-- Add this right after the search-container div and before the error message -->
+<div class="search-help">
+  <div class="search-help-toggle" id="searchHelpToggle">
+    <i class="fas fa-question-circle"></i>
+    How to search
+    <i class="fas fa-chevron-down" id="helpChevron"></i>
+  </div>
+  
+  <div class="search-help-content hidden" id="searchHelpContent">
+    <div class="help-grid">
+      <div class="help-item">
+        <div class="help-label">Single keyword</div>
+        <div class="help-example">cisco</div>
+        <div class="help-description">Find contracts mentioning cisco</div>
+      </div>
+      
+      <div class="help-item">
+        <div class="help-label">Multiple keywords (OR)</div>
+        <div class="help-example">cisco, amazon</div>
+        <div class="help-description">Find contracts with cisco OR amazon</div>
+      </div>
+      
+      <div class="help-item">
+        <div class="help-label">Alternative OR syntax</div>
+        <div class="help-example">cisco or amazon</div>
+        <div class="help-description">Same as above using "or"</div>
+      </div>
+      
+      <div class="help-item">
+        <div class="help-label">Exact phrases</div>
+        <div class="help-example">"cloud security"</div>
+        <div class="help-description">Find exact phrase in quotes</div>
+      </div>
+      
+      <div class="help-item">
+        <div class="help-label">Mixed search</div>
+        <div class="help-example">cisco, "cloud security", aws</div>
+        <div class="help-description">Combine phrases and keywords</div>
+      </div>
+      
+      <div class="help-item">
+        <div class="help-label">Pipe separator</div>
+        <div class="help-example">cisco | amazon | aws</div>
+        <div class="help-description">Another way to search multiple terms</div>
+      </div>
+    </div>
+  </div>
+</div>
         <div id="errorMessage" class="error-message hidden">
           <i class="fas fa-exclamation-circle"></i>
           <span id="errorText"></span>
@@ -638,33 +843,33 @@
       </div>
     </section>
 
-    <!-- Loading State -->
     <div id="loadingState" class="loading-state hidden">
       <div class="loading-spinner"></div>
       <div class="loading-text">Searching for opportunities...</div>
       <div class="loading-subtext">Analyzing contract data from USASpending.gov</div>
     </div>
 
-    <!-- Results Section -->
     <section class="results-section hidden" id="resultsSection">
-      <div class="results-header">
-        <div>
-          <h2 class="results-title">Contract Opportunities</h2>
-          <p class="results-subtitle">Sorted by expiration date - most urgent first</p>
-        </div>
-        <div class="results-actions">
-          <button id="exportCSV" class="action-btn secondary">
-            <i class="fas fa-download"></i>
-            Export CSV
-          </button>
-          <button id="newSearch" class="action-btn primary">
-            <i class="fas fa-search"></i>
-            New Search
-          </button>
-        </div>
-      </div>
+      <!-- Update the results-header section -->
+<div class="results-header">
+  <div>
+    <div class="results-logo">
+      <div class="logo-icon-small">R</div>
+      <h1 class="results-logo-text">Renool.</h1>
+    </div>
+  </div>
+  <div class="results-actions">
+    <button id="exportCSV" class="action-btn secondary">
+      <i class="fas fa-download"></i>
+      Export CSV
+    </button>
+    <button id="newSearch" class="action-btn primary">
+      <i class="fas fa-search"></i>
+      New Search
+    </button>
+  </div>
+</div>
 
-      <!-- Metrics -->
       <div class="metrics-grid">
         <div class="metric-card">
           <div class="metric-value" id="totalOpportunities">0</div>
@@ -684,7 +889,6 @@
         </div>
       </div>
 
-      <!-- Opportunities Table -->
       <div class="opportunities-container">
         <div class="table-header">
           <h3 class="table-title">Renewal Opportunities</h3>
@@ -709,18 +913,17 @@
         <table class="opportunities-table">
           <thead>
             <tr>
-              <th>Priority</th>
-              <th>Days Left</th>
-              <th>Current Vendor</th>
-              <th>Value</th>
-              <th>Agency</th>
+              <th data-sort="priority">Priority <i class="fas fa-sort sort-icon"></i></th>
+              <th data-sort="daysRemaining">Days Left <i class="fas fa-sort sort-icon"></i></th>
+              <th data-sort="vendor">Current Vendor <i class="fas fa-sort sort-icon"></i></th>
+              <th data-sort="value">Value <i class="fas fa-sort sort-icon"></i></th>
+              <th data-sort="agency">Agency <i class="fas fa-sort sort-icon"></i></th>
               <th>Description</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody id="opportunitiesTableBody">
-            <!-- Results will be populated here -->
-          </tbody>
+            </tbody>
         </table>
       </div>
     </section>
@@ -733,6 +936,7 @@
       filteredOpportunities: [],
       competitors: new Map(),
       agencies: new Map(),
+      currentSort: { column: 'daysRemaining', direction: 'asc' }, // ADDED: For sorting
       filters: {
         search: '',
         priority: '',
@@ -743,6 +947,16 @@
 
     // Utility Functions
     const utils = {
+      // ADDED: Debounce function for performance
+      debounce(func, delay) {
+        let timeout;
+        return function(...args) {
+          const context = this;
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(context, args), delay);
+        };
+      },
+      
       formatMoney(value) {
         if (!value && value !== 0) return '$0';
         const num = parseFloat(value);
@@ -802,48 +1016,62 @@
     // USASpending API Integration
     const usaSpendingAPI = {
       async searchContracts(searchParams) {
-        const awardSearchProxyUrl = 'https://vt44ebi3jj.execute-api.us-east-1.amazonaws.com/default/award-search-proxy';
+  const awardSearchProxyUrl = 'https://vt44ebi3jj.execute-api.us-east-1.amazonaws.com/default/award-search-proxy';
 
-        const requestBody = {
-          filters: {
-            award_type_codes: ['A', 'B', 'C', 'D'],
-            keywords: searchParams.keywords ? [searchParams.keywords] : undefined,
-            award_amounts: searchParams.minValue ? [ { lower_bound: parseInt(searchParams.minValue) } ] : undefined,
-            agencies: searchParams.agency ? [ { type: "awarding", tier: "toptier", name: searchParams.agency } ] : undefined
-          },
-          fields: [
-            "Award ID",
-            "Recipient Name",
-            "Start Date",
-            "End Date",
-            "Award Amount",
-            "Awarding Agency",
-            "Awarding Sub Agency",
-            "generated_internal_id"
-          ],
-          page: 1,
-          limit: 100,
-          sort: "Award Amount",
-          order: "desc"
-        };
+  // Parse multiple keywords for OR logic
+  let keywordsArray = [];
+  if (searchParams.keywords) {
+    // Split by comma, "or", pipe, semicolon 
+    const splitKeywords = searchParams.keywords
+      .split(/,|\bor\b|\||\;/i)
+      .map(keyword => keyword.trim().replace(/^["']|["']$/g, ''))
+      .filter(keyword => keyword.length > 0);
+    
+    // If we found multiple keywords, use them all for OR logic
+    // If only one keyword (no separators), use it as is
+    keywordsArray = splitKeywords.length > 1 ? splitKeywords : [searchParams.keywords.trim()];
+  }
 
-        try {
-          const response = await fetch(awardSearchProxyUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(requestBody)
-          });
-          const data = await response.json();
-          if (!response.ok) { throw new Error(data.detail || data.error); }
-          return await this.transformAPIResponse(data);
-        } catch (error) {
-          console.error('USASpending API call failed:', error);
-          throw new Error(`Search failed: ${error.message}`);
-        }
-      },
+  const requestBody = {
+    filters: {
+      award_type_codes: ['A', 'B', 'C', 'D'],
+      keywords: keywordsArray.length > 0 ? keywordsArray : undefined,
+      award_amounts: searchParams.minValue ? [ { lower_bound: parseInt(searchParams.minValue) } ] : undefined,
+      agencies: searchParams.agency ? [ { type: "awarding", tier: "toptier", name: searchParams.agency } ] : undefined
+    },
+    fields: [
+      "Award ID",
+      "Recipient Name",
+      "Start Date",
+      "End Date",
+      "Award Amount",
+      "Awarding Agency",
+      "Awarding Sub Agency",
+      "generated_internal_id"
+    ],
+    page: 1,
+    limit: 100,
+    sort: "Award Amount",
+    order: "desc"
+  };
 
+  try {
+    const response = await fetch(awardSearchProxyUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    });
+    const data = await response.json();
+    if (!response.ok) { throw new Error(data.detail || data.error); }
+    return await this.transformAPIResponse(data);
+  } catch (error) {
+    console.error('USASpending API call failed:', error);
+    throw new Error(`Search failed: ${error.message}`);
+  }
+},
       async _fetchTransactionDescription(internalId) {
         if (!internalId) return 'No description available';
+        // IMPORTANT: Replace with your Transaction Search Lambda URL
         const transactionProxyUrl = 'https://eerqzgy63d.execute-api.us-east-1.amazonaws.com/default/transaction-search-proxy';
 
         const requestBody = {
@@ -864,7 +1092,9 @@
           }
           return 'No description available';
         } catch (error) {
-          return 'Description lookup failed';
+          // CORRECTED: Enhanced error messaging
+          console.error(`Description lookup failed for ${internalId}:`, error);
+          return `Error: ${error.message}`;
         }
       },
 
@@ -932,6 +1162,20 @@
 
       hideError() {
         document.getElementById('errorMessage').classList.add('hidden');
+      },
+      
+      // ADDED: Function to update sort icons
+      updateSortIcons(column, direction) {
+        document.querySelectorAll('.sort-icon').forEach(icon => {
+          icon.className = 'fas fa-sort sort-icon';
+          icon.parentElement.classList.remove('sort-active');
+        });
+        
+        const activeIcon = document.querySelector(`th[data-sort="${column}"] .sort-icon`);
+        if (activeIcon) {
+          activeIcon.className = `fas fa-sort-${direction === 'asc' ? 'up' : 'down'} sort-icon sort-active`;
+          activeIcon.parentElement.classList.add('sort-active');
+        }
       },
 
       updateMetrics() {
@@ -1040,6 +1284,44 @@
 
     // Filtering and Sorting
     const filtering = {
+      // ADDED: Sorting function
+      sortBy(column) {
+        if (app.currentSort.column === column) {
+          app.currentSort.direction = app.currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+          app.currentSort = { column, direction: 'asc' };
+        }
+        ui.updateSortIcons(app.currentSort.column, app.currentSort.direction);
+        this.applyFilters();
+      },
+
+      // ADDED: Sorting logic
+      applySorting() {
+        const { column, direction } = app.currentSort;
+        const multiplier = direction === 'asc' ? 1 : -1;
+
+        app.filteredOpportunities.sort((a, b) => {
+          let valA, valB;
+
+          switch (column) {
+            case 'priority':
+              const order = { urgent: 0, high: 1, medium: 2, low: 3 };
+              valA = order[a.priority.level];
+              valB = order[b.priority.level];
+              break;
+            default:
+              valA = a[column];
+              valB = b[column];
+          }
+
+          if (typeof valA === 'string') {
+            return valA.localeCompare(valB) * multiplier;
+          } else {
+            return (valA - valB) * multiplier;
+          }
+        });
+      },
+      
       applyFilters() {
         let filtered = [...app.opportunities];
         
@@ -1065,7 +1347,8 @@
           filtered = filtered.filter(opp => opp.agency === app.filters.agency);
         }
         
-        app.filteredOpportunities = filtered.sort((a, b) => a.daysRemaining - b.daysRemaining);
+        app.filteredOpportunities = filtered;
+        this.applySorting(); // Call sorting after filtering
         ui.updateMetrics();
         ui.updateOpportunitiesTable();
       }
@@ -1105,51 +1388,51 @@
       }
     };
 
-    // Export functionality - UPDATE THIS SECTION
-const exportData = {
-  exportToCSV() {
-    const headers = [
-      'Priority',
-      'Days Remaining',
-      'Expiration Date',
-      'Current Vendor',
-      'Contract Value',
-      'Agency',
-      'Office',
-      'Contract ID',
-      'Description',
-      'Award Date',
-      'USASpending Link'
-    ];
-    
-    const csvContent = [
-      headers.join(','),
-      ...app.filteredOpportunities.map(opp => [
-        opp.priority.label,
-        opp.daysRemaining,
-        utils.formatDate(opp.popEndDate),
-        `"${opp.vendor.replace(/"/g, '""')}"`,
-        opp.value,
-        `"${opp.agency.replace(/"/g, '""')}"`,
-        `"${opp.office.replace(/"/g, '""')}"`,
-        opp.id,
-        `"${opp.description.replace(/"/g, '""')}"`,
-        opp.awardDate,
-        opp.awardLink || ''
-      ].join(','))
-    ].join('\n');
-    
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `contract-opportunities-${new Date().toISOString().split('T')[0]}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-};
+    // Export functionality
+    const exportData = {
+      exportToCSV() {
+        const headers = [
+          'Priority',
+          'Days Remaining',
+          'Expiration Date',
+          'Current Vendor',
+          'Contract Value',
+          'Agency',
+          'Office',
+          'Contract ID',
+          'Description',
+          'Award Date',
+          'USASpending Link'
+        ];
+        
+        const csvContent = [
+          headers.join(','),
+          ...app.filteredOpportunities.map(opp => [
+            opp.priority.label,
+            opp.daysRemaining,
+            utils.formatDate(opp.popEndDate),
+            `"${(opp.vendor || '').replace(/"/g, '""')}"`,
+            opp.value,
+            `"${(opp.agency || '').replace(/"/g, '""')}"`,
+            `"${(opp.office || '').replace(/"/g, '""')}"`,
+            opp.id,
+            `"${(opp.description || '').replace(/"/g, '""')}"`,
+            utils.formatDate(opp.awardDate),
+            opp.awardLink || ''
+          ].join(','))
+        ].join('\n');
+        
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", `contract-opportunities-${new Date().toISOString().split('T')[0]}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    };
 
     // Search Functions
     async function executeUSASpendingSearch() {
@@ -1177,12 +1460,14 @@ const exportData = {
           throw new Error(`No renewal opportunities found for "${keywords}"`);
         }
 
-        app.opportunities = opportunities.sort((a, b) => a.daysRemaining - b.daysRemaining);
+        app.opportunities = opportunities;
         app.filteredOpportunities = [...app.opportunities];
         
         analysis.analyzeCompetitors();
         ui.updateFilters();
-        filtering.applyFilters();
+
+    filtering.applyFilters();
+    ui.showState('results');
         
         ui.showState('results');
         
@@ -1198,6 +1483,7 @@ const exportData = {
     // Event Handlers
     function setupEventHandlers() {
       document.getElementById('executeSearch').addEventListener('click', executeUSASpendingSearch);
+      
       document.getElementById('newSearch').addEventListener('click', () => {
         ui.showState('hero');
         document.getElementById('searchKeywords').value = '';
@@ -1209,10 +1495,19 @@ const exportData = {
         document.getElementById('competitorFilter').value = '';
         document.getElementById('agencyFilter').value = '';
       });
+ 
+document.getElementById('searchHelpToggle').addEventListener('click', () => {
+  const content = document.getElementById('searchHelpContent');
+  const toggle = document.getElementById('searchHelpToggle');
+  
+  content.classList.toggle('hidden');
+  toggle.classList.toggle('help-expanded');
+});
       document.getElementById('exportCSV').addEventListener('click', exportData.exportToCSV);
       
       document.getElementById('searchKeywords').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
+          e.preventDefault();
           executeUSASpendingSearch();
         }
       });
@@ -1221,10 +1516,11 @@ const exportData = {
         ui.hideError();
       });
       
-      document.getElementById('searchFilter').addEventListener('input', (e) => {
+      // CORRECTED: Apply debounce to the live filter
+      document.getElementById('searchFilter').addEventListener('input', utils.debounce((e) => {
         app.filters.search = e.target.value;
         filtering.applyFilters();
-      });
+      }, 300));
       
       document.getElementById('priorityFilter').addEventListener('change', (e) => {
         app.filters.priority = e.target.value;
@@ -1239,6 +1535,13 @@ const exportData = {
       document.getElementById('agencyFilter').addEventListener('change', (e) => {
         app.filters.agency = e.target.value;
         filtering.applyFilters();
+      });
+
+      // ADDED: Event listeners for table sorting
+      document.querySelectorAll('th[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+          filtering.sortBy(th.dataset.sort);
+        });
       });
     }
 
