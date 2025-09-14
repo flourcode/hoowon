@@ -1,0 +1,2054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pipeline Intel - Contract Renewal Opportunities</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+      --text-primary: #111827;
+      --text-secondary: #6b7280;
+      --text-muted: #9ca3af;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f9fafb;
+      --bg-tertiary: #f3f4f6;
+      --border: #e5e7eb;
+      --border-light: #f3f4f6;
+      --radius: 8px;
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .app-container {
+      min-height: 100vh;
+      max-width: 1400px;
+      margin: 0 auto;
+      background: var(--bg-primary);
+    }
+
+    .header {
+      background: var(--bg-primary);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon {
+      background: var(--primary);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .upload-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    .btn-sm {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .main-content {
+      padding: 2rem;
+    }
+
+    .loading-state, .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+      min-height: 400px;
+    }
+
+    .loading-spinner {
+      width: 2rem;
+      height: 2rem;
+      border: 2px solid var(--border);
+      border-top: 2px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .empty-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .empty-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+
+    .pipeline-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .metric-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .pipeline-section {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+    }
+
+    .section-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .filters {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-input {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-width: 200px;
+    }
+
+    .filter-select {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      cursor: pointer;
+      min-width: 140px;
+    }
+
+    .opportunities-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .opportunities-table th {
+      background: var(--bg-secondary);
+      padding: 0.75rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .opportunities-table th:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .opportunities-table td {
+      padding: 1rem 0.75rem;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.875rem;
+    }
+
+    .opportunities-table tbody tr:hover {
+      background: var(--bg-secondary);
+    }
+
+    .priority-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    .priority-urgent {
+      background: #fef2f2;
+      color: var(--danger);
+    }
+
+    .priority-high {
+      background: #fef3c7;
+      color: #d97706;
+    }
+
+    .priority-medium {
+      background: #dbeafe;
+      color: var(--info);
+    }
+
+    .priority-low {
+      background: var(--bg-tertiary);
+      color: var(--text-muted);
+    }
+
+    .vendor-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .vendor-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .vendor-details {
+      min-width: 0;
+    }
+
+    .vendor-name {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .contract-value {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .days-remaining {
+      font-weight: 600;
+    }
+
+    .days-urgent { color: var(--danger); }
+    .days-high { color: #d97706; }
+    .days-medium { color: var(--info); }
+    .days-low { color: var(--text-muted); }
+
+    .agency-office {
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+
+    .contract-description {
+      color: var(--text-secondary);
+      line-height: 1.4;
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .competitor-analysis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .competitor-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+    }
+
+    .competitor-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .competitor-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .competitor-name {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .competitor-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .competitor-stat {
+      text-align: center;
+    }
+
+    .competitor-stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .competitor-stat-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .sort-icon {
+      margin-left: 0.25rem;
+      opacity: 0.5;
+    }
+
+    .sort-active {
+      opacity: 1;
+      color: var(--primary);
+    }
+
+    /* Modal Styles */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .search-modal {
+      background: var(--bg-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow: auto;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .search-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .form-input {
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-select {
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .form-help {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .search-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 1rem;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        padding: 1rem;
+      }
+
+      .main-content {
+        padding: 1rem;
+      }
+
+      .header-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+      }
+
+      .upload-section {
+        justify-content: center;
+      }
+
+      .filters {
+        justify-content: center;
+      }
+
+      .opportunities-table {
+        font-size: 0.75rem;
+      }
+
+      .opportunities-table th,
+      .opportunities-table td {
+        padding: 0.5rem 0.25rem;
+      }
+
+      .pipeline-overview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .metric-card {
+        padding: 1rem;
+      }
+
+      .metric-value {
+        font-size: 1.75rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .search-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <div class="logo-icon">P</div>
+          <div class="logo-text">Pipeline Intel</div>
+        </div>
+        <div class="upload-section">
+          <input type="file" id="csvFile" class="file-input" accept=".csv">
+          <label for="csvFile" class="btn btn-primary">
+            <i class="fas fa-upload"></i> Upload Contract Data
+          </label>
+          <button id="loadDemo" class="btn btn-secondary">
+            <i class="fas fa-play"></i> Try Demo
+          </button>
+          <button id="searchUSASpending" class="btn btn-secondary">
+            <i class="fas fa-search"></i> Search USASpending
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div id="loadingState" class="loading-state hidden">
+        <div class="loading-spinner"></div>
+        <h2>Processing contract data...</h2>
+        <p>Analyzing renewal opportunities and competitive intelligence</p>
+      </div>
+
+      <div id="emptyState" class="empty-state">
+        <h1 class="empty-title">Find Your Next Pipeline Opportunities</h1>
+        <p class="empty-subtitle">
+          Upload competitor contract data to discover upcoming renewals, track competitive threats, 
+          and identify the best opportunities to pursue based on contract expiration dates.
+        </p>
+        <div class="upload-section">
+          <label for="csvFile" class="btn btn-primary">
+            <i class="fas fa-upload"></i> Upload FPDS or USASpending CSV
+          </label>
+          <button id="loadDemoEmpty" class="btn btn-secondary">
+            <i class="fas fa-play"></i> Try Demo Data
+          </button>
+          <button id="searchUSASpendingEmpty" class="btn btn-secondary">
+            <i class="fas fa-search"></i> Search USASpending
+          </button>
+        </div>
+      </div>
+
+      <div id="dashboard" class="hidden">
+        <!-- Pipeline Overview Metrics -->
+        <div class="pipeline-overview">
+          <div class="metric-card">
+            <div class="metric-value" id="totalOpportunities">0</div>
+            <div class="metric-label">Total Opportunities</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="totalValue">$0</div>
+            <div class="metric-label">Pipeline Value</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="urgentCount">0</div>
+            <div class="metric-label">Urgent (30 days)</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="avgDays">0</div>
+            <div class="metric-label">Avg Days to Expire</div>
+          </div>
+        </div>
+
+        <!-- Top Competitors Analysis -->
+        <div class="pipeline-section">
+          <div class="section-header">
+            <h2 class="section-title">Competitive Landscape</h2>
+          </div>
+          <div class="competitor-analysis" id="competitorAnalysis">
+            <!-- Competitor cards will be inserted here -->
+          </div>
+        </div>
+
+        <!-- Renewal Opportunities Table -->
+        <div class="pipeline-section">
+          <div class="section-header">
+            <h2 class="section-title">Renewal Opportunities</h2>
+            <div class="filters">
+              <input type="text" id="searchFilter" class="filter-input" placeholder="Search opportunities...">
+              <select id="priorityFilter" class="filter-select">
+                <option value="">All Priorities</option>
+                <option value="urgent">Urgent (≤30 days)</option>
+                <option value="high">High (31-90 days)</option>
+                <option value="medium">Medium (3-6 months)</option>
+                <option value="low">Low (6+ months)</option>
+              </select>
+              <select id="agencyFilter" class="filter-select">
+                <option value="">All Agencies</option>
+              </select>
+              <select id="officeFilter" class="filter-select">
+                <option value="">All Offices</option>
+              </select>
+              <select id="competitorFilter" class="filter-select">
+                <option value="">All Competitors</option>
+              </select>
+              <button id="exportOpportunities" class="btn btn-secondary btn-sm">
+                <i class="fas fa-download"></i> Export CSV
+              </button>
+            </div>
+          </div>
+          
+          <div style="overflow-x: auto;">
+            <table class="opportunities-table">
+              <thead>
+                <tr>
+                  <th data-sort="priority">
+                    Priority <i class="fas fa-sort sort-icon"></i>
+                  </th>
+                  <th data-sort="daysRemaining">
+                    Days Left <i class="fas fa-sort sort-icon"></i>
+                  </th>
+                  <th data-sort="vendor">
+                    Current Vendor <i class="fas fa-sort sort-icon"></i>
+                  </th>
+                  <th data-sort="value">
+                    Contract Value <i class="fas fa-sort sort-icon"></i>
+                  </th>
+                  <th data-sort="agency">
+                    Agency / Office <i class="fas fa-sort sort-icon"></i>
+                  </th>
+                  <th data-sort="description">
+                    Opportunity <i class="fas fa-sort sort-icon"></i>
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="opportunitiesTableBody">
+                <!-- Opportunities will be inserted here -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- USASpending Search Modal -->
+    <div id="searchModal" class="modal-backdrop hidden">
+      <div class="search-modal">
+        <div class="modal-header">
+          <h3>Search USASpending.gov</h3>
+          <button class="btn btn-secondary btn-sm" onclick="closeSearchModal()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="search-form">
+            <div class="form-group">
+              <label class="form-label">Search Keywords</label>
+              <input type="text" id="searchKeywords" class="form-input" placeholder="e.g., firewall, cloud, cybersecurity" />
+              <div class="form-help">Search in contract descriptions and vendor names</div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Fiscal Year</label>
+                <select id="fiscalYear" class="form-select">
+                  <option value="2025">FY 2025</option>
+                  <option value="2024">FY 2024</option>
+                  <option value="2023">FY 2023</option>
+                  <option value="2022">FY 2022</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Award Type</label>
+                <select id="awardType" class="form-select">
+                  <option value="">All Types</option>
+                  <option value="contracts">Contracts Only</option>
+                  <option value="idvs">IDV/GWAC Only</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Min Contract Value</label>
+                <select id="minValue" class="form-select">
+                  <option value="">Any Amount</option>
+                  <option value="100000">$100K+</option>
+                  <option value="500000">$500K+</option>
+                  <option value="1000000">$1M+</option>
+                  <option value="5000000">$5M+</option>
+                </select>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Agency (Optional)</label>
+                <input type="text" id="agencyName" class="form-input" placeholder="e.g., Department of Defense" />
+              </div>
+            </div>
+
+            <div class="search-actions">
+              <button id="executeSearch" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search & Load Data
+              </button>
+              <button onclick="closeSearchModal()" class="btn btn-secondary">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Application State
+    const app = {
+      rawData: [],
+      opportunities: [],
+      filteredOpportunities: [],
+      competitors: new Map(),
+      agencies: new Map(),
+      offices: new Map(),
+      currentSort: { column: 'daysRemaining', direction: 'asc' },
+      filters: {
+        search: '',
+        priority: '',
+        competitor: '',
+        agency: '',
+        office: ''
+      }
+    };
+
+    // Utility Functions
+    const utils = {
+      formatMoney(value) {
+        if (!value && value !== 0) return '$0';
+        const num = parseFloat(value);
+        if (isNaN(num)) return '$0';
+        
+        const abs = Math.abs(num);
+        if (abs >= 1e9) return '$' + (num / 1e9).toFixed(1) + 'B';
+        if (abs >= 1e6) return '$' + (num / 1e6).toFixed(1) + 'M';
+        if (abs >= 1e3) return '$' + (num / 1e3).toFixed(1) + 'K';
+        return '$' + num.toLocaleString();
+      },
+
+      formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const date = this.parseDate(dateString);
+        return date ? date.toLocaleDateString() : 'N/A';
+      },
+
+      parseDate(dateString) {
+        if (!dateString) return null;
+        if (dateString instanceof Date) return dateString;
+        
+        const str = String(dateString).trim();
+        
+        // Handle DD-MMM-YY format (e.g., "15-Dec-24")
+        const parts = str.match(/^(\d{1,2})-(\w{3})-(\d{2,4})$/);
+        if (parts) {
+          const months = {
+            'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+            'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+          };
+          const day = parseInt(parts[1]);
+          const month = months[parts[2]];
+          let year = parseInt(parts[3]);
+          if (year < 100) year = year < 50 ? 2000 + year : 1900 + year;
+          
+          if (!isNaN(day) && month !== undefined && !isNaN(year)) {
+            return new Date(year, month, day);
+          }
+        }
+        
+        // Try standard date parsing
+        const date = new Date(str);
+        return isNaN(date.getTime()) ? null : date;
+      },
+
+      getInitials(name) {
+        if (!name) return '?';
+        const words = name.split(' ').filter(w => w.length > 0);
+        if (words.length === 1) return words[0].charAt(0).toUpperCase();
+        return (words[0].charAt(0) + words[1].charAt(0)).toUpperCase();
+      },
+
+      getColorForVendor(vendor) {
+        const colors = [
+          '#059669', '#dc2626', '#2563eb', '#7c3aed', '#db2777',
+          '#ea580c', '#65a30d', '#0891b2', '#be185d', '#a21caf'
+        ];
+        let hash = 0;
+        for (let i = 0; i < vendor.length; i++) {
+          hash = vendor.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return colors[Math.abs(hash) % colors.length];
+      },
+
+      truncateText(text, maxLength) {
+        if (!text) return '';
+        return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+      },
+
+      getDaysUntilDate(dateString) {
+        const date = this.parseDate(dateString);
+        if (!date) return null;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const diff = Math.ceil((date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+        return diff;
+      },
+
+      getPriority(daysRemaining) {
+        if (daysRemaining <= 30) return { level: 'urgent', label: 'URGENT' };
+		if (daysRemaining <= 90) return { level: 'high', label: 'HIGH' };
+        if (daysRemaining <= 180) return { level: 'medium', label: 'MEDIUM' };
+        return { level: 'low', label: 'LOW' };
+      }
+    };
+
+    // Data Processing - Using logic from original Hoowon tool
+    const dataProcessor = {
+      processCSVData(csvText) {
+        try {
+          const csvData = this.parseCSV(csvText);
+          
+          if (csvData.errors && csvData.errors.length > 0) {
+            throw new Error(`CSV parsing errors: ${csvData.errors.join(', ')}`);
+          }
+          
+          if (csvData.data.length === 0) {
+            throw new Error('No valid data rows found in CSV');
+          }
+          
+          // Detect CSV format
+          const format = this.detectCSVFormat(csvData.headers);
+          
+          if (format === 'unknown') {
+            throw new Error(
+              `Unrecognized CSV format. Expected FPDS format (Contract ID, Date Signed...), USASpending prime awards (award_id_piid, award_base_action_date...), or USASpending subawards (prime_award_piid, subaward_amount...). Available fields: ${csvData.headers.slice(0, 10).join(', ')}...`
+            );
+          }
+          
+          return this.transformToOpportunities(csvData.data, format);
+        } catch (error) {
+          throw new Error(`CSV processing failed: ${error.message}`);
+        }
+      },
+
+      parseCSV(text) {
+        if (!text || typeof text !== 'string') {
+          return { headers: [], data: [], errors: ['Invalid input: expected string'], warnings: [] };
+        }
+        
+        const errors = [];
+        const warnings = [];
+        const lines = [];
+        let currentLine = [];
+        let currentField = [];
+        let inQuotes = false;
+        let i = 0;
+        let lineNumber = 1;
+
+        while (i < text.length) {
+          const char = text[i];
+          const nextChar = i + 1 < text.length ? text[i + 1] : '';
+          
+          if (inQuotes) {
+            if (char === '"') {
+              if (nextChar === '"') {
+                currentField.push('"');
+                i += 2;
+                continue;
+              } else {
+                inQuotes = false;
+                i++;
+                continue;
+              }
+            } else {
+              currentField.push(char);
+              if (char === '\n') lineNumber++;
+            }
+          } else {
+            if (char === '"') {
+              if (currentField.length > 0) {
+                warnings.push(`Unexpected quote at line ${lineNumber}, position ${i}`);
+              }
+              inQuotes = true;
+            } else if (char === ',') {
+              currentLine.push(currentField.join('').trim());
+              currentField = [];
+            } else if (char === '\r' && nextChar === '\n') {
+              currentLine.push(currentField.join('').trim());
+              lines.push({ line: currentLine, lineNumber });
+              currentLine = [];
+              currentField = [];
+              lineNumber++;
+              i++;
+            } else if (char === '\r' || char === '\n') {
+              currentLine.push(currentField.join('').trim());
+              lines.push({ line: currentLine, lineNumber });
+              currentLine = [];
+              currentField = [];
+              lineNumber++;
+            } else {
+              currentField.push(char);
+            }
+          }
+          i++;
+        }
+
+        if (inQuotes) {
+          errors.push(`Unclosed quoted field at line ${lineNumber}`);
+        }
+
+        if (currentField.length > 0 || currentLine.length > 0) {
+          currentLine.push(currentField.join('').trim());
+          lines.push({ line: currentLine, lineNumber });
+        }
+
+        const nonEmptyLines = lines.filter(lineObj => 
+          lineObj.line.length > 0 && lineObj.line.some(field => field.length > 0)
+        );
+
+        if (nonEmptyLines.length === 0) {
+          return { headers: [], data: [], errors: ['No data found'], warnings };
+        }
+
+        const headers = nonEmptyLines[0].line;
+        const data = [];
+        
+        const cleanHeaders = headers.map((header, index) => {
+          const cleaned = header.trim();
+          if (!cleaned) {
+            warnings.push('Empty header field detected and will be replaced');
+            return `Column_${index}`;
+          }
+          return cleaned;
+        });
+
+        const headerCount = cleanHeaders.length;
+
+        for (let i = 1; i < nonEmptyLines.length; i++) {
+          const lineObj = nonEmptyLines[i];
+          const values = lineObj.line;
+
+          if (values.length !== headerCount) {
+            warnings.push(`Row ${lineObj.lineNumber}: Expected ${headerCount} fields, got ${values.length}`);
+            while (values.length < headerCount) values.push('');
+            values.length = headerCount;
+          }
+
+          const row = {};
+          for (let j = 0; j < headerCount; j++) {
+            const rawValue = values[j] || '';
+            row[cleanHeaders[j]] = rawValue;
+          }
+          data.push(row);
+        }
+
+        return { headers: cleanHeaders, data, errors, warnings };
+      },
+
+      detectCSVFormat(headers) {
+        // Detect USASpending Subaward format
+        const subawardFields = [
+          'prime_award_piid', 'prime_award_base_action_date', 'prime_award_awarding_agency_name',
+          'prime_awardee_name', 'prime_award_amount', 'subaward_amount', 'subawardee_name'
+        ];
+        
+        const subawardMatches = subawardFields.filter(field => 
+          headers.some(h => h.toLowerCase().includes(field.toLowerCase()))
+        ).length;
+
+        // Detect USASpending prime award format
+        const usaSpendingFields = [
+          'award_id_piid', 'award_base_action_date', 'awarding_agency_name',
+          'recipient_name', 'total_obligated_amount', 'naics_code'
+        ];
+        
+        const usaSpendingMatches = usaSpendingFields.filter(field => 
+          headers.some(h => h.toLowerCase().includes(field.toLowerCase()))
+        ).length;
+        
+        // Detect FPDS format
+        const fpdsFields = [
+          'Contract ID', 'Date Signed', 'Contracting Agency',
+          'Legal Business Name', 'Action Obligation ($)'
+        ];
+        
+        const fpdsMatches = fpdsFields.filter(field => headers.includes(field)).length;
+        
+        if (subawardMatches >= 5) return 'subaward';
+        if (usaSpendingMatches >= 4) return 'usaspending';
+        if (fpdsMatches >= 3) return 'fpds';
+        return 'unknown';
+      },
+
+      transformToOpportunities(data, format) {
+        const opportunities = [];
+        
+        data.forEach((row, index) => {
+          try {
+            let processedRow;
+            
+            if (format === 'usaspending') {
+              processedRow = this.processUSASpendingRow(row);
+            } else if (format === 'subaward') {
+              processedRow = this.processSubawardRow(row);
+            } else {
+              processedRow = this.processFPDSRow(row);
+            }
+            
+            if (!processedRow || !processedRow.popEndDate) return; // Skip if no end date
+            
+            const daysRemaining = utils.getDaysUntilDate(processedRow.popEndDate);
+            if (daysRemaining === null || daysRemaining < 0 || daysRemaining > 730) return; // Only show next 2 years
+            
+            const opportunity = {
+              id: processedRow.id || `contract-${index}`,
+              vendor: processedRow.vendor || 'Unknown Vendor',
+              agency: processedRow.agency || 'Unknown Agency',
+              office: processedRow.office || 'Unknown Office',
+              value: this.parseMoney(processedRow.value) || 0,
+              description: processedRow.description || 'No description available',
+              naics: processedRow.naics || '',
+              popEndDate: processedRow.popEndDate,
+              daysRemaining: daysRemaining,
+              priority: utils.getPriority(daysRemaining),
+              awardDate: processedRow.date || '',
+              contractType: processedRow.type || '',
+              isSubaward: processedRow.isSubaward || false,
+              primeVendor: processedRow.primeVendor || null
+            };
+            
+            opportunities.push(opportunity);
+          } catch (error) {
+            console.warn(`Error processing row ${index}:`, error);
+          }
+        });
+
+        return opportunities.sort((a, b) => a.daysRemaining - b.daysRemaining);
+      },
+
+      processFPDSRow(row) {
+        const parsedDate = utils.parseDate(row['Date Signed']);
+        const value = row['Action Obligation ($)'];
+        
+        return {
+          id: String(row['Contract ID'] || ''),
+          date: String(row['Date Signed'] || ''),
+          parsedDate: parsedDate,
+          type: String(row['Award/IDV Type'] || ''),
+          agency: String(row['Contracting Agency'] || ''),
+          office: String(row['Contracting Office Name'] || ''),
+          vendor: String(row['Legal Business Name'] || ''),
+          value: value,
+          naics: String(row['NAICS'] || ''),
+          naicsDescription: String(row['NAICS Description'] || ''),
+          description: String(row['PSC Description'] || row['Description of Requirement'] || ''),
+          popEndDate: null // FPDS typically doesn't have PoP end dates in standard exports
+        };
+      },
+
+      processUSASpendingRow(row) {
+        const parsedDate = utils.parseDate(row['award_base_action_date']);
+        const value = row['total_obligated_amount'];
+        const popEndDate = row['period_of_performance_current_end_date'];
+        
+        return {
+          id: String(row['award_id_piid'] || ''),
+          date: String(row['award_base_action_date'] || ''),
+          parsedDate: parsedDate,
+          type: String(row['award_type'] || ''),
+          agency: String(row['awarding_agency_name'] || ''),
+          office: String(row['awarding_office_name'] || ''),
+          vendor: String(row['recipient_name'] || ''),
+          value: value,
+          naics: String(row['naics_code'] || ''),
+          naicsDescription: String(row['naics_description'] || ''),
+          description: String(row['prime_award_base_transaction_description'] || row['product_or_service_code_description'] || ''),
+          popEndDate: popEndDate
+        };
+      },
+
+      processSubawardRow(row) {
+        const parsedDate = utils.parseDate(row['prime_award_base_action_date']);
+        const value = row['subaward_amount'] || row['prime_award_amount'];
+        const popEndDate = row['prime_award_period_of_performance_current_end_date'];
+        
+        return {
+          id: String(row['prime_award_piid'] || ''),
+          date: String(row['prime_award_base_action_date'] || ''),
+          parsedDate: parsedDate,
+          type: String(row['subaward_type'] || 'Subaward'),
+          agency: String(row['prime_award_awarding_agency_name'] || ''),
+          office: String(row['prime_award_awarding_office_name'] || ''),
+          vendor: String(row['subawardee_name'] || row['prime_awardee_name'] || ''),
+          primeVendor: String(row['prime_awardee_name'] || ''),
+          value: value,
+          naics: String(row['prime_award_naics_code'] || ''),
+          naicsDescription: String(row['prime_award_naics_description'] || ''),
+          description: String(row['subaward_description'] || row['prime_award_base_transaction_description'] || ''),
+          popEndDate: popEndDate,
+          isSubaward: true
+        };
+      },
+
+      parseMoney(value) {
+        if (value === null || value === undefined || value === '') return 0;
+        const cleanValue = String(value).replace(/[$,\s]/g, '');
+        const parsed = parseFloat(cleanValue);
+        return isNaN(parsed) ? 0 : parsed;
+      }
+    };
+
+// USASpending API Integration
+const usaSpendingAPI = {
+  async searchContracts(searchParams) {
+    // Replace with your actual Lambda URL from API Gateway
+    const proxyUrl = 'https://b0g0wvtivk.execute-api.us-east-1.amazonaws.com/default/usaspending-proxy';
+    
+    // Build the search request based on USASpending API v2 format
+    const requestBody = {
+      filters: {
+        time_period: [
+          {
+            start_date: `${searchParams.fiscalYear - 1}-10-01`, // Fiscal year starts Oct 1
+            end_date: `${searchParams.fiscalYear}-09-30`
+          }
+        ],
+        award_type_codes: this.getAwardTypeCodes(searchParams.awardType),
+        keywords: searchParams.keywords ? [searchParams.keywords] : undefined,
+        award_amounts: searchParams.minValue ? [
+          {
+            lower_bound: parseInt(searchParams.minValue),
+            upper_bound: null
+          }
+        ] : undefined,
+        agencies: searchParams.agency ? [
+          {
+            type: "awarding",
+            tier: "toptier", 
+            name: searchParams.agency
+          }
+        ] : undefined
+      },
+      fields: [
+        "Award ID",
+        "Recipient Name", 
+        "Start Date",
+        "End Date",
+        "Award Amount",
+        "Awarding Agency",
+        "Awarding Sub Agency", 
+        "Award Description",
+        "Period of Performance Start Date",
+        "Period of Performance Current End Date",
+        "NAICS Code",
+        "NAICS Description"
+      ],
+      page: 1,
+      limit: 2000, // Max allowed by API
+      sort: "Award Amount",
+      order: "desc"
+    };
+
+    try {
+      const response = await fetch(proxyUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Proxy server error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      // Check if the proxy returned an error
+      if (data.error) {
+        throw new Error(`USASpending API error: ${data.error}`);
+      }
+      
+      return this.transformAPIResponse(data);
+    } catch (error) {
+      console.error('USASpending API call failed:', error);
+      throw new Error(`Search failed: ${error.message}. Please try uploading a CSV file instead.`);
+    }
+  },
+
+  getAwardTypeCodes(awardType) {
+    switch (awardType) {
+      case 'contracts':
+        return ['A', 'B', 'C', 'D']; // Contract award types
+      case 'idvs':
+        return ['IDV_A', 'IDV_B', 'IDV_C', 'IDV_D']; // IDV award types
+      default:
+        return ['A', 'B', 'C', 'D', 'IDV_A', 'IDV_B', 'IDV_C', 'IDV_D'];
+    }
+  },
+
+  transformAPIResponse(apiData) {
+    if (!apiData.results || !Array.isArray(apiData.results)) {
+      throw new Error('Invalid API response format');
+    }
+
+    // Transform API response to match our internal data structure
+    const opportunities = apiData.results.map(record => {
+      const opportunity = {
+        id: record["Award ID"] || `api-${Math.random().toString(36).substr(2, 9)}`,
+        vendor: record["Recipient Name"] || 'Unknown Vendor',
+        agency: record["Awarding Agency"] || 'Unknown Agency',
+        office: record["Awarding Sub Agency"] || 'Unknown Office',
+        value: parseFloat(record["Award Amount"]) || 0,
+        description: record["Award Description"] || 'No description available',
+        naics: record["NAICS Code"] || '',
+        naicsDescription: record["NAICS Description"] || '',
+        popEndDate: record["Period of Performance Current End Date"],
+        awardDate: record["Start Date"] || '',
+        contractType: 'Contract'
+      };
+
+      // Only include contracts with valid PoP end dates that are renewal opportunities
+      if (opportunity.popEndDate) {
+        const daysRemaining = utils.getDaysUntilDate(opportunity.popEndDate);
+        if (daysRemaining !== null && daysRemaining >= 0 && daysRemaining <= 730) {
+          opportunity.daysRemaining = daysRemaining;
+          opportunity.priority = utils.getPriority(daysRemaining);
+          return opportunity;
+        }
+      }
+      return null;
+    }).filter(opp => opp !== null);
+
+    if (opportunities.length === 0) {
+      throw new Error('No contracts found with upcoming renewal dates (0-730 days)');
+    }
+
+    return opportunities;
+  }
+};
+    // UI Management
+    const ui = {
+      showState(state) {
+        document.getElementById('loadingState').classList.toggle('hidden', state !== 'loading');
+        document.getElementById('emptyState').classList.toggle('hidden', state !== 'empty');
+        document.getElementById('dashboard').classList.toggle('hidden', state !== 'dashboard');
+      },
+
+      updateMetrics() {
+        const opps = app.filteredOpportunities;
+        const totalValue = opps.reduce((sum, opp) => sum + opp.value, 0);
+        const urgentCount = opps.filter(opp => opp.priority.level === 'urgent').length;
+        const avgDays = opps.length > 0 ? Math.round(opps.reduce((sum, opp) => sum + opp.daysRemaining, 0) / opps.length) : 0;
+
+        document.getElementById('totalOpportunities').textContent = opps.length.toLocaleString();
+        document.getElementById('totalValue').textContent = utils.formatMoney(totalValue);
+        document.getElementById('urgentCount').textContent = urgentCount.toLocaleString();
+        document.getElementById('avgDays').textContent = avgDays.toLocaleString();
+      },
+
+      updateCompetitorAnalysis() {
+        const container = document.getElementById('competitorAnalysis');
+        const competitors = Array.from(app.competitors.values())
+          .sort((a, b) => b.totalValue - a.totalValue)
+          .slice(0, 4);
+
+        container.innerHTML = competitors.map(competitor => `
+          <div class="competitor-card">
+            <div class="competitor-header">
+              <div class="competitor-avatar" style="background: ${utils.getColorForVendor(competitor.name)}">
+                ${utils.getInitials(competitor.name)}
+              </div>
+              <div>
+                <div class="competitor-name">${utils.truncateText(competitor.name, 25)}</div>
+              </div>
+            </div>
+            <div class="competitor-stats">
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">${competitor.opportunities}</div>
+                <div class="competitor-stat-label">Opportunities</div>
+              </div>
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">${utils.formatMoney(competitor.totalValue)}</div>
+                <div class="competitor-stat-label">Total Value</div>
+              </div>
+            </div>
+            <div class="competitor-stats">
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">${competitor.urgentCount}</div>
+                <div class="competitor-stat-label">Urgent</div>
+              </div>
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">${competitor.avgDays}</div>
+                <div class="competitor-stat-label">Avg Days</div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      },
+
+      updateOpportunitiesTable() {
+        const tbody = document.getElementById('opportunitiesTableBody');
+        const opportunities = app.filteredOpportunities;
+
+        if (opportunities.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                No opportunities found matching current filters
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = opportunities.map(opp => {
+          const priorityClass = `priority-${opp.priority.level}`;
+          const daysClass = `days-${opp.priority.level}`;
+          
+          return `
+            <tr>
+              <td>
+                <span class="priority-badge ${priorityClass}">
+                  <i class="fas fa-circle"></i>
+                  ${opp.priority.label}
+                </span>
+              </td>
+              <td>
+                <div class="days-remaining ${daysClass}">
+                  ${opp.daysRemaining} days
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">
+                  Expires ${utils.formatDate(opp.popEndDate)}
+                </div>
+              </td>
+              <td>
+                <div class="vendor-info">
+                  <div class="vendor-avatar" style="background: ${utils.getColorForVendor(opp.vendor)}">
+                    ${utils.getInitials(opp.vendor)}
+                  </div>
+                  <div class="vendor-details">
+                    <div class="vendor-name">${utils.truncateText(opp.vendor, 25)}</div>
+                    <div class="agency-office">${utils.truncateText(opp.office, 30)}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="contract-value">${utils.formatMoney(opp.value)}</div>
+              </td>
+              <td>
+                <div style="font-weight: 500;">${utils.truncateText(opp.agency, 25)}</div>
+                <div class="agency-office">${utils.truncateText(opp.office, 25)}</div>
+              </td>
+              <td>
+                <div class="contract-description" title="${opp.description}">
+                  ${utils.truncateText(opp.description, 100)}
+                </div>
+                ${opp.naics ? `<div class="agency-office">NAICS: ${opp.naics}</div>` : ''}
+              </td>
+              <td>
+                <button class="btn btn-secondary btn-sm" onclick="showOpportunityDetails('${opp.id}')">
+                  <i class="fas fa-eye"></i> Details
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      },
+
+      updateFilters() {
+        // Update competitor filter dropdown
+        const competitorSelect = document.getElementById('competitorFilter');
+        const currentCompetitorValue = competitorSelect.value;
+        
+        // Clear existing options except "All Competitors"
+        competitorSelect.innerHTML = '<option value="">All Competitors</option>';
+        
+        // Add competitor options
+        Array.from(app.competitors.values())
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .forEach(competitor => {
+            const option = document.createElement('option');
+            option.value = competitor.name;
+            option.textContent = `${competitor.name} (${competitor.opportunities})`;
+            competitorSelect.appendChild(option);
+          });
+        
+        // Update agency filter dropdown
+        const agencySelect = document.getElementById('agencyFilter');
+        const currentAgencyValue = agencySelect.value;
+        
+        agencySelect.innerHTML = '<option value="">All Agencies</option>';
+        
+        Array.from(app.agencies.values())
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .forEach(agency => {
+            const option = document.createElement('option');
+            option.value = agency.name;
+            option.textContent = `${agency.name} (${agency.opportunities})`;
+            agencySelect.appendChild(option);
+          });
+        
+        // Update office filter dropdown
+        const officeSelect = document.getElementById('officeFilter');
+        const currentOfficeValue = officeSelect.value;
+        
+        officeSelect.innerHTML = '<option value="">All Offices</option>';
+        
+        Array.from(app.offices.values())
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .forEach(office => {
+            const option = document.createElement('option');
+            option.value = office.name;
+            option.textContent = `${office.name} (${office.opportunities})`;
+            officeSelect.appendChild(option);
+          });
+        
+        // Restore selected values if they still exist
+        competitorSelect.value = currentCompetitorValue;
+        agencySelect.value = currentAgencyValue;
+        officeSelect.value = currentOfficeValue;
+      },
+
+      updateSortIcons(column, direction) {
+        // Reset all sort icons
+        document.querySelectorAll('.sort-icon').forEach(icon => {
+          icon.className = 'fas fa-sort sort-icon';
+        });
+        
+        // Update active sort icon
+        const activeIcon = document.querySelector(`th[data-sort="${column}"] .sort-icon`);
+        if (activeIcon) {
+          activeIcon.className = `fas fa-sort-${direction === 'asc' ? 'up' : 'down'} sort-icon sort-active`;
+        }
+      },
+
+      updateOfficeFilterForAgency(selectedAgency) {
+        const officeSelect = document.getElementById('officeFilter');
+        const currentOfficeValue = officeSelect.value;
+        
+        officeSelect.innerHTML = '<option value="">All Offices</option>';
+        
+        // Only show offices from the selected agency
+        Array.from(app.offices.values())
+          .filter(office => office.agency === selectedAgency)
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .forEach(office => {
+            const option = document.createElement('option');
+            option.value = office.name;
+            option.textContent = `${office.name} (${office.opportunities})`;
+            officeSelect.appendChild(option);
+          });
+        
+        // Only restore office value if it belongs to the selected agency
+        const officeExists = Array.from(app.offices.values())
+          .some(office => office.name === currentOfficeValue && office.agency === selectedAgency);
+        
+        if (officeExists) {
+          officeSelect.value = currentOfficeValue;
+        } else {
+          app.filters.office = '';
+        }
+      }
+    };
+
+    // Filtering and Sorting
+    const filtering = {
+      applyFilters() {
+        let filtered = [...app.opportunities];
+        
+        // Search filter
+        if (app.filters.search) {
+          const term = app.filters.search.toLowerCase();
+          filtered = filtered.filter(opp => 
+            opp.vendor.toLowerCase().includes(term) ||
+            opp.agency.toLowerCase().includes(term) ||
+            opp.office.toLowerCase().includes(term) ||
+            opp.description.toLowerCase().includes(term) ||
+            opp.id.toLowerCase().includes(term)
+          );
+        }
+        
+        // Priority filter
+        if (app.filters.priority) {
+          filtered = filtered.filter(opp => opp.priority.level === app.filters.priority);
+        }
+        
+        // Competitor filter
+        if (app.filters.competitor) {
+          filtered = filtered.filter(opp => opp.vendor === app.filters.competitor);
+        }
+        
+        // Agency filter
+        if (app.filters.agency) {
+          filtered = filtered.filter(opp => opp.agency === app.filters.agency);
+        }
+        
+        // Office filter
+        if (app.filters.office) {
+          filtered = filtered.filter(opp => opp.office === app.filters.office);
+        }
+        
+        app.filteredOpportunities = filtered;
+        this.applySorting();
+        ui.updateMetrics();
+        ui.updateOpportunitiesTable();
+      },
+
+      applySorting() {
+        const { column, direction } = app.currentSort;
+        
+        app.filteredOpportunities.sort((a, b) => {
+          let valueA, valueB;
+          
+          switch (column) {
+            case 'priority':
+              const priorityOrder = { urgent: 0, high: 1, medium: 2, low: 3 };
+              valueA = priorityOrder[a.priority.level];
+              valueB = priorityOrder[b.priority.level];
+              break;
+            case 'daysRemaining':
+              valueA = a.daysRemaining;
+              valueB = b.daysRemaining;
+              break;
+            case 'vendor':
+              valueA = a.vendor.toLowerCase();
+              valueB = b.vendor.toLowerCase();
+              break;
+            case 'value':
+              valueA = a.value;
+              valueB = b.value;
+              break;
+            case 'agency':
+              valueA = a.agency.toLowerCase();
+              valueB = b.agency.toLowerCase();
+              break;
+            case 'description':
+              valueA = a.description.toLowerCase();
+              valueB = b.description.toLowerCase();
+              break;
+            default:
+              return 0;
+          }
+          
+          if (typeof valueA === 'string') {
+            const result = valueA.localeCompare(valueB);
+            return direction === 'asc' ? result : -result;
+          } else {
+            const result = valueA - valueB;
+            return direction === 'asc' ? result : -result;
+          }
+        });
+      },
+
+      sortBy(column) {
+        if (app.currentSort.column === column) {
+          app.currentSort.direction = app.currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+          app.currentSort = { column, direction: 'asc' };
+        }
+        
+        ui.updateSortIcons(app.currentSort.column, app.currentSort.direction);
+        this.applySorting();
+        ui.updateOpportunitiesTable();
+      }
+    };
+
+    // Data Analysis
+    const analysis = {
+      analyzeCompetitors() {
+        app.competitors.clear();
+        app.agencies.clear();
+        app.offices.clear();
+        
+        app.opportunities.forEach(opp => {
+          // Analyze competitors
+          if (!app.competitors.has(opp.vendor)) {
+            app.competitors.set(opp.vendor, {
+              name: opp.vendor,
+              opportunities: 0,
+              totalValue: 0,
+              urgentCount: 0,
+              avgDays: 0
+            });
+          }
+          
+          const competitor = app.competitors.get(opp.vendor);
+          competitor.opportunities++;
+          competitor.totalValue += opp.value;
+          if (opp.priority.level === 'urgent') {
+            competitor.urgentCount++;
+          }
+          
+          // Analyze agencies
+          if (!app.agencies.has(opp.agency)) {
+            app.agencies.set(opp.agency, {
+              name: opp.agency,
+              opportunities: 0,
+              totalValue: 0
+            });
+          }
+          
+          const agency = app.agencies.get(opp.agency);
+          agency.opportunities++;
+          agency.totalValue += opp.value;
+          
+          // Analyze offices
+          if (!app.offices.has(opp.office)) {
+            app.offices.set(opp.office, {
+              name: opp.office,
+              agency: opp.agency,
+              opportunities: 0,
+              totalValue: 0
+            });
+          }
+          
+          const office = app.offices.get(opp.office);
+          office.opportunities++;
+          office.totalValue += opp.value;
+        });
+        
+        // Calculate average days for each competitor
+        app.competitors.forEach(competitor => {
+          const competitorOpps = app.opportunities.filter(opp => opp.vendor === competitor.name);
+          const totalDays = competitorOpps.reduce((sum, opp) => sum + opp.daysRemaining, 0);
+          competitor.avgDays = Math.round(totalDays / competitorOpps.length);
+        });
+      }
+    };
+
+    // Export functionality
+    const exportData = {
+      exportToCSV() {
+        const headers = [
+          'Priority',
+          'Days Remaining',
+          'Expiration Date',
+          'Current Vendor',
+          'Contract Value',
+          'Agency',
+          'Office',
+          'Contract ID',
+          'Description',
+          'NAICS Code',
+          'Award Date',
+          'Contract Type'
+        ];
+        
+        const csvContent = [
+          headers.join(','),
+          ...app.filteredOpportunities.map(opp => [
+            opp.priority.label,
+            opp.daysRemaining,
+            utils.formatDate(opp.popEndDate),
+            `"${opp.vendor.replace(/"/g, '""')}"`,
+            opp.value,
+            `"${opp.agency.replace(/"/g, '""')}"`,
+            `"${opp.office.replace(/"/g, '""')}"`,
+            opp.id,
+            `"${opp.description.replace(/"/g, '""')}"`,
+            opp.naics,
+            opp.awardDate,
+            opp.contractType
+          ].join(','))
+        ].join('\n');
+        
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `renewal-opportunities-${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    };
+
+    // Modal Management
+    function openSearchModal() {
+      document.getElementById('searchModal').classList.remove('hidden');
+      document.getElementById('searchKeywords').focus();
+    }
+
+    function closeSearchModal() {
+      document.getElementById('searchModal').classList.add('hidden');
+    }
+
+    async function executeUSASpendingSearch() {
+      const keywords = document.getElementById('searchKeywords').value.trim();
+      const fiscalYear = parseInt(document.getElementById('fiscalYear').value);
+      const awardType = document.getElementById('awardType').value;
+      const minValue = document.getElementById('minValue').value;
+      const agencyName = document.getElementById('agencyName').value.trim();
+
+      if (!keywords) {
+        alert('Please enter search keywords');
+        return;
+      }
+
+      closeSearchModal();
+      ui.showState('loading');
+
+      try {
+        const opportunities = await usaSpendingAPI.searchContracts({
+          keywords,
+          fiscalYear,
+          awardType,
+          minValue,
+          agency: agencyName
+        });
+
+        if (opportunities.length === 0) {
+          throw new Error(`No renewal opportunities found for "${keywords}" in FY${fiscalYear}`);
+        }
+
+        app.opportunities = opportunities.sort((a, b) => a.daysRemaining - b.daysRemaining);
+        app.filteredOpportunities = [...app.opportunities];
+        
+        analysis.analyzeCompetitors();
+        ui.updateFilters();
+        filtering.applyFilters();
+        
+        ui.showState('dashboard');
+        ui.updateCompetitorAnalysis();
+        
+        // Show search results summary
+        const searchSummary = `Found ${opportunities.length} renewal opportunities for "${keywords}" in FY${fiscalYear}`;
+        console.log(searchSummary);
+        
+      } catch (error) {
+        console.error('Search error:', error);
+        alert(`Search failed: ${error.message}\n\nTip: Try downloading data directly from USASpending.gov and uploading the CSV file instead.`);
+        ui.showState('empty');
+      }
+    }
+
+    // Event Handlers
+    function setupEventHandlers() {
+      // File upload
+      document.getElementById('csvFile').addEventListener('change', handleFileUpload);
+      document.getElementById('loadDemo').addEventListener('click', loadDemoData);
+      document.getElementById('loadDemoEmpty').addEventListener('click', loadDemoData);
+      
+      // USASpending search
+      document.getElementById('searchUSASpending').addEventListener('click', openSearchModal);
+      document.getElementById('searchUSASpendingEmpty').addEventListener('click', openSearchModal);
+      document.getElementById('executeSearch').addEventListener('click', executeUSASpendingSearch);
+      
+      // Close modal on backdrop click
+      document.getElementById('searchModal').addEventListener('click', (e) => {
+        if (e.target.id === 'searchModal') {
+          closeSearchModal();
+        }
+      });
+      
+      // Close modal on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !document.getElementById('searchModal').classList.contains('hidden')) {
+          closeSearchModal();
+        }
+      });
+      
+      // Filters
+      document.getElementById('searchFilter').addEventListener('input', (e) => {
+        app.filters.search = e.target.value;
+        filtering.applyFilters();
+      });
+      
+      document.getElementById('priorityFilter').addEventListener('change', (e) => {
+        app.filters.priority = e.target.value;
+        filtering.applyFilters();
+      });
+      
+      document.getElementById('competitorFilter').addEventListener('change', (e) => {
+        app.filters.competitor = e.target.value;
+        filtering.applyFilters();
+      });
+      
+      document.getElementById('agencyFilter').addEventListener('change', (e) => {
+        app.filters.agency = e.target.value;
+        // Clear office filter if agency changes, since offices are tied to agencies
+        if (e.target.value === '') {
+          app.filters.office = '';
+          document.getElementById('officeFilter').value = '';
+        } else {
+          // Filter office options to only show offices from selected agency
+          ui.updateOfficeFilterForAgency(e.target.value);
+        }
+        filtering.applyFilters();
+      });
+      
+      document.getElementById('officeFilter').addEventListener('change', (e) => {
+        app.filters.office = e.target.value;
+        filtering.applyFilters();
+      });
+      
+      // Export
+      document.getElementById('exportOpportunities').addEventListener('click', exportData.exportToCSV);
+      
+      // Table sorting
+      document.querySelectorAll('th[data-sort]').forEach(th => {
+        th.addEventListener('click', () => {
+          filtering.sortBy(th.dataset.sort);
+        });
+      });
+    }
+
+    // File Upload Handler
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      ui.showState('loading');
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const opportunities = dataProcessor.processCSVData(e.target.result);
+          if (opportunities.length === 0) {
+            throw new Error('No valid renewal opportunities found in the data');
+          }
+          
+          app.rawData = e.target.result;
+          app.opportunities = opportunities;
+          app.filteredOpportunities = [...opportunities];
+          
+          analysis.analyzeCompetitors();
+          ui.updateFilters();
+          filtering.applyFilters();
+          
+          ui.showState('dashboard');
+          ui.updateCompetitorAnalysis();
+          
+        } catch (error) {
+          alert(`Error processing file: ${error.message}`);
+          ui.showState('empty');
+        }
+      };
+      
+      reader.onerror = () => {
+        alert('Error reading file');
+        ui.showState('empty');
+      };
+      
+      reader.readAsText(file);
+    }
+
+    // Demo Data Loader - Load real sample data
+    async function loadDemoData() {
+      ui.showState('loading');
+      
+      try {
+        // Load sample data from your existing S3 bucket
+        const response = await fetch('https://subhoodata.s3.us-east-1.amazonaws.com/data/dhs_CY24_25.csv');
+        
+        if (!response.ok) {
+          throw new Error('Failed to load demo data');
+        }
+        
+        const csvText = await response.text();
+        const opportunities = dataProcessor.processCSVData(csvText);
+        
+        if (opportunities.length === 0) {
+          throw new Error('No valid renewal opportunities found in demo data');
+        }
+        
+        app.rawData = csvText;
+        app.opportunities = opportunities;
+        app.filteredOpportunities = [...opportunities];
+        
+        analysis.analyzeCompetitors();
+        ui.updateFilters();
+        filtering.applyFilters();
+        
+        ui.showState('dashboard');
+        ui.updateCompetitorAnalysis();
+        
+      } catch (error) {
+        alert(`Error loading demo data: ${error.message}`);
+        ui.showState('empty');
+      }
+    }
+
+    // Opportunity Details Modal (simplified)
+    function showOpportunityDetails(opportunityId) {
+      const opp = app.opportunities.find(o => o.id === opportunityId);
+      if (!opp) return;
+      
+      const details = `
+        Contract Details:
+        
+        Contract ID: ${opp.id}
+        Current Vendor: ${opp.vendor}
+        Contract Value: ${utils.formatMoney(opp.value)}
+        
+        Agency: ${opp.agency}
+        Office: ${opp.office}
+        
+        Description: ${opp.description}
+        
+        Expiration Date: ${utils.formatDate(opp.popEndDate)}
+        Days Remaining: ${opp.daysRemaining}
+        Priority: ${opp.priority.label}
+        
+        NAICS Code: ${opp.naics}
+        Award Date: ${utils.formatDate(opp.awardDate)}
+        Contract Type: ${opp.contractType}
+      `;
+      
+      alert(details);
+    }
+
+    // Initialize Application
+    document.addEventListener('DOMContentLoaded', () => {
+      setupEventHandlers();
+      ui.showState('empty');
+    });
+  </script>
+</body>
+</html>
