@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>renool.</title>
+  <title>xpirn - search expiring federal contracts</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,7 +11,7 @@
   <style>
     :root {
       --primary: #007AFF;
-      --primary-dark: #0A65D1; /* Slightly adjusted for better hover */
+      --primary-dark: #0A65D1;
       --success: #34C759;
       --warning: #FF9500;
       --danger: #FF3B30;
@@ -27,7 +27,6 @@
       --glass-border: rgba(255, 255, 255, 0.1);
       --radius: 12px;
       --radius-lg: 20px;
-      /* MODIFIED: Subtle shadows for a cleaner look */
       --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
       --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
@@ -64,6 +63,33 @@
       position: relative;
     }
 
+    .hero-logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .logo-icon-large {
+      background: var(--primary);
+      color: white;
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 3.5rem;
+    }
+
+    .hero-logo-text {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
     .hero-subtitle {
       font-size: clamp(1.2rem, 3vw, 1.5rem);
       font-weight: 300;
@@ -87,7 +113,6 @@
 
     .search-container:hover {
       transform: translateY(-3px);
-      /* MODIFIED: Use the same subtle shadow on hover */
       box-shadow: var(--shadow-lg); 
     }
 
@@ -112,6 +137,7 @@
       color: var(--text-primary);
       font-family: inherit;
       transition: all 0.2s ease;
+      min-height: 44px;
     }
 
     .form-input:focus, .form-select:focus {
@@ -125,7 +151,6 @@
     }
 
     .search-btn {
-      /* MODIFIED: Removed gradient */
       background: var(--primary);
       color: white;
       border: none;
@@ -139,13 +164,12 @@
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
+      min-height: 44px;
     }
 
     .search-btn:hover {
-      /* MODIFIED: Changed hover state to a solid color and removed shadow */
       transform: translateY(-2px);
       background: var(--primary-dark);
-      box-shadow: none;
     }
 
     .search-btn:active {
@@ -205,9 +229,17 @@
       background: var(--bg-primary);
     }
 
+    /* Compact header with metrics */
     .results-header {
-      max-width: 1400px;
-      margin: 0 auto 2rem;
+  max-width: 1400px;
+  margin: 0 auto 0; /* Remove bottom margin */
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0; /* Only round top corners */
+  padding: 1.5rem;
+}
+
+    .header-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -215,7 +247,66 @@
       gap: 1rem;
     }
 
-    .results-actions {
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .header-branding {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .logo-icon-small {
+      background: var(--primary);
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .header-brand-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    /* Compact metrics inline */
+    .compact-metrics {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .metric-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .metric-value {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .metric-urgent {
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    .header-actions {
       display: flex;
       gap: 1rem;
     }
@@ -232,19 +323,17 @@
       transition: all 0.2s ease;
       border: none;
       font-family: inherit;
+      min-height: 44px;
     }
 
     .action-btn.primary {
-      /* MODIFIED: Removed gradient */
       background: var(--primary);
       color: white;
     }
 
     .action-btn.primary:hover {
-      /* MODIFIED: Changed hover state to a solid color and removed shadow */
-      transform: translateY(-2px);
+      transform: translateY(-1px);
       background: var(--primary-dark);
-      box-shadow: none;
     }
 
     .action-btn.secondary {
@@ -256,79 +345,55 @@
     .action-btn.secondary:hover {
       background: var(--bg-secondary);
       border-color: var(--primary);
-      transform: translateY(-2px);
-    }
-
-    .results-title {
-      font-size: 2rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .results-subtitle {
-      color: var(--text-secondary);
-      font-size: 1rem;
-    }
-
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-      max-width: 1400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .metric-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      text-align: center;
-      transition: all 0.2s ease;
-    }
-
-    .metric-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--primary);
-    }
-
-    .metric-value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      /* MODIFIED: Removed text gradient, replaced with solid color */
-      color: var(--primary);
-    }
-
-    .metric-label {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      transform: translateY(-1px);
     }
 
     .opportunities-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      background: var(--bg-card);
-      border-radius: var(--radius-lg);
-      overflow-x: auto;
-      border: 1px solid var(--border);
-    }
+  max-width: 1400px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: none; /* Remove top border to connect with header */
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* Only round bottom corners */
+  overflow: hidden;
+}
 
-    .table-header {
-      background: var(--bg-tertiary);
+    /* UPDATED: Combined header with stats and filters */
+    .opportunities-header {
       padding: 1.5rem;
       border-bottom: 1px solid var(--border);
     }
 
-    .table-title {
-      font-size: 1.3rem;
+    /* UPDATED: Stats replace the title */
+    .opportunities-stats {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+    }
+
+    .stat-value {
+      color: var(--primary);
       font-weight: 600;
-      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .stat-urgent {
+      color: var(--danger);
+      font-weight: 600;
+      font-size: 1.2rem;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
     }
 
     .filters-container {
@@ -348,9 +413,17 @@
       min-width: 150px;
     }
 
+    /* UPDATED: Table container without separate border/radius */
+    .opportunities-table-container {
+      background: var(--bg-card);
+      overflow-x: auto;
+    }
+
+    /* Desktop table layout */
     .opportunities-table {
       width: 100%;
       border-collapse: collapse;
+      display: table;
     }
 
     .opportunities-table th {
@@ -366,23 +439,24 @@
       user-select: none;
     }
 
-    /* Style for sortable headers */
     .opportunities-table th[data-sort] {
       cursor: pointer;
       transition: color 0.2s ease;
     }
+
     .opportunities-table th[data-sort]:hover {
       color: var(--text-primary);
     }
+
     .sort-icon {
       margin-left: 0.5rem;
       opacity: 0.5;
     }
+
     .sort-active {
       opacity: 1;
       color: var(--primary);
     }
-
 
     .opportunities-table td {
       padding: 1.2rem 1rem;
@@ -444,7 +518,6 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      /* MODIFIED: Removed gradient, replaced with solid color */
       background: var(--primary);
       color: white;
       display: flex;
@@ -452,7 +525,7 @@
       justify-content: center;
       font-weight: 600;
       font-size: 0.9rem;
-      flex-shrink: 0; 
+      flex-shrink: 0;
     }
 
     .vendor-name {
@@ -522,6 +595,170 @@
       transform: translateY(-1px);
     }
 
+    /* Mobile card layout */
+    .opportunities-grid {
+      display: none;
+      padding: 1rem;
+      gap: 0.75rem;
+      grid-template-columns: 1fr;
+    }
+
+    .opportunity-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .opportunity-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow);
+    }
+
+    .opportunity-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--primary);
+    }
+
+    .opportunity-card.urgent::before { background: var(--danger); }
+    .opportunity-card.high::before { background: var(--warning); }
+    .opportunity-card.medium::before { background: var(--primary); }
+    .opportunity-card.low::before { background: var(--text-secondary); }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+
+    .card-primary-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-vendor {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card-value {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .card-urgency {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: var(--radius);
+    }
+
+    .urgency-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .days-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .card-secondary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .info-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .info-value {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .card-description {
+      margin-bottom: 1rem;
+    }
+
+    .description-preview {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-bottom: 0.5rem;
+    }
+
+    .description-toggle {
+      color: var(--primary);
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .description-toggle:hover {
+      color: var(--primary-dark);
+    }
+
+    .description-full {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.4;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .description-full.expanded {
+      display: block;
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .contract-id {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-family: 'SF Mono', Monaco, monospace;
+    }
+
     .error-message {
       background: rgba(255, 59, 48, 0.1);
       border: 1px solid rgba(255, 59, 48, 0.3);
@@ -560,6 +797,87 @@
       }
     }
 
+    /* Search help styles */
+    .search-help {
+      max-width: 800px;
+      margin: 1rem auto 0;
+    }
+
+    .search-help-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgba(142, 142, 147, 0.1);
+      border: 1px solid rgba(142, 142, 147, 0.2);
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      justify-content: center;
+    }
+
+    .search-help-toggle:hover {
+      background: rgba(142, 142, 147, 0.15);
+      color: var(--text-primary);
+    }
+
+    .search-help-content {
+      margin-top: 1rem;
+      padding: 1.5rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+    }
+
+    .help-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+    }
+
+    .help-item {
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .help-label {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .help-example {
+      font-family: 'SF Mono', Monaco, monospace;
+      background: rgba(0, 122, 255, 0.1);
+      color: var(--primary);
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid rgba(0, 122, 255, 0.2);
+    }
+
+    .help-description {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    #helpChevron {
+      margin-left: auto;
+      transition: transform 0.2s ease;
+    }
+
+    .help-expanded #helpChevron {
+      transform: rotate(180deg);
+    }
+
     @media (max-width: 768px) {
       .search-form {
         grid-template-columns: 1fr;
@@ -577,13 +895,26 @@
         padding: 1rem;
       }
 
-      .results-header {
+      .header-top {
         flex-direction: column;
         align-items: stretch;
         text-align: center;
       }
 
-      .results-actions {
+      .header-left {
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+
+      .compact-metrics {
+        justify-content: center;
+      }
+
+      .header-actions {
+        justify-content: center;
+      }
+
+      .opportunities-stats {
         justify-content: center;
       }
       
@@ -591,235 +922,260 @@
         flex-direction: column;
         align-items: stretch;
       }
-      
-      .opportunities-table {
-        font-size: 0.8rem;
+
+      .filter-select:nth-child(n+3) {
+        display: none;
+      }
+
+      /* Hide desktop table on mobile */
+      .opportunities-table-container {
+        display: none;
       }
       
-      .opportunities-table th,
-      .opportunities-table td {
-        padding: 0.8rem 0.5rem;
+      /* Show mobile cards */
+      .opportunities-grid {
+        display: grid;
+      }
+
+      .opportunity-card {
+        padding: 1rem;
+      }
+
+      .card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .card-vendor {
+        margin-bottom: 0.75rem;
+      }
+
+      .card-value {
+        text-align: left;
+        font-size: 1.2rem;
+      }
+
+      .card-secondary {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .help-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .search-help-content {
+        padding: 1rem;
       }
     }
-	.search-help {
-  max-width: 800px;
-  margin: 1rem auto 0;
+	/* Integrated search row */
+.integrated-search-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
 }
 
-.search-help-toggle {
+.search-inputs {
+  display: flex;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.header-search-input {
+  flex: 2;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.header-search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+.header-search-select {
+  flex: 1;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.header-search-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: rgba(142, 142, 147, 0.1);
-  border: 1px solid rgba(142, 142, 147, 0.2);
-  border-radius: var(--radius);
+  white-space: nowrap;
+}
+
+.header-search-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+
+@media (max-width: 768px) {
+  .integrated-search-row {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+  
+  .search-inputs {
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+  
+  .header-search-input {
+    flex: 1;
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+  
+  /* Hide the dropdowns on mobile */
+  .header-search-select {
+    display: none;
+  }
+  
+  .header-search-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 768px) {
+  /* Remove labels from mobile cards */
+  .card-secondary .info-label {
+    display: none;
+  }
+  
+  /* Make the values more prominent */
+  .card-secondary .info-value {
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    font-weight: 400;
+    line-height: 1.3;
+  }
+  
+  /* Adjust grid to be more compact */
+  .card-secondary {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+  
+  /* Optional: Add subtle separators between values */
+  .card-secondary .info-item:not(:last-child) .info-value::after {
+    content: "";
+    display: block;
+    height: 1px;
+    background: var(--border);
+    margin-top: 0.5rem;
+    opacity: 0.3;
+  }
+}
+@media (max-width: 768px) {
+  /* Hide Agency and Expires info items on mobile */
+  .card-secondary .info-item:nth-child(1),
+    .card-secondary .info-item:nth-child(2),
+  .card-secondary .info-item:nth-child(4) {
+    display: none;
+  }
+  
+  /* Adjust grid to accommodate fewer items */
+  .card-secondary {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+.opportunities-table td * {
+  font-size: 0.9rem !important;
+}
+.opportunities-table th {
+  background: var(--bg-secondary);
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+  user-select: none;
+  vertical-align: baseline; /* Use baseline instead of middle */
+  min-height: 40px; /* Ensure minimum height */
+  display: table-cell; /* Ensure proper table cell behavior */
+}
+
+/* Ensure all headers get consistent spacing */
+.opportunities-table th {
+  position: relative;
+}
+
+/* Force consistent right padding for icon space */
+.opportunities-table th {
+  padding-right: 2rem; /* Make room for icon */
+}
+
+.sort-icon {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+}
+.search-summary {
   color: var(--text-secondary);
   font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  justify-content: center;
+  font-style: italic;
+  margin-left: 1rem;
+  flex-shrink: 0;
 }
-
-.search-help-toggle:hover {
-  background: rgba(142, 142, 147, 0.15);
+.search-results-summary {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
   color: var(--text-primary);
-}
-
-.search-help-content {
-  margin-top: 1rem;
-  padding: 1.5rem;
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius);
-}
-
-.help-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
-
-.help-item {
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: var(--radius);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.help-label {
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 0.85rem;
-  margin-bottom: 0.5rem;
-}
-
-.help-example {
-  font-family: 'SF Mono', Monaco, monospace;
-  background: rgba(0, 122, 255, 0.1);
-  color: var(--primary);
-  padding: 0.4rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
-  border: 1px solid rgba(0, 122, 255, 0.2);
-}
-
-.help-description {
-  color: var(--text-secondary);
-  font-size: 0.8rem;
   line-height: 1.4;
 }
 
-#helpChevron {
-  margin-left: auto;
-  transition: transform 0.2s ease;
-}
-
-.help-expanded #helpChevron {
-  transform: rotate(180deg);
-}
-
-@media (max-width: 768px) {
-  .help-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .search-help-content {
-    padding: 1rem;
-  }
-}
-.results-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.logo-icon-small {
-  background: var(--primary);
-  color: white;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-.results-logo-text {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-}
-
-.results-title {
-  font-size: 1.5rem; /* Slightly smaller since we now have the main title above */
+.search-results-summary .search-term {
+  color: var(--primary);
   font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-.hero-logo {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
 }
 
-.logo-icon-large {
-  background: var(--primary);
-  color: white;
-  width: 80px;
-  height: 80px;
-  border-radius: var(--radius-lg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 3.5rem;
+.search-results-summary .urgent-count {
+  color: var(--danger);
+  font-weight: 600;
 }
-
-.hero-logo-text {
-  font-size: clamp(3rem, 8vw, 6rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0;
-}
-.search-btn, .form-input, .form-select, .action-btn {
-    min-height: 44px; /* Apple's recommended minimum tap target size */
-    padding: 0.75rem;
-}
-@media (max-width: 768px) {
-  .filters-container {
-    position: sticky;
-    top: 0;
-    background: var(--bg-card);
-    z-index: 10;
-  }
-  
-  /* Show only most important filters on mobile */
-  .filter-select:nth-child(n+3) {
-    display: none;
-  }
-
-.opportunities-table thead {
-    /* Hide the table header on mobile, as labels will be in the cards */
-    display: none;
-}
-
-.opportunities-table tr {
-    /* Each row becomes a card */
-    display: block;
-    margin-bottom: 1rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-    background: var(--bg-secondary);
-}
-
-.opportunities-table td {
-    display: flex; /* Use flexbox for alignment within the "cell" */
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 0.5rem;
-    border-bottom: 1px solid var(--border);
-    text-align: right; /* Align cell content to the right */
-}
-
-.opportunities-table td:last-child {
-    border-bottom: none;
-}
-
-.opportunities-table td::before {
-    /* Use the data-label attribute for the cell's title */
-    content: attr(data-label);
-    font-weight: 600;
-    text-align: left;
-    margin-right: 1rem;
-    color: var(--text-secondary);
-}
-
-/* Adjust specific cells for better layout */
-.opportunities-table td .vendor-info,
-.opportunities-table td .description-text {
-    width: 100%;
-    justify-content: flex-start;
-    text-align: left;
-}
-}
-</style>
+  </style>
 </head>
 <body>
   <div class="app-container">
     <section class="hero-section" id="heroSection">
-  <div class="hero-logo">
-    <div class="logo-icon-large">R</div>
-    <h1 class="hero-logo-text">Renool.</h1>
-  </div>
-  <p class="hero-subtitle">Discover contract renewals before your competitors do</p>
+      <div class="hero-logo">
+        <h1 class="hero-logo-text">Xpirn.</h1>
+      </div>
+      <p class="hero-subtitle">Search Expiring Federal Contracts</p>
       
       <div class="search-container">
         <div class="search-form">
@@ -856,53 +1212,55 @@
           <i class="fas fa-search"></i>
           Find Opportunities
         </button>
+
         <div class="search-help">
-  <div class="search-help-toggle" id="searchHelpToggle">
-    <i class="fas fa-question-circle"></i>
-    How to search
-    <i class="fas fa-chevron-down" id="helpChevron"></i>
-  </div>
-  
-  <div class="search-help-content hidden" id="searchHelpContent">
-    <div class="help-grid">
-      <div class="help-item">
-        <div class="help-label">Single keyword</div>
-        <div class="help-example">cisco</div>
-        <div class="help-description">Find contracts mentioning cisco</div>
-      </div>
-      
-      <div class="help-item">
-        <div class="help-label">Multiple keywords (OR)</div>
-        <div class="help-example">cisco, amazon</div>
-        <div class="help-description">Find contracts with cisco OR amazon</div>
-      </div>
-      
-      <div class="help-item">
-        <div class="help-label">Alternative OR syntax</div>
-        <div class="help-example">cisco or amazon</div>
-        <div class="help-description">Same as above using "or"</div>
-      </div>
-      
-      <div class="help-item">
-        <div class="help-label">Exact phrases</div>
-        <div class="help-example">"cloud security"</div>
-        <div class="help-description">Find exact phrase in quotes</div>
-      </div>
-      
-      <div class="help-item">
-        <div class="help-label">Mixed search</div>
-        <div class="help-example">cisco, "cloud security", aws</div>
-        <div class="help-description">Combine phrases and keywords</div>
-      </div>
-      
-      <div class="help-item">
-        <div class="help-label">Pipe separator</div>
-        <div class="help-example">cisco | amazon | aws</div>
-        <div class="help-description">Another way to search multiple terms</div>
-      </div>
-    </div>
-  </div>
-</div>
+          <div class="search-help-toggle" id="searchHelpToggle">
+            <i class="fas fa-question-circle"></i>
+            How to search
+            <i class="fas fa-chevron-down" id="helpChevron"></i>
+          </div>
+          
+          <div class="search-help-content hidden" id="searchHelpContent">
+            <div class="help-grid">
+              <div class="help-item">
+                <div class="help-label">Single keyword</div>
+                <div class="help-example">cisco</div>
+                <div class="help-description">Find contracts mentioning cisco</div>
+              </div>
+              
+              <div class="help-item">
+                <div class="help-label">Multiple keywords (OR)</div>
+                <div class="help-example">cisco, amazon</div>
+                <div class="help-description">Find contracts with cisco OR amazon</div>
+              </div>
+              
+              <div class="help-item">
+                <div class="help-label">Alternative OR syntax</div>
+                <div class="help-example">cisco or amazon</div>
+                <div class="help-description">Same as above using "or"</div>
+              </div>
+              
+              <div class="help-item">
+                <div class="help-label">Exact phrases</div>
+                <div class="help-example">"cloud security"</div>
+                <div class="help-description">Find exact phrase in quotes</div>
+              </div>
+              
+              <div class="help-item">
+                <div class="help-label">Mixed search</div>
+                <div class="help-example">cisco, "cloud security", aws</div>
+                <div class="help-description">Combine phrases and keywords</div>
+              </div>
+              
+              <div class="help-item">
+                <div class="help-label">Pipe separator</div>
+                <div class="help-example">cisco | amazon | aws</div>
+                <div class="help-description">Another way to search multiple terms</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div id="errorMessage" class="error-message hidden">
           <i class="fas fa-exclamation-circle"></i>
           <span id="errorText"></span>
@@ -917,47 +1275,62 @@
     </div>
 
     <section class="results-section hidden" id="resultsSection">
-      <div class="results-header">
-  <div>
-    <div class="results-logo">
-      <div class="logo-icon-small">R</div>
-      <h1 class="results-logo-text">Renool.</h1>
+<!-- Updated results header with integrated search -->
+<div class="results-header">
+  <div class="header-top">
+   <div class="header-branding">
+  <div class="brand-text-container">
+    <h1 class="header-brand-text">Xpirn.</h1>
+    <p class="header-subtitle">Search Expiring Federal Contracts</p>
+  </div>
+</div>
+    <div class="header-actions">
+      <button id="exportCSV" class="action-btn secondary">
+        <i class="fas fa-download"></i>
+        Export CSV
+      </button>
     </div>
   </div>
-  <div class="results-actions">
-    <button id="exportCSV" class="action-btn secondary">
-      <i class="fas fa-download"></i>
-      Export CSV
-    </button>
-    <button id="newSearch" class="action-btn primary">
+  
+  <!-- NEW: Integrated search row -->
+  <div class="integrated-search-row">
+    <div class="search-inputs">
+      <input type="search" id="headerSearchKeywords" class="header-search-input" placeholder="Search or start new search..." />
+      <select id="headerMinValue" class="header-search-select">
+        <option value="">Any Value</option>
+        <option value="100000">$100K+</option>
+        <option value="500000">$500K+</option>
+        <option value="1000000">$1M+</option>
+        <option value="5000000">$5M+</option>
+      </select>
+      <select id="headerAgency" class="header-search-select">
+        <option value="">All Agencies</option>
+        <option value="Department of Defense">Defense</option>
+        <option value="Department of Veterans Affairs">Veterans Affairs</option>
+        <option value="Department of Homeland Security">Homeland Security</option>
+        <option value="General Services Administration">GSA</option>
+        <option value="Department of Health and Human Services">Health & Human Services</option>
+        <option value="Department of Energy">Energy</option>
+        <option value="National Aeronautics and Space Administration">NASA</option>
+        <option value="Department of Justice">Justice</option>
+        <option value="Department of State">State</option>
+        <option value="Department of Agriculture">Agriculture</option>
+      </select>
+    </div>
+    <button id="headerSearchBtn" class="header-search-btn">
       <i class="fas fa-search"></i>
-      New Search
+      Search
     </button>
   </div>
 </div>
 
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <div class="metric-value" id="totalOpportunities">0</div>
-          <div class="metric-label">Opportunities</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value" id="totalValue">$0</div>
-          <div class="metric-label">Total Value</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value" id="urgentCount">0</div>
-          <div class="metric-label">Urgent</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value" id="avgDays">0</div>
-          <div class="metric-label">Avg Days Left</div>
-        </div>
-      </div>
-
+      <!-- UPDATED: Single unified container with stats replacing title -->
       <div class="opportunities-container">
-        <div class="table-header">
-          <h3 class="table-title">Renewal Opportunities</h3>
+        <div class="opportunities-header">
+  <div class="search-results-summary">
+    <span id="resultsSummary">Loading...</span>
+  </div>
+          
           <div class="filters-container">
             <input type="text" id="searchFilter" class="filter-input" placeholder="Filter opportunities...">
             <select id="priorityFilter" class="filter-select">
@@ -976,21 +1349,27 @@
           </div>
         </div>
         
-        <table class="opportunities-table">
-          <thead>
-            <tr>
-              <th data-sort="priority">Priority <i class="fas fa-sort sort-icon"></i></th>
-              <th data-sort="daysRemaining">Days Left <i class="fas fa-sort sort-icon"></i></th>
-              <th data-sort="vendor">Current Vendor <i class="fas fa-sort sort-icon"></i></th>
-              <th data-sort="value">Value <i class="fas fa-sort sort-icon"></i></th>
-              <th data-sort="agency">Agency <i class="fas fa-sort sort-icon"></i></th>
-              <th>Description</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="opportunitiesTableBody">
+        <div class="opportunities-table-container">
+          <table class="opportunities-table">
+            <thead>
+              <tr>
+                <th data-sort="priority">Priority <i class="fas fa-sort sort-icon"></i></th>
+                <th data-sort="daysRemaining">Days Left <i class="fas fa-sort sort-icon"></i></th>
+                <th data-sort="vendor">Current Vendor <i class="fas fa-sort sort-icon"></i></th>
+                <th data-sort="value">Value <i class="fas fa-sort sort-icon"></i></th>
+                <th data-sort="agency">Agency <i class="fas fa-sort sort-icon"></i></th>
+                <th>Description</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="opportunitiesTableBody">
             </tbody>
-        </table>
+          </table>
+        </div>
+        
+        <div class="opportunities-grid" id="opportunitiesGrid">
+          <!-- Mobile cards will be populated here -->
+        </div>
       </div>
     </section>
   </div>
@@ -1002,7 +1381,7 @@
       filteredOpportunities: [],
       competitors: new Map(),
       agencies: new Map(),
-      currentSort: { column: 'daysRemaining', direction: 'asc' }, // ADDED: For sorting
+      currentSort: { column: 'daysRemaining', direction: 'asc' },
       filters: {
         search: '',
         priority: '',
@@ -1013,7 +1392,6 @@
 
     // Utility Functions
     const utils = {
-      // ADDED: Debounce function for performance
       debounce(func, delay) {
         let timeout;
         return function(...args) {
@@ -1082,62 +1460,58 @@
     // USASpending API Integration
     const usaSpendingAPI = {
       async searchContracts(searchParams) {
-  const awardSearchProxyUrl = 'https://vt44ebi3jj.execute-api.us-east-1.amazonaws.com/default/award-search-proxy';
+        const awardSearchProxyUrl = 'https://vt44ebi3jj.execute-api.us-east-1.amazonaws.com/default/award-search-proxy';
 
-  // Parse multiple keywords for OR logic
-  let keywordsArray = [];
-  if (searchParams.keywords) {
-    // Split by comma, "or", pipe, semicolon 
-    const splitKeywords = searchParams.keywords
-      .split(/,|\bor\b|\||\;/i)
-      .map(keyword => keyword.trim().replace(/^["']|["']$/g, ''))
-      .filter(keyword => keyword.length > 0);
-    
-    // If we found multiple keywords, use them all for OR logic
-    // If only one keyword (no separators), use it as is
-    keywordsArray = splitKeywords.length > 1 ? splitKeywords : [searchParams.keywords.trim()];
-  }
+        let keywordsArray = [];
+        if (searchParams.keywords) {
+          const splitKeywords = searchParams.keywords
+            .split(/,|\bor\b|\||\;/i)
+            .map(keyword => keyword.trim().replace(/^["']|["']$/g, ''))
+            .filter(keyword => keyword.length > 0);
+          
+          keywordsArray = splitKeywords.length > 1 ? splitKeywords : [searchParams.keywords.trim()];
+        }
 
-  const requestBody = {
-    filters: {
-      award_type_codes: ['A', 'B', 'C', 'D'],
-      keywords: keywordsArray.length > 0 ? keywordsArray : undefined,
-      award_amounts: searchParams.minValue ? [ { lower_bound: parseInt(searchParams.minValue) } ] : undefined,
-      agencies: searchParams.agency ? [ { type: "awarding", tier: "toptier", name: searchParams.agency } ] : undefined
-    },
-    fields: [
-      "Award ID",
-      "Recipient Name",
-      "Start Date",
-      "End Date",
-      "Award Amount",
-      "Awarding Agency",
-      "Awarding Sub Agency",
-      "generated_internal_id"
-    ],
-    page: 1,
-    limit: 100,
-    sort: "Award Amount",
-    order: "desc"
-  };
+        const requestBody = {
+          filters: {
+            award_type_codes: ['A', 'B', 'C', 'D'],
+            keywords: keywordsArray.length > 0 ? keywordsArray : undefined,
+            award_amounts: searchParams.minValue ? [ { lower_bound: parseInt(searchParams.minValue) } ] : undefined,
+            agencies: searchParams.agency ? [ { type: "awarding", tier: "toptier", name: searchParams.agency } ] : undefined
+          },
+          fields: [
+            "Award ID",
+            "Recipient Name",
+            "Start Date",
+            "End Date",
+            "Award Amount",
+            "Awarding Agency",
+            "Awarding Sub Agency",
+            "generated_internal_id"
+          ],
+          page: 1,
+          limit: 100,
+          sort: "Award Amount",
+          order: "desc"
+        };
 
-  try {
-    const response = await fetch(awardSearchProxyUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestBody)
-    });
-    const data = await response.json();
-    if (!response.ok) { throw new Error(data.detail || data.error); }
-    return await this.transformAPIResponse(data);
-  } catch (error) {
-    console.error('USASpending API call failed:', error);
-    throw new Error(`Search failed: ${error.message}`);
-  }
-},
+        try {
+          const response = await fetch(awardSearchProxyUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody)
+          });
+          const data = await response.json();
+          if (!response.ok) { throw new Error(data.detail || data.error); }
+          return await this.transformAPIResponse(data);
+        } catch (error) {
+          console.error('USASpending API call failed:', error);
+          throw new Error(`Search failed: ${error.message}`);
+        }
+      },
+
       async _fetchTransactionDescription(internalId) {
         if (!internalId) return 'No description available';
-        // IMPORTANT: Replace with your Transaction Search Lambda URL
         const transactionProxyUrl = 'https://eerqzgy63d.execute-api.us-east-1.amazonaws.com/default/transaction-search-proxy';
 
         const requestBody = {
@@ -1158,7 +1532,6 @@
           }
           return 'No description available';
         } catch (error) {
-          // CORRECTED: Enhanced error messaging
           console.error(`Description lookup failed for ${internalId}:`, error);
           return `Error: ${error.message}`;
         }
@@ -1229,8 +1602,7 @@
       hideError() {
         document.getElementById('errorMessage').classList.add('hidden');
       },
-      
-      // ADDED: Function to update sort icons
+
       updateSortIcons(column, direction) {
         document.querySelectorAll('.sort-icon').forEach(icon => {
           icon.className = 'fas fa-sort sort-icon';
@@ -1245,17 +1617,27 @@
       },
 
       updateMetrics() {
-        const opps = app.filteredOpportunities;
-        const totalValue = opps.reduce((sum, opp) => sum + opp.value, 0);
-        const urgentCount = opps.filter(opp => opp.priority.level === 'urgent').length;
-        const avgDays = opps.length > 0 ? Math.round(opps.reduce((sum, opp) => sum + opp.daysRemaining, 0) / opps.length) : 0;
+  const opps = app.filteredOpportunities;
+  const totalValue = opps.reduce((sum, opp) => sum + opp.value, 0);
+  
+  // Get current search terms
+  const heroKeywords = document.getElementById('searchKeywords').value.trim();
+  const headerKeywords = document.getElementById('headerSearchKeywords')?.value.trim();
+  const currentKeywords = headerKeywords || heroKeywords;
+  
+  // Build the summary sentence
+  let summary = `We found ${opps.length.toLocaleString()} expiring opportunities with a total value of ${utils.formatMoney(totalValue)}`;
+  
+  if (currentKeywords) {
+    summary += ` for <span class="search-term">"${currentKeywords}"</span>`;
+  }
+  
+  summary += '.';
+  
+  document.getElementById('resultsSummary').innerHTML = summary;
+},
 
-        document.getElementById('totalOpportunities').textContent = opps.length.toLocaleString();
-        document.getElementById('totalValue').textContent = utils.formatMoney(totalValue);
-        document.getElementById('urgentCount').textContent = urgentCount.toLocaleString();
-        document.getElementById('avgDays').textContent = avgDays.toLocaleString();
-      },
-
+      // Desktop table update
       updateOpportunitiesTable() {
         const tbody = document.getElementById('opportunitiesTableBody');
         const opportunities = app.filteredOpportunities;
@@ -1276,41 +1658,133 @@
           const daysClass = `days-${opp.priority.level}`;
           
           return `
-    <tr class="slide-up">
-      <td data-label="Priority">
-        <span class="priority-badge ${priorityClass}">${opp.priority.label}</span>
-      </td>
-      <td data-label="Days Left">
-        <div class="days-remaining ${daysClass}">${opp.daysRemaining} days</div>
-        <div class="expiry-date">Expires ${utils.formatDate(opp.popEndDate)}</div>
-      </td>
-      <td data-label="Vendor">
-        <div class="vendor-info">
-          <div class="vendor-avatar" style="background: ${utils.getColorForVendor(opp.vendor)}">
-            ${utils.getInitials(opp.vendor)}
-          </div>
-          <div>
-            <div class="vendor-name">${utils.truncateText(opp.vendor, 30)}</div>
-            <div class="vendor-id">${utils.truncateText(opp.id, 25)}</div>
-          </div>
-        </div>
-      </td>
-      <td data-label="Value">
-        <div class="contract-value">${utils.formatMoney(opp.value)}</div>
-      </td>
-      <td data-label="Agency">
-        <div class="agency-info">${utils.truncateText(opp.agency, 25)}</div>
-        <div class="office-info">${utils.truncateText(opp.office, 25)}</div>
-      </td>
-      <td data-label="Description">
-        <div class="description-text">${utils.truncateText(opp.description, 120)}</div>
-      </td>
-      <td data-label="Action">
-        ${opp.awardLink ? `<a href="${opp.awardLink}" target="_blank" class="view-award-btn"><i class="fas fa-external-link-alt"></i> View</a>` : ''}
-      </td>
-    </tr>
-  `;
-}).join('');
+            <tr class="slide-up">
+              <td>
+                <span class="priority-badge ${priorityClass}">${opp.priority.label}</span>
+              </td>
+              <td>
+                <div class="days-remaining ${daysClass}">${opp.daysRemaining} days</div>
+                <div class="expiry-date">Expires ${utils.formatDate(opp.popEndDate)}</div>
+              </td>
+              <td>
+                <div class="vendor-info">
+                  <div class="vendor-avatar" style="background: ${utils.getColorForVendor(opp.vendor)}">
+                    ${utils.getInitials(opp.vendor)}
+                  </div>
+                  <div>
+                    <div class="vendor-name">${utils.truncateText(opp.vendor, 30)}</div>
+                    <div class="vendor-id">${utils.truncateText(opp.id, 25)}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="contract-value">${utils.formatMoney(opp.value)}</div>
+              </td>
+              <td>
+                <div class="agency-info">${utils.truncateText(opp.agency, 40)}</div>
+                <div class="office-info">${utils.truncateText(opp.office, 40)}</div>
+              </td>
+              <td>
+                <div class="description-text">${utils.truncateText(opp.description, 120)}</div>
+              </td>
+              <td>
+                ${opp.awardLink ? `<a href="${opp.awardLink}" target="_blank" class="view-award-btn"><i class="fas fa-external-link-alt"></i> View</a>` : ''}
+              </td>
+            </tr>
+          `;
+        }).join('');
+      },
+
+      // Mobile card update
+      updateOpportunitiesGrid() {
+        const grid = document.getElementById('opportunitiesGrid');
+        const opportunities = app.filteredOpportunities;
+
+        if (opportunities.length === 0) {
+          grid.innerHTML = `
+            <div style="text-align: center; padding: 3rem; color: var(--text-secondary); grid-column: 1 / -1;">
+              No opportunities found matching current filters
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = opportunities.map(opp => {
+          const priorityClass = opp.priority.level;
+          const daysClass = `days-${opp.priority.level}`;
+          const descriptionPreview = utils.truncateText(opp.description, 120);
+          const hasMoreDescription = opp.description.length > 120;
+          
+          const vendorTitle = (opp.vendor || '').replace(/"/g, '&quot;');
+          const agencyTitle = (opp.agency || '').replace(/"/g, '&quot;');
+          const officeTitle = (opp.office || '').replace(/"/g, '&quot;');
+          const idTitle = (opp.id || '').replace(/"/g, '&quot;');
+          
+          return `
+            <div class="opportunity-card ${priorityClass} slide-up">
+              <div class="card-header">
+                <div class="card-primary-info">
+                  <div class="card-vendor">
+                    <div class="vendor-avatar" style="background: ${utils.getColorForVendor(opp.vendor)}">
+                      ${utils.getInitials(opp.vendor)}
+                    </div>
+                    <div class="vendor-name" title="${vendorTitle}">${utils.truncateText(opp.vendor, 35)}</div>
+                  </div>
+                </div>
+                <div class="card-value">${utils.formatMoney(opp.value)}</div>
+              </div>
+
+              <div class="card-urgency">
+                <div class="urgency-info">
+                  <div class="days-remaining ${daysClass}">${opp.daysRemaining}</div>
+                  <div class="days-label">days left</div>
+                </div>
+                <div class="priority-badge priority-${opp.priority.level}">
+                  ${opp.priority.label}
+                </div>
+              </div>
+
+              <div class="card-secondary">
+                <div class="info-item">
+                  <div class="info-label">Agency</div>
+                  <div class="info-value" title="${agencyTitle}">${utils.truncateText(opp.agency, 40)}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Expires</div>
+                  <div class="info-value">${utils.formatDate(opp.popEndDate)}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Office</div>
+                  <div class="info-value" title="${officeTitle}">${utils.truncateText(opp.office, 40)}</div>
+                </div>
+                <div class="info-item">
+                  <div class="info-label">Contract ID</div>
+                  <div class="info-value contract-id" title="${idTitle}">${utils.truncateText(opp.id, 15)}</div>
+                </div>
+              </div>
+
+              <div class="card-description">
+                <div class="description-preview">${descriptionPreview}</div>
+                ${hasMoreDescription ? `
+                  <div class="description-toggle" onclick="toggleDescription(this)">
+                    Show more
+                  </div>
+                  <div class="description-full">
+                    ${opp.description}
+                  </div>
+                ` : ''}
+              </div>
+
+              <div class="card-actions">
+                ${opp.awardLink ? `
+                  <a href="${opp.awardLink}" target="_blank" class="view-award-btn">
+                    <i class="fas fa-external-link-alt"></i> View Award
+                  </a>
+                ` : '<div></div>'}
+              </div>
+            </div>
+          `;
+        }).join('');
       },
 
       updateFilters() {
@@ -1340,9 +1814,22 @@
       }
     };
 
+    // Global function for description toggle
+    window.toggleDescription = function(element) {
+      const fullDescription = element.nextElementSibling;
+      const isExpanded = fullDescription.classList.contains('expanded');
+      
+      if (isExpanded) {
+        fullDescription.classList.remove('expanded');
+        element.textContent = 'Show more';
+      } else {
+        fullDescription.classList.add('expanded');
+        element.textContent = 'Show less';
+      }
+    };
+
     // Filtering and Sorting
     const filtering = {
-      // ADDED: Sorting function
       sortBy(column) {
         if (app.currentSort.column === column) {
           app.currentSort.direction = app.currentSort.direction === 'asc' ? 'desc' : 'asc';
@@ -1353,7 +1840,6 @@
         this.applyFilters();
       },
 
-      // ADDED: Sorting logic
       applySorting() {
         const { column, direction } = app.currentSort;
         const multiplier = direction === 'asc' ? 1 : -1;
@@ -1406,9 +1892,10 @@
         }
         
         app.filteredOpportunities = filtered;
-        this.applySorting(); // Call sorting after filtering
-        ui.updateMetrics();
+        this.applySorting();
+        ui.updateMetrics(); // Updated to handle both metric sets
         ui.updateOpportunitiesTable();
+        ui.updateOpportunitiesGrid();
       }
     };
 
@@ -1492,122 +1979,285 @@
       }
     };
 
-    // Search Functions
-    async function executeUSASpendingSearch() {
-      const keywords = document.getElementById('searchKeywords').value.trim();
-      const minValue = document.getElementById('minValue').value;
-      const agencyName = document.getElementById('agencyName').value.trim();
+   // Search Functions
+async function executeUSASpendingSearch() {
+  const keywords = document.getElementById('searchKeywords').value.trim();
+  const minValue = document.getElementById('minValue').value;
+  const agencyName = document.getElementById('agencyName').value.trim();
 
-      if (!keywords) {
-        ui.showError('Please enter search keywords');
-        return;
-      }
+  if (!keywords) {
+    ui.showError('Please enter search keywords');
+    return;
+  }
 
-      ui.hideError();
-      ui.showState('loading');
-      document.getElementById('executeSearch').disabled = true;
+  ui.hideError();
+  ui.showState('loading');
+  document.getElementById('executeSearch').disabled = true;
 
-      try {
-        const opportunities = await usaSpendingAPI.searchContracts({
-          keywords,
-          minValue,
-          agency: agencyName || undefined
-        });
+  try {
+    const opportunities = await usaSpendingAPI.searchContracts({
+      keywords,
+      minValue,
+      agency: agencyName || undefined
+    });
 
-        if (opportunities.length === 0) {
-          throw new Error(`No renewal opportunities found for "${keywords}"`);
-        }
+    if (opportunities.length === 0) {
+      throw new Error(`No renewal opportunities found for "${keywords}"`);
+    }
 
-        app.opportunities = opportunities;
-        app.filteredOpportunities = [...app.opportunities];
-        
-        analysis.analyzeCompetitors();
-        ui.updateFilters();
-
+    app.opportunities = opportunities;
+    app.filteredOpportunities = [...app.opportunities];
+    
+    analysis.analyzeCompetitors();
+    ui.updateFilters();
     filtering.applyFilters();
     ui.showState('results');
-        
-        ui.showState('results');
-        
-      } catch (error) {
-        console.error('Search error:', error);
-        ui.showError(`Search failed: ${error.message}`);
-        ui.showState('hero');
-      } finally {
-        document.getElementById('executeSearch').disabled = false;
-      }
-    }
-
-    // Event Handlers
-    function setupEventHandlers() {
-      document.getElementById('executeSearch').addEventListener('click', executeUSASpendingSearch);
-      
-      document.getElementById('newSearch').addEventListener('click', () => {
-        ui.showState('hero');
-        document.getElementById('searchKeywords').value = '';
-        document.getElementById('minValue').value = '';
-        document.getElementById('agencyName').value = '';
-        app.filters = { search: '', priority: '', competitor: '', agency: '' };
-        document.getElementById('searchFilter').value = '';
-        document.getElementById('priorityFilter').value = '';
-        document.getElementById('competitorFilter').value = '';
-        document.getElementById('agencyFilter').value = '';
-      });
- 
-document.getElementById('searchHelpToggle').addEventListener('click', () => {
-  const content = document.getElementById('searchHelpContent');
-  const toggle = document.getElementById('searchHelpToggle');
+    
+    // Replace the setTimeout block with this:
+setTimeout(() => {
+  const headerSearchBtn = document.getElementById('headerSearchBtn');
+  const headerSearchKeywords = document.getElementById('headerSearchKeywords');
   
-  content.classList.toggle('hidden');
-  toggle.classList.toggle('help-expanded');
-});
-      document.getElementById('exportCSV').addEventListener('click', exportData.exportToCSV);
-      
-      document.getElementById('searchKeywords').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          executeUSASpendingSearch();
-        }
-      });
-      
-      document.getElementById('searchKeywords').addEventListener('input', () => {
-        ui.hideError();
-      });
-      
-      // CORRECTED: Apply debounce to the live filter
-      document.getElementById('searchFilter').addEventListener('input', utils.debounce((e) => {
-        app.filters.search = e.target.value;
-        filtering.applyFilters();
-      }, 300));
-      
-      document.getElementById('priorityFilter').addEventListener('change', (e) => {
-        app.filters.priority = e.target.value;
-        filtering.applyFilters();
-      });
-      
-      document.getElementById('competitorFilter').addEventListener('change', (e) => {
-        app.filters.competitor = e.target.value;
-        filtering.applyFilters();
-      });
-      
-      document.getElementById('agencyFilter').addEventListener('change', (e) => {
-        app.filters.agency = e.target.value;
-        filtering.applyFilters();
-      });
+  console.log('Header elements found:', headerSearchBtn, headerSearchKeywords); // Debug line
+  
+  if (headerSearchBtn && headerSearchKeywords) {
+    // Clear any existing event handlers
+    headerSearchBtn.onclick = null;
+    headerSearchKeywords.onkeypress = null;
+    
+    // Set new event handlers
+    headerSearchBtn.onclick = executeHeaderSearch;
+    headerSearchKeywords.onkeypress = (e) => {
+      console.log('Key pressed:', e.key); // Debug line
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        console.log('Enter pressed, calling executeHeaderSearch'); // Debug line
+        executeHeaderSearch();
+      }
+    };
+    
+    console.log('Event handlers attached'); // Debug line
+  } else {
+    console.log('Header elements not found'); // Debug line
+  }
+}, 100);
+    
+  } catch (error) {
+    console.error('Search error:', error);
+    ui.showError(`Search failed: ${error.message}`);
+    ui.showState('hero');
+  } finally {
+    document.getElementById('executeSearch').disabled = false;
+  }
+}
 
-      // ADDED: Event listeners for table sorting
-      document.querySelectorAll('th[data-sort]').forEach(th => {
-        th.addEventListener('click', () => {
-          filtering.sortBy(th.dataset.sort);
-        });
-      });
+async function executeHeaderSearch() {
+  const keywords = document.getElementById('headerSearchKeywords').value.trim();
+  const minValue = document.getElementById('headerMinValue').value;
+  const agencyName = document.getElementById('headerAgency').value.trim();
+
+  if (!keywords) {
+    // If no keywords, just focus the input
+    document.getElementById('headerSearchKeywords').focus();
+    return;
+  }
+
+  document.getElementById('headerSearchBtn').disabled = true;
+  document.getElementById('headerSearchBtn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+
+  try {
+    const opportunities = await usaSpendingAPI.searchContracts({
+      keywords,
+      minValue,
+      agency: agencyName || undefined
+    });
+
+    if (opportunities.length === 0) {
+      throw new Error(`No renewal opportunities found for "${keywords}"`);
     }
 
-    // Initialize Application
-    document.addEventListener('DOMContentLoaded', () => {
-      setupEventHandlers();
+    app.opportunities = opportunities;
+    app.filteredOpportunities = [...app.opportunities];
+    
+    analysis.analyzeCompetitors();
+    ui.updateFilters();
+    filtering.applyFilters();
+    
+    // Clear any existing filter values
+    document.getElementById('searchFilter').value = '';
+    app.filters = { search: '', priority: '', competitor: '', agency: '' };
+    
+  } catch (error) {
+    console.error('Header search error:', error);
+    // Show error briefly in the button
+    document.getElementById('headerSearchBtn').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+    setTimeout(() => {
+      document.getElementById('headerSearchBtn').innerHTML = '<i class="fas fa-search"></i> Search';
+    }, 2000);
+  } finally {
+    document.getElementById('headerSearchBtn').disabled = false;
+    document.getElementById('headerSearchBtn').innerHTML = '<i class="fas fa-search"></i> Search';
+  }
+}
+function getCurrentSearchSummary() {
+  // Get the original search terms (from hero section initially, then from header)
+  const heroKeywords = document.getElementById('searchKeywords').value.trim();
+  const headerKeywords = document.getElementById('headerSearchKeywords')?.value.trim();
+  const currentKeywords = headerKeywords || heroKeywords;
+  
+  const minValue = document.getElementById('headerMinValue')?.value || document.getElementById('minValue').value;
+  const agency = document.getElementById('headerAgency')?.value || document.getElementById('agencyName').value;
+  
+  let summary = [];
+  
+  if (currentKeywords) {
+    summary.push(`"${currentKeywords}"`);
+  }
+  
+  if (minValue) {
+    const valueLabels = {
+      '100000': '$100K+',
+      '500000': '$500K+', 
+      '1000000': '$1M+',
+      '5000000': '$5M+'
+    };
+    summary.push(valueLabels[minValue] || minValue);
+  }
+  
+  if (agency) {
+    const shortAgencyNames = {
+      'Department of Defense': 'Defense',
+      'Department of Veterans Affairs': 'VA',
+      'Department of Homeland Security': 'DHS',
+      'General Services Administration': 'GSA',
+      'Department of Health and Human Services': 'HHS',
+      'Department of Energy': 'Energy',
+      'National Aeronautics and Space Administration': 'NASA',
+      'Department of Justice': 'Justice',
+      'Department of State': 'State',
+      'Department of Agriculture': 'Agriculture'
+    };
+    summary.push(shortAgencyNames[agency] || agency);
+  }
+  
+  return summary.length > 0 ? ` • ${summary.join(' • ')}` : '';
+}
+    // Event Handlers
+function setupEventHandlers() {
+  document.getElementById('executeSearch').addEventListener('click', executeUSASpendingSearch);
+  
+  // Only attach if element exists
+  const newSearchBtn = document.getElementById('newSearch');
+  if (newSearchBtn) {
+    newSearchBtn.addEventListener('click', () => {
       ui.showState('hero');
+      document.getElementById('searchKeywords').value = '';
+      document.getElementById('minValue').value = '';
+      document.getElementById('agencyName').value = '';
+      app.filters = { search: '', priority: '', competitor: '', agency: '' };
+      document.getElementById('searchFilter').value = '';
+      document.getElementById('priorityFilter').value = '';
+      document.getElementById('competitorFilter').value = '';
+      document.getElementById('agencyFilter').value = '';
     });
+  }
+
+  document.getElementById('searchHelpToggle').addEventListener('click', () => {
+    const content = document.getElementById('searchHelpContent');
+    const toggle = document.getElementById('searchHelpToggle');
+    
+    content.classList.toggle('hidden');
+    toggle.classList.toggle('help-expanded');
+  });
+
+  // Only attach if element exists
+  const exportBtn = document.getElementById('exportCSV');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', exportData.exportToCSV);
+  }
+  
+  document.getElementById('searchKeywords').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      executeUSASpendingSearch();
+    }
+  });
+  
+  document.getElementById('searchKeywords').addEventListener('input', () => {
+    ui.hideError();
+  });
+  
+  // Only attach if elements exist
+  const searchFilter = document.getElementById('searchFilter');
+  if (searchFilter) {
+    searchFilter.addEventListener('input', utils.debounce((e) => {
+      app.filters.search = e.target.value;
+      filtering.applyFilters();
+    }, 300));
+  }
+  
+  const priorityFilter = document.getElementById('priorityFilter');
+  if (priorityFilter) {
+    priorityFilter.addEventListener('change', (e) => {
+      app.filters.priority = e.target.value;
+      filtering.applyFilters();
+    });
+  }
+  
+  const competitorFilter = document.getElementById('competitorFilter');
+  if (competitorFilter) {
+    competitorFilter.addEventListener('change', (e) => {
+      app.filters.competitor = e.target.value;
+      filtering.applyFilters();
+    });
+  }
+  
+  const agencyFilter = document.getElementById('agencyFilter');
+  if (agencyFilter) {
+    agencyFilter.addEventListener('change', (e) => {
+      app.filters.agency = e.target.value;
+      filtering.applyFilters();
+    });
+  }
+
+  // Event listeners for table sorting - only if table exists
+  const sortHeaders = document.querySelectorAll('th[data-sort]');
+  if (sortHeaders.length > 0) {
+    sortHeaders.forEach(th => {
+      th.addEventListener('click', () => {
+        filtering.sortBy(th.dataset.sort);
+      });
+    });
+  }
+}
+
+// Add this to your Initialize Application section, right after setupEventHandlers():
+function clearAllSearchInputs() {
+  // Clear hero section search inputs
+  document.getElementById('searchKeywords').value = '';
+  document.getElementById('minValue').value = '';
+  document.getElementById('agencyName').value = '';
+  
+  // Clear header search inputs if they exist
+  const headerKeywords = document.getElementById('headerSearchKeywords');
+  const headerMinValue = document.getElementById('headerMinValue');
+  const headerAgency = document.getElementById('headerAgency');
+  
+  if (headerKeywords) headerKeywords.value = '';
+  if (headerMinValue) headerMinValue.value = '';
+  if (headerAgency) headerAgency.value = '';
+  
+  // Clear filter inputs if they exist
+  const searchFilter = document.getElementById('searchFilter');
+  if (searchFilter) searchFilter.value = '';
+}
+
+// Update your Initialize Application section:
+document.addEventListener('DOMContentLoaded', () => {
+  setupEventHandlers();
+  clearAllSearchInputs(); // Add this line
+  ui.showState('hero');
+});
   </script>
 </body>
 </html>
