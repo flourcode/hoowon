@@ -1709,7 +1709,7 @@ body {
 		  <div class="logo-subtitle">Try these Sample Datasets</div>
             <div class="dataset-buttons">
               <button class="btn-secondary btn-sm" data-dataset="dhs_CY24_25">DHS Awards CY24-25</button>
-			  <button class="btn-secondary btn-sm" data-dataset="AFLCMC C3IN">AFLCMC C3IN</button>
+			  <button class="btn-secondary btn-sm" data-dataset="SEP_NOV25">SEP NOV25 Awards</button>
 			  <button class="btn-secondary btn-sm" data-dataset="NAICS_611310_Colleges">Colleges & Uni</button>
 			  <button class="btn-secondary btn-sm" data-dataset="carahsoft_DA10">Carahsoft DA10</button>
             </div>
@@ -2873,7 +2873,7 @@ const dataProcessor = {
 		'AFLCMC C3IN': 'AFLCMC C3IN.csv',
 		'carahsoft_DA10': 'carahsoft_DA10.csv',
 		'NAICS_611310_Colleges': 'NAICS_611310_Colleges.csv',
-		'USAF_SEP24': 'USAF_SEP24.csv',
+		'SEP_NOV25': 'SEP_NOV25.csv',
 		'PSC_DA10_SaaS': 'PSC_DA10_SaaS.csv',
 		'PSC_DA01_IT_Labor': 'PSC_DA01_IT_Labor.csv',
         '332813_Electroplating': '332813_Electroplating.csv'
@@ -5982,10 +5982,10 @@ async function loadExampleDataOnInit() {
   try {
     stateManager.showState('loadingState');
     
-    const response = await fetch(`${app.s3BaseUrl}navy_cloud.csv`);
+    const response = await fetch(`${app.s3BaseUrl}SEP_NOV25.csv`);
     
     if (!response.ok) {
-      console.warn('navy_cloud.csv not found, loading default dataset');
+      console.warn('SEP_NOV25.csv not found, loading default dataset');
       dataProcessor.loadExampleData('dhs_CY24_25');
       updateDataSourceBanner('dhs_CY24_25.csv');
       return;
@@ -5993,7 +5993,7 @@ async function loadExampleDataOnInit() {
     
     const csvText = await response.text();
     dataProcessor.processData(csvText);
-    updateDataSourceBanner('navy_cloud.csv');
+    updateDataSourceBanner('SEP_NOV25.csv');
     
   } catch (error) {
     console.error('Error loading example data:', error);
